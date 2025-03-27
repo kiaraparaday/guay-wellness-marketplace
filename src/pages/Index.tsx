@@ -92,7 +92,7 @@ const topSolutions: SolutionType[] = [
 const testimonials = [
   {
     id: 1,
-    quote: "Implementar el programa de mindfulness corporativo transformó la cultura de nuestro equipo. Notamos una mejora del 30% en productividad y satisfacción laboral.",
+    quote: "Implementar el programa de mindfulness corporativo transform�� la cultura de nuestro equipo. Notamos una mejora del 30% en productividad y satisfacción laboral.",
     author: "María Rodríguez",
     position: "Directora de Recursos Humanos",
     company: "TechSolutions S.A.",
@@ -190,7 +190,7 @@ const IndexPage: React.FC = () => {
               <div className="relative">
                 <h2 className="text-2xl md:text-3xl font-playfair font-semibold mb-2 text-gray-dark">
                   <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-guay-purple to-guay-blue">
-                    SOLUCIONES PREMIUM
+                    SOLUCIONES DESTACADAS
                   </span>
                   <span className="ml-3 text-xl font-normal text-guay-orange">Nuestras Top Soluciones</span>
                 </h2>
@@ -218,7 +218,6 @@ const IndexPage: React.FC = () => {
               </Link>
             </div>
             
-            {/* Top Solutions Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {topSolutions.map((solution, index) => (
                 <SolutionCard 
