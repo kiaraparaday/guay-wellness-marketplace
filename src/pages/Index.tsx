@@ -135,25 +135,29 @@ const IndexPage: React.FC = () => {
             
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               {dimensions.map((dimension, index) => (
-                <Link
-                  key={dimension.id}
-                  to={`/dimension/${dimension.id}`}
-                  className="relative overflow-hidden rounded-xl h-36 flex items-end shadow-subtle hover:shadow-md transition-all group"
-                >
-                  <img 
-                    src={dimension.image} 
-                    alt={dimension.title} 
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                  <div className="relative p-4 text-white">
-                    <h3 className="font-playfair font-medium text-lg mb-1">{dimension.title}</h3>
-                    <div className="flex items-center text-sm text-white/80 group-hover:text-white transition-all">
-                      <span>Explorar</span>
-                      <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <div key={dimension.id} className="flex flex-col">
+                  <Link
+                    to={`/dimension/${dimension.id}`}
+                    className="relative overflow-hidden rounded-xl h-36 flex items-end shadow-subtle hover:shadow-md transition-all group mb-2"
+                  >
+                    <img 
+                      src={dimension.image} 
+                      alt={dimension.title} 
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                    <div className="relative p-4 text-white">
+                      <h3 className="font-playfair font-medium text-lg mb-1">{dimension.title}</h3>
+                      <div className="flex items-center text-sm text-white/80 group-hover:text-white transition-all">
+                        <span>Explorar</span>
+                        <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </div>
                     </div>
+                  </Link>
+                  <div className="bg-white/90 rounded-lg p-3 shadow-sm text-sm text-guay-dark border border-guay-blue/10">
+                    {dimension.description}
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
             
