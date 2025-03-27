@@ -16,8 +16,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    /* GUAY brand colors */
-    --primary: 195 66% 55%; /* Blue */
+    /* GUAY brand colors updated based on image */
+    --primary: 195 65% 54%; /* Updated blue (#49A1C9) */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 240 4.8% 95.9%;
@@ -26,7 +26,7 @@
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
 
-    --accent: 252 84% 98%;
+    --accent: 80 53% 56%; /* Lime green (#B5CF4F) */
     --accent-foreground: 240 5.9% 10%;
 
     --destructive: 0 84.2% 60.2%;
@@ -34,7 +34,7 @@
 
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 252 84% 66%;
+    --ring: 330 81% 55%; /* Purple (#BF5C95) */
 
     --radius: 0.75rem;
 
@@ -45,7 +45,7 @@
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 252 84% 66%;
+    --sidebar-ring: 330 81% 55%; /* Purple (#BF5C95) */
   }
 
   .dark {
@@ -159,7 +159,7 @@
     @apply relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
   }
 
-  /* GUAY-specific styles */
+  /* GUAY-specific styles updated to match brand colors */
   .guay-gradient {
     @apply bg-gradient-to-r from-guay-green via-guay-blue to-guay-purple;
   }
@@ -170,6 +170,23 @@
   
   .guay-text-gradient {
     @apply bg-gradient-to-r from-guay-blue to-guay-purple bg-clip-text text-transparent;
+  }
+
+  /* New colored circle backgrounds like in the reference image */
+  .circle-bg-green {
+    @apply bg-guay-green rounded-full;
+  }
+  
+  .circle-bg-blue {
+    @apply bg-guay-blue rounded-full;
+  }
+  
+  .circle-bg-purple {
+    @apply bg-guay-purple rounded-full;
+  }
+  
+  .circle-bg-orange {
+    @apply bg-guay-orange rounded-full;
   }
 }
 
@@ -200,4 +217,3 @@
 .font-playfair {
   font-family: 'Playfair Display', serif;
 }
-

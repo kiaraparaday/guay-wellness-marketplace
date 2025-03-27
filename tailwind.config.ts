@@ -63,26 +63,13 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				guay: {
-					50: '#f5f5ff',
-					100: '#ebebff',
-					200: '#d8d8ff',
-					300: '#b6b6ff',
-					400: '#9b87f5',
-					500: '#7867e8',
-					600: '#5a49d6',
-					700: '#4a3bbc',
-					800: '#3f33a0',
-					900: '#352d7e',
-					950: '#201b4a',
-				},
-				// GUAY Brand Colors based on reference images
-				'guay-green': '#B5CF4F',
-				'guay-blue': '#49A1C9',
-				'guay-purple': '#BF5C95',
-				'guay-orange': '#E9A15B',
-				'guay-dark': '#1A2138',
-				'guay-light': '#F8F9FA',
+				// GUAY Brand Colors updated based on the uploaded image
+				'guay-green': '#B5CF4F',  // Lime green
+				'guay-blue': '#49A1C9',   // Medium blue
+				'guay-purple': '#BF5C95', // Magenta purple
+				'guay-orange': '#E9A15B', // Orange/gold
+				'guay-dark': '#1A2138',   // Dark navy
+				'guay-light': '#F8F9FA',  // Light background
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

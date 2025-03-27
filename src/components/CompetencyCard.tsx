@@ -26,7 +26,7 @@ const CompetencyCard: React.FC<CompetencyCardProps> = ({ competency, index }) =>
       to={`/competency/${competency.id}`}
       className={cn(
         "group flex flex-col h-full items-center rounded-xl bg-white hover-scale shadow-subtle hover:shadow-md transition-all duration-300 animate-fade-in overflow-hidden",
-        "opacity-0 border border-transparent hover:border-primary/10"
+        "opacity-0 border border-transparent hover:border-guay-blue/20"
       )}
       style={{ 
         animationDelay: `${index * 100}ms`,
@@ -65,7 +65,7 @@ const CompetencyCard: React.FC<CompetencyCardProps> = ({ competency, index }) =>
       )}
       
       <div className="p-6">
-        <h3 className="text-lg font-playfair font-medium text-center group-hover:text-primary transition-colors duration-300">
+        <h3 className="text-lg font-playfair font-medium text-center group-hover:text-guay-blue transition-colors duration-300">
           {competency.title}
         </h3>
         
