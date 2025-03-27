@@ -29,38 +29,35 @@ const DimensionCard: React.FC<DimensionCardProps> = ({ dimension, index }) => {
         animationFillMode: "forwards"
       }}
     >
-      <div 
-        className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 opacity-70 group-hover:opacity-80 transition-opacity duration-500"
-        style={{
-          backgroundImage: `linear-gradient(to bottom, transparent, ${dimension.color})`
-        }}
-      />
-      
-      <img 
-        src={dimension.image} 
-        alt={dimension.title} 
-        className="w-full h-80 object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
-      />
-      
-      <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-        <h3 className="text-2xl font-semibold mb-2 group-hover:translate-y-0 translate-y-2 transition-transform duration-500">
-          {dimension.title}
-        </h3>
+      <Link to={`/dimension/${dimension.id}`} className="block">
+        <div 
+          className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 opacity-70 group-hover:opacity-80 transition-opacity duration-500"
+          style={{
+            backgroundImage: `linear-gradient(to bottom, transparent, ${dimension.color})`
+          }}
+        />
         
-        <div className="bg-white/90 backdrop-blur-sm text-foreground p-3 rounded-lg shadow-sm mb-4 transform opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">
-          <p className="text-sm">
+        <img 
+          src={dimension.image} 
+          alt={dimension.title} 
+          className="w-full h-72 object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
+        />
+        
+        <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+          <h3 className="text-xl font-semibold mb-2 transform group-hover:translate-y-0 transition-transform duration-500">
+            {dimension.title}
+          </h3>
+          
+          <p className="text-sm text-white/90 mb-3 line-clamp-2">
             {dimension.description}
           </p>
+          
+          <div className="inline-flex items-center gap-1 text-sm font-medium py-1.5 px-3 bg-white/20 backdrop-blur-sm rounded-full group-hover:bg-white/30 transition-all duration-300">
+            Explorar soluciones 
+            <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform duration-300" />
+          </div>
         </div>
-        
-        <Link 
-          to={`/dimension/${dimension.id}`}
-          className="inline-flex items-center gap-1 text-sm font-medium py-2 px-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-300"
-        >
-          Explorar soluciones 
-          <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" />
-        </Link>
-      </div>
+      </Link>
     </div>
   );
 };

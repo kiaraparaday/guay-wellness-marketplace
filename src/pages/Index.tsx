@@ -1,4 +1,3 @@
-
 import React from "react";
 import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
@@ -10,28 +9,28 @@ const dimensions: DimensionType[] = [
   {
     id: "psychosocial",
     title: "Factores Psicosociales",
-    description: "Aborda los elementos que afectan el bienestar mental y emocional de los colaboradores, como la gestión de cargas mentales, autonomía laboral y equilibrio vida-trabajo.",
+    description: "Mejora el bienestar mental y emocional de tu equipo.",
     image: "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?auto=format&fit=crop&q=80",
     color: "rgba(79, 70, 229, 0.8)",
   },
   {
     id: "climate",
     title: "Clima Laboral",
-    description: "Mejora el ambiente de trabajo enfocándose en la comunicación, motivación, equidad e integración entre los miembros del equipo.",
+    description: "Transforma el ambiente de trabajo para potenciar la productividad.",
     image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80",
     color: "rgba(245, 158, 11, 0.8)",
   },
   {
     id: "culture",
     title: "Cultura Organizacional",
-    description: "Fortalece los valores y comportamientos compartidos en la organización, desarrollando capacidades, coordinación e integración, y aprendizaje organizacional.",
+    description: "Fortalece valores compartidos y desarrolla capacidades de equipo.",
     image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80",
     color: "rgba(16, 185, 129, 0.8)",
   },
   {
     id: "dei",
     title: "Diversidad, Equidad e Inclusión",
-    description: "Promueve un entorno laboral donde todas las personas son valoradas y respetadas, independientemente de sus diferencias, creando espacios seguros y equitativos.",
+    description: "Crea espacios donde cada persona pueda brillar siendo auténtica.",
     image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80",
     color: "rgba(236, 72, 153, 0.8)",
   },
@@ -135,29 +134,11 @@ const IndexPage: React.FC = () => {
             
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               {dimensions.map((dimension, index) => (
-                <div key={dimension.id} className="flex flex-col">
-                  <Link
-                    to={`/dimension/${dimension.id}`}
-                    className="relative overflow-hidden rounded-xl h-36 flex items-end shadow-subtle hover:shadow-md transition-all group mb-2"
-                  >
-                    <img 
-                      src={dimension.image} 
-                      alt={dimension.title} 
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                    <div className="relative p-4 text-white">
-                      <h3 className="font-playfair font-medium text-lg mb-1">{dimension.title}</h3>
-                      <div className="flex items-center text-sm text-white/80 group-hover:text-white transition-all">
-                        <span>Explorar</span>
-                        <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </div>
-                  </Link>
-                  <div className="bg-white/90 rounded-lg p-3 shadow-sm text-sm text-guay-dark border border-guay-blue/10">
-                    {dimension.description}
-                  </div>
-                </div>
+                <DimensionCard 
+                  key={dimension.id}
+                  dimension={dimension}
+                  index={index}
+                />
               ))}
             </div>
             
