@@ -92,7 +92,7 @@ const topSolutions: SolutionType[] = [
 const testimonials = [
   {
     id: 1,
-    quote: "Implementar el programa de mindfulness corporativo transform�� la cultura de nuestro equipo. Notamos una mejora del 30% en productividad y satisfacción laboral.",
+    quote: "Implementar el programa de mindfulness corporativo transformó la cultura de nuestro equipo. Notamos una mejora del 30% en productividad y satisfacción laboral.",
     author: "María Rodríguez",
     position: "Directora de Recursos Humanos",
     company: "TechSolutions S.A.",
@@ -192,7 +192,6 @@ const IndexPage: React.FC = () => {
                   <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-guay-purple to-guay-blue">
                     SOLUCIONES DESTACADAS
                   </span>
-                  <span className="ml-3 text-xl font-normal text-guay-orange">Top Recomendadas</span>
                 </h2>
                 
                 <div className="absolute -top-6 -right-14 transform">
