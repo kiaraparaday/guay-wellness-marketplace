@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
 import SolutionCard, { SolutionType } from "@/components/SolutionCard";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Star } from "lucide-react";
 
 const dimensions: DimensionType[] = [
   {
@@ -36,7 +36,6 @@ const dimensions: DimensionType[] = [
   },
 ];
 
-// Catálogo de soluciones destacadas
 const topSolutions: SolutionType[] = [
   {
     id: "mindfulness-program",
@@ -156,16 +155,28 @@ const IndexPage: React.FC = () => {
           {/* Top Solutions Section */}
           <section className="mb-12">
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-              <div>
-                <h2 className="text-2xl md:text-3xl font-playfair font-semibold mb-2 text-guay-dark">
-                  <span className="text-guay-purple">
-                    Soluciones Destacadas
-                  </span>
-                </h2>
-                <p className="text-muted-foreground max-w-xl">
-                  Descubre nuestras soluciones más populares y recomendadas
-                </p>
+              <div className="relative">
+                <div className="flex items-center">
+                  <Star className="text-yellow-400 fill-yellow-400 w-6 h-6 mr-2 animate-pulse" />
+                  <h2 className="text-2xl md:text-3xl font-playfair font-semibold mb-2 text-guay-dark">
+                    <span className="relative">
+                      <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-guay-orange via-guay-purple to-guay-blue">
+                        Soluciones Destacadas
+                      </span>
+                      <span className="absolute -bottom-1.5 left-0 w-full h-2 bg-gradient-to-r from-guay-orange/30 via-guay-purple/30 to-guay-blue/30 rounded-full"></span>
+                    </span>
+                  </h2>
+                  <Star className="text-yellow-400 fill-yellow-400 w-6 h-6 ml-2 animate-pulse" />
+                </div>
+                
+                <div className="absolute -top-2 -right-12 bg-guay-orange text-white text-xs font-bold px-3 py-1 rounded-full rotate-12 shadow-md flex items-center">
+                  TOP <span className="mx-0.5">⭐</span> PICKS
+                </div>
               </div>
+              
+              <p className="text-muted-foreground max-w-xl mt-2">
+                Descubre nuestras soluciones más populares y recomendadas
+              </p>
               
               <Link 
                 to="/solution" 
