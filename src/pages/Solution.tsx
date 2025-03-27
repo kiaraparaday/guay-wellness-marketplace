@@ -1,10 +1,10 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "@/components/Header";
-import { ArrowLeft, Calendar, Clock, Users, Download, Globe, FileText } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Users, Download, Globe, FileText, Tag } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 // Sample solutions data
 const solutionsData = {
@@ -56,6 +56,7 @@ const solutionsData = {
     competencies: [
       { id: "mental-workload", name: "Gestión de Cargas Mentales", dimensionId: "psychosocial", dimensionName: "Factores Psicosociales" },
     ],
+    categories: ["Carga Mental", "Bienestar", "Estrés"]
   },
   
   "solution-2": {
@@ -107,6 +108,7 @@ const solutionsData = {
     competencies: [
       { id: "communication", name: "Comunicación", dimensionId: "climate", dimensionName: "Clima Laboral" },
     ],
+    categories: ["Comunicación", "Liderazgo", "Trabajo en Equipo"]
   },
 };
 
@@ -220,6 +222,25 @@ const SolutionPage: React.FC = () => {
                 <h1 className="text-3xl sm:text-4xl font-semibold mb-6 animate-fade-in">
                   {solution.title}
                 </h1>
+                
+                {/* Categories */}
+                {solution.categories && solution.categories.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    <div className="flex items-center text-muted-foreground mr-2">
+                      <Tag className="w-4 h-4 mr-1" />
+                      <span className="text-sm">Categorías:</span>
+                    </div>
+                    {solution.categories.map((category, index) => (
+                      <Badge 
+                        key={index}
+                        variant="outline" 
+                        className="text-sm bg-primary/5 hover:bg-primary/10 text-primary border-primary/20"
+                      >
+                        {category}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
                 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
                   <div className="flex items-center">

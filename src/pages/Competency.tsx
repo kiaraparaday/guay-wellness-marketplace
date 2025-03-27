@@ -72,6 +72,7 @@ const solutionsData: SolutionType[] = [
     description: "Aprende técnicas prácticas para identificar y manejar el estrés laboral y distribuir mejor las cargas cognitivas.",
     image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80",
     competencies: ["mental-workload"],
+    categories: ["Carga Mental", "Bienestar", "Estrés"]
   },
   {
     id: "solution-2",
@@ -83,6 +84,7 @@ const solutionsData: SolutionType[] = [
     description: "Desarrolla habilidades para transmitir mensajes claros, escuchar activamente y gestionar conversaciones difíciles en entornos laborales.",
     image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80",
     competencies: ["communication"],
+    categories: ["Comunicación", "Liderazgo", "Trabajo en Equipo"]
   },
   {
     id: "solution-3",
@@ -94,6 +96,7 @@ const solutionsData: SolutionType[] = [
     description: "Fortalece tus habilidades de liderazgo con un programa personalizado que combina sesiones individuales y grupales.",
     image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80",
     competencies: ["capability-development"],
+    categories: ["Liderazgo", "Desarrollo Personal", "Integridad"]
   },
   {
     id: "solution-4",
@@ -105,6 +108,7 @@ const solutionsData: SolutionType[] = [
     description: "Comprende la importancia de la diversidad en el lugar de trabajo y cómo crear un entorno inclusivo para todos.",
     image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80",
     competencies: ["diversity"],
+    categories: ["Diversidad", "Inclusión", "Cultura Organizacional"]
   },
   {
     id: "solution-5",
@@ -116,6 +120,7 @@ const solutionsData: SolutionType[] = [
     description: "Diagnostica los factores de riesgo psicosocial en tu organización para desarrollar estrategias efectivas de prevención.",
     image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80",
     competencies: ["mental-workload"],
+    categories: ["Carga Mental", "Evaluación", "Prevención"]
   },
   {
     id: "solution-6",
@@ -127,6 +132,7 @@ const solutionsData: SolutionType[] = [
     description: "Aprende a comunicarte con claridad y respeto, defendiendo tus ideas mientras respetas las de los demás.",
     image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80",
     competencies: ["communication"],
+    categories: ["Comunicación", "Asertividad", "Resolución de Conflictos"]
   },
   {
     id: "solution-7",
@@ -138,6 +144,7 @@ const solutionsData: SolutionType[] = [
     description: "Implementa micro-descansos estratégicos para reducir la fatiga mental y mejorar la concentración durante la jornada laboral.",
     image: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&q=80",
     competencies: ["mental-workload", "work-life-balance"],
+    categories: ["Carga Mental", "Bienestar", "Productividad"]
   },
   {
     id: "solution-8",
@@ -149,6 +156,7 @@ const solutionsData: SolutionType[] = [
     description: "Reestructura roles y responsabilidades para optimizar la carga mental y fomentar un ambiente más productivo y saludable.",
     image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80",
     competencies: ["mental-workload", "work-autonomy"],
+    categories: ["Carga Mental", "Autonomía", "Diseño Organizacional"]
   },
   {
     id: "solution-9",
@@ -160,6 +168,7 @@ const solutionsData: SolutionType[] = [
     description: "Aprende técnicas de atención plena para reducir el estrés, mejorar la concentración y tomar mejores decisiones bajo presión.",
     image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80",
     competencies: ["mental-workload", "work-life-balance"],
+    categories: ["Mindfulness", "Estrés", "Bienestar"]
   },
   {
     id: "solution-10",
@@ -171,6 +180,7 @@ const solutionsData: SolutionType[] = [
     description: "Optimiza la colaboración y comunicación en equipo mediante metodologías y herramientas digitales que reducen la carga mental.",
     image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80",
     competencies: ["mental-workload", "communication"],
+    categories: ["Trabajo en Equipo", "Productividad", "Herramientas Digitales"]
   },
 ];
 

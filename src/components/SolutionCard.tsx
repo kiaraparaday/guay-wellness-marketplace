@@ -1,8 +1,8 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { Clock, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 export interface SolutionType {
   id: string;
@@ -14,6 +14,7 @@ export interface SolutionType {
   description: string;
   image: string;
   competencies: string[]; // ids of related competencies
+  categories?: string[]; // New field for category tags
 }
 
 interface SolutionCardProps {
@@ -62,6 +63,31 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
     return modalities[modality] || modality;
   };
 
+  // Map competency IDs to readable names
+  const competencyLabels: Record<string, string> = {
+    "mental-workload": "Carga Mental",
+    "work-autonomy": "Autonomía Laboral",
+    "work-life-balance": "Equilibrio Vida-Trabajo",
+    "communication": "Comunicación",
+    "capability-development": "Desarrollo de Capacidades",
+    "diversity": "Diversidad",
+    "leadership": "Liderazgo",
+    "teamwork": "Trabajo en Equipo",
+    "innovation": "Innovación",
+    "integrity": "Integridad"
+  };
+
+  // Get category labels to display
+  const getCategoryLabels = () => {
+    // First use categories if available
+    if (solution.categories && solution.categories.length > 0) {
+      return solution.categories;
+    }
+    
+    // Fall back to competency names if no categories are specified
+    return solution.competencies.map(id => competencyLabels[id] || id);
+  };
+
   return (
     <Link 
       to={`/solution/${solution.id}`}
@@ -95,9 +121,22 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
           {solution.title}
         </h3>
         
-        <p className="text-sm text-muted-foreground mb-4 line-clamp-2 flex-grow">
+        <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
           {solution.description}
         </p>
+        
+        {/* Category tags */}
+        <div className="flex flex-wrap gap-1.5 mb-4">
+          {getCategoryLabels().map((category, idx) => (
+            <Badge 
+              key={idx} 
+              variant="outline" 
+              className="text-xs bg-primary/5 hover:bg-primary/10 text-primary border-primary/20"
+            >
+              {category}
+            </Badge>
+          ))}
+        </div>
         
         <div className="flex justify-between items-center mt-auto pt-3 border-t border-border">
           <div className="flex items-center text-sm text-muted-foreground">

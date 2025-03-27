@@ -2,6 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 export interface CompetencyType {
   id: string;
@@ -11,6 +12,7 @@ export interface CompetencyType {
   icon: string;
   color: string;
   image?: string; // Added the image property
+  dimensionTitle?: string; // Optional dimension title for display
 }
 
 interface CompetencyCardProps {
@@ -32,12 +34,22 @@ const CompetencyCard: React.FC<CompetencyCardProps> = ({ competency, index }) =>
       }}
     >
       {competency.image ? (
-        <div className="w-full h-40 overflow-hidden">
+        <div className="w-full h-40 overflow-hidden relative">
           <img 
             src={competency.image} 
             alt={competency.title} 
             className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
           />
+          {competency.dimensionTitle && (
+            <div className="absolute top-3 left-3">
+              <Badge 
+                className="text-xs font-medium"
+                style={{ backgroundColor: `${competency.color}20`, color: competency.color }}
+              >
+                {competency.dimensionTitle}
+              </Badge>
+            </div>
+          )}
         </div>
       ) : (
         <div 
