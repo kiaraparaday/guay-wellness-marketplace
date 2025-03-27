@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -16,7 +16,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    --primary: 252 84% 66%;
+    /* GUAY brand colors */
+    --primary: 195 66% 55%; /* Blue */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 240 4.8% 95.9%;
@@ -57,7 +58,7 @@
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 252 84% 66%;
+    --primary: 195 66% 55%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 240 3.7% 15.9%;
@@ -93,12 +94,12 @@
   }
 
   body {
-    @apply bg-background text-foreground font-inter;
+    @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-medium tracking-tight;
+    @apply font-playfair tracking-tight;
   }
 
   h1 {
@@ -157,6 +158,19 @@
   .link-underline {
     @apply relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
   }
+
+  /* GUAY-specific styles */
+  .guay-gradient {
+    @apply bg-gradient-to-r from-guay-green via-guay-blue to-guay-purple;
+  }
+  
+  .guay-heading {
+    @apply font-playfair text-guay-dark font-medium;
+  }
+  
+  .guay-text-gradient {
+    @apply bg-gradient-to-r from-guay-blue to-guay-purple bg-clip-text text-transparent;
+  }
 }
 
 /* Custom scrollbar */
@@ -182,3 +196,8 @@
 .font-inter {
   font-family: 'Inter', sans-serif;
 }
+
+.font-playfair {
+  font-family: 'Playfair Display', serif;
+}
+

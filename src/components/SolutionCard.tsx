@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { Clock, Users } from "lucide-react";
@@ -27,17 +28,17 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
   const getTypeColor = (type: string) => {
     switch (type) {
       case "workshop":
-        return "bg-blue-100 text-blue-800";
+        return "bg-guay-blue/10 text-guay-blue border border-guay-blue/20";
       case "course":
-        return "bg-purple-100 text-purple-800";
+        return "bg-guay-purple/10 text-guay-purple border border-guay-purple/20";
       case "webinar":
-        return "bg-green-100 text-green-800";
+        return "bg-guay-green/10 text-guay-green border border-guay-green/20";
       case "coaching":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-guay-orange/10 text-guay-orange border border-guay-orange/20";
       case "assessment":
-        return "bg-orange-100 text-orange-800";
+        return "bg-orange-100 text-orange-800 border border-orange-200";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-100 text-gray-800 border border-gray-200";
     }
   };
 
@@ -110,14 +111,14 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
           <span className={cn("px-2 py-1 rounded-md text-xs font-medium", getTypeColor(solution.type))}>
             {typeToSpanish(solution.type)}
           </span>
-          <span className="px-2 py-1 bg-black/60 text-white rounded-md text-xs font-medium">
+          <span className="px-2 py-1 bg-guay-dark/70 text-white rounded-md text-xs font-medium">
             {modalityToSpanish(solution.modality)}
           </span>
         </div>
       </div>
       
       <div className="flex flex-col flex-grow p-4">
-        <h3 className="text-lg font-medium mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-300">
+        <h3 className="text-lg font-playfair font-medium mb-2 line-clamp-2 group-hover:text-guay-blue transition-colors duration-300">
           {solution.title}
         </h3>
         
@@ -131,7 +132,7 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
             <Badge 
               key={idx} 
               variant="outline" 
-              className="text-xs bg-primary/5 hover:bg-primary/10 text-primary border-primary/20"
+              className="text-xs bg-guay-purple/5 hover:bg-guay-purple/10 text-guay-purple border-guay-purple/20"
             >
               {category}
             </Badge>

@@ -75,7 +75,14 @@ export default {
 					800: '#3f33a0',
 					900: '#352d7e',
 					950: '#201b4a',
-				}
+				},
+				// GUAY Brand Colors based on reference images
+				'guay-green': '#B5CF4F',
+				'guay-blue': '#49A1C9',
+				'guay-purple': '#BF5C95',
+				'guay-orange': '#E9A15B',
+				'guay-dark': '#1A2138',
+				'guay-light': '#F8F9FA',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -140,6 +147,10 @@ export default {
 			},
 			backdropBlur: {
 				'xs': '2px',
+			},
+			fontFamily: {
+				'playfair': ['Playfair Display', 'serif'],
+				'inter': ['Inter', 'sans-serif'],
 			},
 		}
 	},

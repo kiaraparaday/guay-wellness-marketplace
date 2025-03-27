@@ -11,8 +11,8 @@ export interface CompetencyType {
   description: string;
   icon: string;
   color: string;
-  image?: string; // Added the image property
-  dimensionTitle?: string; // Optional dimension title for display
+  image?: string;
+  dimensionTitle?: string;
 }
 
 interface CompetencyCardProps {
@@ -34,7 +34,7 @@ const CompetencyCard: React.FC<CompetencyCardProps> = ({ competency, index }) =>
       }}
     >
       {competency.image ? (
-        <div className="w-full h-40 overflow-hidden relative">
+        <div className="w-full h-44 overflow-hidden relative">
           <img 
             src={competency.image} 
             alt={competency.title} 
@@ -53,19 +53,19 @@ const CompetencyCard: React.FC<CompetencyCardProps> = ({ competency, index }) =>
         </div>
       ) : (
         <div 
-          className="w-16 h-16 mt-6 mb-4 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110" 
+          className="w-20 h-20 mt-6 mb-4 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110" 
           style={{ backgroundColor: `${competency.color}20` }}
         >
           <img 
             src={competency.icon} 
             alt={competency.title} 
-            className="w-8 h-8"
+            className="w-10 h-10"
           />
         </div>
       )}
       
       <div className="p-6">
-        <h3 className="text-lg font-medium text-center group-hover:text-primary transition-colors duration-300">
+        <h3 className="text-lg font-playfair font-medium text-center group-hover:text-primary transition-colors duration-300">
           {competency.title}
         </h3>
         
@@ -73,7 +73,13 @@ const CompetencyCard: React.FC<CompetencyCardProps> = ({ competency, index }) =>
           {competency.description}
         </p>
         
-        <span className="mt-1 px-3 py-1 text-xs bg-secondary rounded-full group-hover:bg-primary group-hover:text-white transition-all duration-300">
+        <span className="mt-1 px-4 py-1.5 text-xs rounded-full inline-block font-medium transition-all duration-300"
+             style={{ 
+                backgroundColor: `${competency.color}10`, 
+                color: competency.color,
+                borderColor: `${competency.color}30`,
+                borderWidth: '1px'
+             }}>
           Ver soluciones
         </span>
       </div>
