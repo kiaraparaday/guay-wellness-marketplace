@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { ArrowRight } from "lucide-react";
 
 export interface CompetencyType {
   id: string;
@@ -73,15 +74,18 @@ const CompetencyCard: React.FC<CompetencyCardProps> = ({ competency, index }) =>
           {competency.description}
         </p>
         
-        <span className="mt-1 px-4 py-1.5 text-xs rounded-full inline-block font-medium transition-all duration-300"
-             style={{ 
-                backgroundColor: `${competency.color}10`, 
-                color: competency.color,
-                borderColor: `${competency.color}30`,
-                borderWidth: '1px'
-             }}>
-          Ver soluciones
-        </span>
+        <div className="flex justify-center">
+          <div className="flex items-center px-4 py-1.5 rounded-full transition-all duration-300 group-hover:translate-x-1"
+               style={{ 
+                  backgroundColor: `${competency.color}10`, 
+                  color: competency.color,
+                  borderColor: `${competency.color}30`,
+                  borderWidth: '1px'
+               }}>
+            <span className="text-xs font-medium">Ver soluciones</span>
+            <ArrowRight className="ml-1 w-3 h-3" />
+          </div>
+        </div>
       </div>
     </Link>
   );

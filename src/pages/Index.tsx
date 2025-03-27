@@ -3,6 +3,7 @@ import React from "react";
 import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
 import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 const dimensions: DimensionType[] = [
   {
@@ -40,38 +41,111 @@ const IndexPage: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30">
       <Header />
       
-      {/* Hero Section */}
-      <section className="pt-12 pb-20 px-6">
-        <div className="max-w-7xl mx-auto text-center">
-          <div className="inline-block px-3 py-1 mb-6 bg-primary/10 text-primary rounded-full text-sm font-medium animate-fade-in">
-            Marketplace de Bienestar Organizacional
+      {/* Hero Section with Solutions CTA */}
+      <section className="pt-8 pb-8 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col items-center text-center md:text-left md:items-start mb-6">
+            <div className="inline-block px-3 py-1 mb-2 bg-primary/10 text-primary rounded-full text-sm font-medium animate-fade-in">
+              Marketplace de Bienestar Organizacional
+            </div>
+            
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight animate-fade-in" style={{ animationDelay: "100ms" }}>
+              Soluciones para el bienestar <br className="hidden md:block" />
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-guay-600 to-guay-400">
+                de tu organización
+              </span>
+            </h1>
           </div>
           
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold mb-6 tracking-tight animate-fade-in" style={{ animationDelay: "100ms" }}>
-            Soluciones para el bienestar <br className="hidden md:block" />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-guay-600 to-guay-400">
-              de tu organización
-            </span>
-          </h1>
-          
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-12 animate-fade-in" style={{ animationDelay: "200ms" }}>
-            Encuentra las herramientas que necesitas para mejorar el bienestar organizacional
-            a través de diagnósticos específicos y soluciones adaptadas a tus necesidades.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in" style={{ animationDelay: "300ms" }}>
-            <Link 
-              to="/appointment" 
-              className="px-6 py-3 bg-primary text-white rounded-full font-medium hover:shadow-md hover:bg-primary/90 transition-all-200"
-            >
-              Agendar una cita
-            </Link>
-            <a 
-              href="#dimensions" 
-              className="px-6 py-3 bg-white text-foreground rounded-full font-medium border border-border hover:border-primary/20 hover:bg-primary/5 transition-all-200"
-            >
-              Explorar soluciones
-            </a>
+          {/* SOLUTIONS SECTION - Now prominently displayed first */}
+          <div className="bg-white rounded-2xl p-6 shadow-lg mb-12 border border-guay-blue/10">
+            <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+              <div>
+                <h2 className="text-2xl md:text-3xl font-playfair font-semibold mb-2 text-guay-dark">
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-guay-blue to-guay-purple">
+                    SOLUCIONES
+                  </span>
+                </h2>
+                <p className="text-muted-foreground max-w-xl">
+                  Descubre herramientas específicas para mejorar el bienestar en tu organización
+                </p>
+              </div>
+              
+              <Link 
+                to="/dimension/psychosocial" 
+                className="hidden md:flex items-center mt-4 md:mt-0 px-6 py-3 bg-guay-blue text-white rounded-full font-medium hover:shadow-md hover:bg-guay-blue/90 transition-all-200 group"
+              >
+                Ver todas las soluciones
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+              {dimensions.map((dimension, index) => (
+                <Link
+                  key={dimension.id}
+                  to={`/dimension/${dimension.id}`}
+                  className="relative overflow-hidden rounded-xl h-36 flex items-end shadow-subtle hover:shadow-md transition-all group"
+                >
+                  <img 
+                    src={dimension.image} 
+                    alt={dimension.title} 
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                  <div className="relative p-4 text-white">
+                    <h3 className="font-playfair font-medium text-lg mb-1">{dimension.title}</h3>
+                    <div className="flex items-center text-sm text-white/80 group-hover:text-white transition-all">
+                      <span>Explorar</span>
+                      <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            
+            <div className="flex justify-center mt-6 md:hidden">
+              <Link 
+                to="/dimension/psychosocial" 
+                className="flex items-center px-6 py-3 bg-guay-blue text-white rounded-full font-medium hover:shadow-md hover:bg-guay-blue/90 transition-all-200 group"
+              >
+                Ver todas las soluciones
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          </div>
+        
+          {/* Secondary content */}
+          <div className="md:flex md:space-x-8">
+            <div className="md:w-1/2 mb-8 md:mb-0">
+              <p className="text-lg text-muted-foreground animate-fade-in mb-6" style={{ animationDelay: "200ms" }}>
+                Encuentra las herramientas que necesitas para mejorar el bienestar organizacional
+                a través de diagnósticos específicos y soluciones adaptadas a tus necesidades.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row items-center sm:items-start justify-start gap-4 animate-fade-in" style={{ animationDelay: "300ms" }}>
+                <Link 
+                  to="/appointment" 
+                  className="px-6 py-3 bg-primary text-white rounded-full font-medium hover:shadow-md hover:bg-primary/90 transition-all-200"
+                >
+                  Agendar una cita
+                </Link>
+                <a 
+                  href="#dimensions" 
+                  className="px-6 py-3 bg-white text-foreground rounded-full font-medium border border-border hover:border-primary/20 hover:bg-primary/5 transition-all-200"
+                >
+                  Explorar dimensiones
+                </a>
+              </div>
+            </div>
+            
+            <div className="hidden md:block md:w-1/2 rounded-xl overflow-hidden shadow-lg">
+              <img 
+                src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80" 
+                alt="Bienestar organizacional" 
+                className="w-full h-full object-cover"
+              />
+            </div>
           </div>
         </div>
       </section>
