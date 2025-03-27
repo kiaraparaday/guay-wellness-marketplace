@@ -189,9 +189,10 @@ const IndexPage: React.FC = () => {
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
               <div className="relative">
                 <h2 className="text-2xl md:text-3xl font-playfair font-semibold mb-2 text-gray-dark">
-                  <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-gray-purple to-gray-blue">
-                    Soluciones Destacadas
+                  <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-guay-purple to-guay-blue">
+                    SOLUCIONES PREMIUM
                   </span>
+                  <span className="ml-3 text-xl font-normal text-guay-orange">Nuestras Top Soluciones</span>
                 </h2>
                 
                 <div className="absolute -top-6 -right-14 transform">
@@ -205,7 +206,7 @@ const IndexPage: React.FC = () => {
               </div>
               
               <p className="text-muted-foreground max-w-xl mt-2">
-                Descubre nuestras soluciones más populares y recomendadas
+                <span className="font-semibold text-guay-purple">Las más solicitadas</span> por las organizaciones líderes en bienestar
               </p>
               
               <Link 
