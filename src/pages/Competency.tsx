@@ -16,6 +16,22 @@ const competenciesData = {
     dimensionTitle: "Factores Psicosociales",
     color: "#4f46e5",
   },
+  "work-autonomy": {
+    id: "work-autonomy",
+    title: "Autonomía Laboral",
+    description: "Desarrollo de entornos donde los colaboradores tengan control sobre sus tareas, métodos y tiempos de trabajo, fomentando responsabilidad e iniciativa.",
+    dimensionId: "psychosocial",
+    dimensionTitle: "Factores Psicosociales",
+    color: "#4f46e5",
+  },
+  "work-life-balance": {
+    id: "work-life-balance",
+    title: "Relación Vida-Trabajo",
+    description: "Prácticas y políticas para equilibrar las responsabilidades profesionales y personales, mejorando la calidad de vida y reduciendo el estrés.",
+    dimensionId: "psychosocial",
+    dimensionTitle: "Factores Psicosociales",
+    color: "#4f46e5",
+  },
   "communication": {
     id: "communication",
     title: "Comunicación",
@@ -112,6 +128,50 @@ const solutionsData: SolutionType[] = [
     image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80",
     competencies: ["communication"],
   },
+  {
+    id: "solution-7",
+    title: "Programa de Pausas Activas Mentales",
+    type: "workshop",
+    modality: "hybrid",
+    duration: "4 sesiones de 1 hora",
+    audience: "Todos los colaboradores",
+    description: "Implementa micro-descansos estratégicos para reducir la fatiga mental y mejorar la concentración durante la jornada laboral.",
+    image: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&q=80",
+    competencies: ["mental-workload", "work-life-balance"],
+  },
+  {
+    id: "solution-8",
+    title: "Consultoría en Diseño de Puestos de Trabajo",
+    type: "coaching",
+    modality: "in-person",
+    duration: "1 mes",
+    audience: "Directivos y RRHH",
+    description: "Reestructura roles y responsabilidades para optimizar la carga mental y fomentar un ambiente más productivo y saludable.",
+    image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80",
+    competencies: ["mental-workload", "work-autonomy"],
+  },
+  {
+    id: "solution-9",
+    title: "Mindfulness para la Gestión del Estrés Laboral",
+    type: "course",
+    modality: "virtual",
+    duration: "8 semanas, sesiones de 30 min",
+    audience: "Todos los colaboradores",
+    description: "Aprende técnicas de atención plena para reducir el estrés, mejorar la concentración y tomar mejores decisiones bajo presión.",
+    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80",
+    competencies: ["mental-workload", "work-life-balance"],
+  },
+  {
+    id: "solution-10",
+    title: "Herramientas para el Trabajo Colaborativo Eficiente",
+    type: "webinar",
+    modality: "virtual",
+    duration: "2 horas",
+    audience: "Equipos de trabajo",
+    description: "Optimiza la colaboración y comunicación en equipo mediante metodologías y herramientas digitales que reducen la carga mental.",
+    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80",
+    competencies: ["mental-workload", "communication"],
+  },
 ];
 
 // Filter types
@@ -139,8 +199,7 @@ const CompetencyPage: React.FC = () => {
     type: [] as string[],
     modality: [] as string[],
   });
-  const [showFilters, setShowFilters] = useState(false);
-
+  
   useEffect(() => {
     window.scrollTo(0, 0);
     
@@ -229,38 +288,20 @@ const CompetencyPage: React.FC = () => {
                 >
                   {competency.dimensionTitle}
                 </span>
-                
-                <button
-                  onClick={() => setShowFilters(!showFilters)}
-                  className={cn(
-                    "inline-flex items-center px-3 py-1 rounded-full text-sm font-medium transition-all-200",
-                    showFilters 
-                      ? "bg-primary text-white"
-                      : "bg-secondary hover:bg-secondary/70"
-                  )}
-                >
-                  <Filter className="w-3.5 h-3.5 mr-1.5" />
-                  Filtros
-                  {(filters.type.length > 0 || filters.modality.length > 0) && (
-                    <span className="ml-1.5 w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-xs">
-                      {filters.type.length + filters.modality.length}
-                    </span>
-                  )}
-                </button>
               </div>
             </div>
           </div>
         </div>
       </section>
       
-      {/* Filters Section (Collapsible) */}
-      <div 
-        className={cn(
-          "bg-white border-b border-border transition-all duration-300 overflow-hidden",
-          showFilters ? "max-h-96" : "max-h-0"
-        )}
-      >
-        <div className="max-w-7xl mx-auto py-6 px-6">
+      {/* Filters Section (Always Visible) */}
+      <div className="bg-white border-b border-border py-6">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex items-center mb-4">
+            <Filter className="w-4 h-4 mr-2 text-primary" />
+            <h2 className="font-medium">Filtros</h2>
+          </div>
+          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div>
               <h3 className="font-medium mb-3">Tipo de solución</h3>
@@ -303,12 +344,14 @@ const CompetencyPage: React.FC = () => {
             </div>
             
             <div className="flex items-end">
-              <button
-                onClick={clearFilters}
-                className="px-3 py-1 text-sm text-muted-foreground hover:text-primary transition-all-200"
-              >
-                Limpiar filtros
-              </button>
+              {(filters.type.length > 0 || filters.modality.length > 0) && (
+                <button
+                  onClick={clearFilters}
+                  className="px-3 py-1 text-sm text-muted-foreground hover:text-primary transition-all-200"
+                >
+                  Limpiar filtros
+                </button>
+              )}
             </div>
           </div>
         </div>

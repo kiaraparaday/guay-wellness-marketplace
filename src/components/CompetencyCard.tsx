@@ -7,6 +7,7 @@ export interface CompetencyType {
   id: string;
   dimensionId: string;
   title: string;
+  description: string;
   icon: string;
   color: string;
 }
@@ -44,7 +45,11 @@ const CompetencyCard: React.FC<CompetencyCardProps> = ({ competency, index }) =>
         {competency.title}
       </h3>
       
-      <span className="mt-3 px-3 py-1 text-xs bg-secondary rounded-full group-hover:bg-primary group-hover:text-white transition-all duration-300">
+      <p className="mt-2 text-sm text-muted-foreground text-center line-clamp-3 mb-4">
+        {competency.description}
+      </p>
+      
+      <span className="mt-1 px-3 py-1 text-xs bg-secondary rounded-full group-hover:bg-primary group-hover:text-white transition-all duration-300">
         Ver soluciones
       </span>
     </Link>
