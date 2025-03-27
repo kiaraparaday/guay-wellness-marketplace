@@ -10,6 +10,7 @@ import Competency from "./pages/Competency";
 import Solution from "./pages/Solution";
 import Appointment from "./pages/Appointment";
 import RequestSolution from "./pages/RequestSolution";
+import Testimonials from "./pages/Testimonials";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/solution/:id" element={<Solution />} />
           <Route path="/appointment" element={<Appointment />} />
           <Route path="/request-solution" element={<RequestSolution />} />
+          <Route path="/testimonials" element={<Testimonials />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

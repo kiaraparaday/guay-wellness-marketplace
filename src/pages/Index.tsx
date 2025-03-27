@@ -3,8 +3,9 @@ import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
 import SolutionCard, { SolutionType } from "@/components/SolutionCard";
 import { Link } from "react-router-dom";
-import { ArrowRight, Star } from "lucide-react";
+import { ArrowRight, Star, Quote, Users, Building } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 
 const dimensions: DimensionType[] = [
   {
@@ -88,6 +89,36 @@ const topSolutions: SolutionType[] = [
   }
 ];
 
+const testimonials = [
+  {
+    id: 1,
+    quote: "Implementar el programa de mindfulness corporativo transformó la cultura de nuestro equipo. Notamos una mejora del 30% en productividad y satisfacción laboral.",
+    author: "María Rodríguez",
+    position: "Directora de Recursos Humanos",
+    company: "TechSolutions S.A.",
+    industry: "Tecnología",
+    image: "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?auto=format&fit=crop&q=80",
+  },
+  {
+    id: 2,
+    quote: "La formación en liderazgo consciente nos permitió desarrollar directivos más empáticos y efectivos. El resultado fue inmediato en la retención de talento.",
+    author: "Carlos Mendoza",
+    position: "CEO",
+    company: "Innogreen",
+    industry: "Energías Renovables",
+    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80",
+  },
+  {
+    id: 3,
+    quote: "El taller de construcción de equipos diversos fue una inversión excelente. Logramos crear un ambiente donde todas las voces son escuchadas y valoradas.",
+    author: "Ana Gómez",
+    position: "Directora de Operaciones",
+    company: "GlobalHealth",
+    industry: "Salud",
+    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80",
+  },
+];
+
 const IndexPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30">
@@ -110,11 +141,11 @@ const IndexPage: React.FC = () => {
           </div>
           
           {/* SOLUTIONS SECTION - Prominently displayed first */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg mb-12 border border-guay-blue/10">
+          <div className="bg-white rounded-2xl p-6 shadow-lg mb-12 border border-gray-blue/10">
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
               <div>
-                <h2 className="text-2xl md:text-3xl font-playfair font-semibold mb-2 text-guay-dark">
-                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-guay-blue to-guay-purple">
+                <h2 className="text-2xl md:text-3xl font-playfair font-semibold mb-2 text-gray-dark">
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-gray-purple to-gray-blue">
                     SOLUCIONES
                   </span>
                 </h2>
@@ -157,11 +188,9 @@ const IndexPage: React.FC = () => {
           <section className="mb-12">
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
               <div className="relative">
-                <h2 className="text-2xl md:text-3xl font-playfair font-semibold mb-2 text-guay-dark">
-                  <span className="relative">
-                    <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-guay-purple to-guay-blue">
-                      Soluciones Destacadas
-                    </span>
+                <h2 className="text-2xl md:text-3xl font-playfair font-semibold mb-2 text-gray-dark">
+                  <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-gray-purple to-gray-blue">
+                    Soluciones Destacadas
                   </span>
                 </h2>
                 
@@ -189,7 +218,7 @@ const IndexPage: React.FC = () => {
             </div>
             
             {/* Top Solutions Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {topSolutions.map((solution, index) => (
                 <SolutionCard 
                   key={solution.id}
@@ -209,47 +238,111 @@ const IndexPage: React.FC = () => {
               </Link>
             </div>
           </section>
-        </div>
-      </section>
-      
-      {/* CTA Section */}
-      <section className="py-20 px-6 bg-gradient-to-b from-white to-primary/5">
-        <div className="max-w-7xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-subtle overflow-hidden">
-            <div className="grid grid-cols-1 lg:grid-cols-2">
-              <div className="p-8 md:p-12 flex flex-col justify-center">
-                <h2 className="text-3xl font-semibold mb-4">
-                  ¿No encuentras lo que buscas?
-                </h2>
-                <p className="text-muted-foreground mb-6">
-                  Nuestro equipo de expertos en bienestar organizacional puede ayudarte a 
-                  encontrar la solución ideal para tus necesidades específicas.
-                </p>
-                <div className="space-y-4 sm:space-y-0 sm:flex sm:gap-4">
+
+          {/* NEW SECTION: Casos de Éxito */}
+          <section className="mb-12">
+            <div className="relative overflow-hidden bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
+              <div className="absolute -top-24 -right-24 w-48 h-48 bg-guay-purple/10 rounded-full blur-xl"></div>
+              <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-guay-blue/10 rounded-full blur-xl"></div>
+              
+              <div className="flex flex-col md:flex-row justify-between items-center mb-8 relative z-10">
+                <div>
+                  <h2 className="text-2xl md:text-3xl font-playfair font-semibold mb-2">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-guay-blue via-guay-purple to-guay-orange">
+                      Casos de Éxito
+                    </span>
+                  </h2>
+                  <p className="text-muted-foreground max-w-xl">
+                    Experiencias reales de organizaciones que han transformado su bienestar
+                  </p>
+                </div>
+                
+                <div className="mt-4 md:mt-0">
                   <Link 
-                    to="/appointment" 
-                    className="inline-block px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-all-200"
+                    to="/testimonials" 
+                    className="flex items-center px-5 py-2.5 bg-white text-guay-dark rounded-full font-medium border border-guay-blue/20 hover:border-guay-blue/40 hover:shadow-sm transition-all-200 group"
                   >
-                    Agendar una cita
-                  </Link>
-                  <Link 
-                    to="/request-solution" 
-                    className="inline-block px-6 py-3 bg-white text-foreground rounded-lg font-medium border border-border hover:border-primary/20 transition-all-200"
-                  >
-                    Solicitar una solución
+                    Ver más testimonios
+                    <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </div>
               </div>
-              <div className="hidden lg:block relative">
-                <img 
-                  src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80"
-                  alt="Equipo de trabajo" 
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-transparent" />
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {testimonials.map((testimonial) => (
+                  <Card key={testimonial.id} className="border border-gray-100 shadow-sm hover:shadow-md transition-all-200 hover:border-guay-blue/30">
+                    <CardContent className="p-6">
+                      <div className="mb-4 text-guay-blue">
+                        <Quote className="w-8 h-8 opacity-70" />
+                      </div>
+                      <p className="mb-6 italic text-gray-700">{testimonial.quote}</p>
+                      <div className="flex items-start">
+                        <div className="w-10 h-10 rounded-full overflow-hidden mr-3 flex-shrink-0">
+                          <img 
+                            src={testimonial.image} 
+                            alt={testimonial.author} 
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-gray-900">{testimonial.author}</h4>
+                          <p className="text-sm text-gray-600">{testimonial.position}</p>
+                          <div className="flex items-center mt-1 text-xs text-gray-500">
+                            <Building className="w-3 h-3 mr-1" />
+                            {testimonial.company}
+                            <span className="mx-1.5">•</span>
+                            <Users className="w-3 h-3 mr-1" />
+                            {testimonial.industry}
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </div>
-          </div>
+          </section>
+      
+          {/* CTA Section */}
+          <section className="py-20 px-6 bg-gradient-to-b from-white to-primary/5">
+            <div className="max-w-7xl mx-auto">
+              <div className="bg-white rounded-2xl shadow-subtle overflow-hidden">
+                <div className="grid grid-cols-1 lg:grid-cols-2">
+                  <div className="p-8 md:p-12 flex flex-col justify-center">
+                    <h2 className="text-3xl font-semibold mb-4">
+                      ¿No encuentras lo que buscas?
+                    </h2>
+                    <p className="text-muted-foreground mb-6">
+                      Nuestro equipo de expertos en bienestar organizacional puede ayudarte a 
+                      encontrar la solución ideal para tus necesidades específicas.
+                    </p>
+                    <div className="space-y-4 sm:space-y-0 sm:flex sm:gap-4">
+                      <Link 
+                        to="/appointment" 
+                        className="inline-block px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-all-200"
+                      >
+                        Agendar una cita
+                      </Link>
+                      <Link 
+                        to="/request-solution" 
+                        className="inline-block px-6 py-3 bg-white text-foreground rounded-lg font-medium border border-border hover:border-primary/20 transition-all-200"
+                      >
+                        Solicitar una solución
+                      </Link>
+                    </div>
+                  </div>
+                  <div className="hidden lg:block relative">
+                    <img 
+                      src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80"
+                      alt="Equipo de trabajo" 
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-transparent" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </section>
       
