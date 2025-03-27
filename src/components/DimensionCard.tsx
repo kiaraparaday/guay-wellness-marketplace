@@ -47,9 +47,11 @@ const DimensionCard: React.FC<DimensionCardProps> = ({ dimension, index }) => {
           {dimension.title}
         </h3>
         
-        <p className="text-white/90 mb-4 text-sm line-clamp-2 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">
-          {dimension.description}
-        </p>
+        <div className="bg-white/90 backdrop-blur-sm text-foreground p-3 rounded-lg shadow-sm mb-4 transform opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">
+          <p className="text-sm">
+            {dimension.description}
+          </p>
+        </div>
         
         <Link 
           to={`/dimension/${dimension.id}`}

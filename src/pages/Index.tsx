@@ -2,6 +2,7 @@
 import React from "react";
 import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
+import SolutionCard, { SolutionType } from "@/components/SolutionCard";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 
@@ -36,6 +37,58 @@ const dimensions: DimensionType[] = [
   },
 ];
 
+// Catálogo de soluciones destacadas
+const topSolutions: SolutionType[] = [
+  {
+    id: "mindfulness-program",
+    title: "Programa de mindfulness corporativo",
+    type: "workshop",
+    modality: "hybrid",
+    duration: "8 semanas",
+    audience: "Equipos",
+    description: "Programa de 8 semanas para mejorar la concentración y reducir el estrés laboral en equipos de trabajo",
+    image: "/lovable-uploads/4155b648-99dc-4b36-9b11-b2ce846309e6.png",
+    competencies: ["mental-workload", "work-life-balance"],
+    categories: ["Mindfulness", "Bienestar Mental"]
+  },
+  {
+    id: "leadership-training",
+    title: "Formación en liderazgo consciente",
+    type: "course",
+    modality: "virtual",
+    duration: "12 horas",
+    audience: "Directivos",
+    description: "Desarrollo de habilidades de liderazgo empático y consciente para potenciar equipos de alto rendimiento",
+    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80",
+    competencies: ["leadership", "capability-development"],
+    categories: ["Liderazgo", "Desarrollo"]
+  },
+  {
+    id: "team-building",
+    title: "Taller de construcción de equipos diversos",
+    type: "workshop",
+    modality: "in-person",
+    duration: "1 día",
+    audience: "Todos",
+    description: "Experiencia inmersiva para fortalecer lazos de equipo y valorar la diversidad en entornos laborales",
+    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80",
+    competencies: ["teamwork", "diversity"],
+    categories: ["Trabajo en Equipo", "Diversidad"]
+  },
+  {
+    id: "stress-management",
+    title: "Gestión del estrés laboral",
+    type: "course",
+    modality: "virtual",
+    duration: "6 horas",
+    audience: "Todos",
+    description: "Estrategias prácticas para identificar y gestionar el estrés en el entorno laboral actual",
+    image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?auto=format&fit=crop&q=80",
+    competencies: ["mental-workload", "work-life-balance"],
+    categories: ["Bienestar", "Equilibrio"]
+  }
+];
+
 const IndexPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30">
@@ -57,7 +110,7 @@ const IndexPage: React.FC = () => {
             </h1>
           </div>
           
-          {/* SOLUTIONS SECTION - Now prominently displayed first */}
+          {/* SOLUTIONS SECTION - Prominently displayed first */}
           <div className="bg-white rounded-2xl p-6 shadow-lg mb-12 border border-guay-blue/10">
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
               <div>
@@ -114,67 +167,51 @@ const IndexPage: React.FC = () => {
               </Link>
             </div>
           </div>
-        
-          {/* Secondary content */}
-          <div className="md:flex md:space-x-8">
-            <div className="md:w-1/2 mb-8 md:mb-0">
-              <p className="text-lg text-muted-foreground animate-fade-in mb-6" style={{ animationDelay: "200ms" }}>
-                Encuentra las herramientas que necesitas para mejorar el bienestar organizacional
-                a través de diagnósticos específicos y soluciones adaptadas a tus necesidades.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row items-center sm:items-start justify-start gap-4 animate-fade-in" style={{ animationDelay: "300ms" }}>
-                <Link 
-                  to="/appointment" 
-                  className="px-6 py-3 bg-primary text-white rounded-full font-medium hover:shadow-md hover:bg-primary/90 transition-all-200"
-                >
-                  Agendar una cita
-                </Link>
-                <a 
-                  href="#dimensions" 
-                  className="px-6 py-3 bg-white text-foreground rounded-full font-medium border border-border hover:border-primary/20 hover:bg-primary/5 transition-all-200"
-                >
-                  Explorar dimensiones
-                </a>
+          
+          {/* Top Solutions Section */}
+          <section className="mb-12">
+            <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+              <div>
+                <h2 className="text-2xl md:text-3xl font-playfair font-semibold mb-2 text-guay-dark">
+                  <span className="text-guay-purple">
+                    Soluciones Destacadas
+                  </span>
+                </h2>
+                <p className="text-muted-foreground max-w-xl">
+                  Descubre nuestras soluciones más populares y recomendadas
+                </p>
               </div>
+              
+              <Link 
+                to="/solution" 
+                className="hidden md:flex items-center mt-4 md:mt-0 px-6 py-3 bg-guay-purple text-white rounded-full font-medium hover:shadow-md hover:bg-guay-purple/90 transition-all-200 group"
+              >
+                Ver todo el catálogo
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
             
-            <div className="hidden md:block md:w-1/2 rounded-xl overflow-hidden shadow-lg">
-              <img 
-                src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80" 
-                alt="Bienestar organizacional" 
-                className="w-full h-full object-cover"
-              />
+            {/* Top Solutions Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {topSolutions.map((solution, index) => (
+                <SolutionCard 
+                  key={solution.id}
+                  solution={solution}
+                  index={index}
+                />
+              ))}
             </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* Dimensions Section */}
-      <section id="dimensions" className="py-16 px-6 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-block px-3 py-1 mb-6 bg-accent text-primary rounded-full text-sm font-medium">
-              Dimensiones
+            
+            <div className="flex justify-center mt-6 md:hidden">
+              <Link 
+                to="/solution" 
+                className="flex items-center px-6 py-3 bg-guay-purple text-white rounded-full font-medium hover:shadow-md hover:bg-guay-purple/90 transition-all-200 group"
+              >
+                Ver todo el catálogo
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
-            <h2 className="text-3xl md:text-4xl font-semibold mb-4">
-              Explora por dimensiones de bienestar
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Selecciona una dimensión para conocer las competencias específicas 
-              y las soluciones disponibles para mejorar el bienestar en tu organización.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {dimensions.map((dimension, index) => (
-              <DimensionCard 
-                key={dimension.id} 
-                dimension={dimension} 
-                index={index}
-              />
-            ))}
-          </div>
+          </section>
         </div>
       </section>
       
