@@ -140,7 +140,7 @@ const IndexPage: React.FC = () => {
             </h1>
           </div>
           
-          {/* SOLUTIONS SECTION - Prominently displayed first */}
+          {/* SOLUTIONS SECTION */}
           <div className="bg-white rounded-2xl p-6 shadow-lg mb-12 border border-gray-blue/10">
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
               <div>
@@ -192,7 +192,7 @@ const IndexPage: React.FC = () => {
                   <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-guay-purple to-guay-blue">
                     SOLUCIONES DESTACADAS
                   </span>
-                  <span className="ml-3 text-xl font-normal text-guay-orange">Nuestras Top Soluciones</span>
+                  <span className="ml-3 text-xl font-normal text-guay-orange">Top Recomendadas</span>
                 </h2>
                 
                 <div className="absolute -top-6 -right-14 transform">
