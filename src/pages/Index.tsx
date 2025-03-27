@@ -165,10 +165,13 @@ const IndexPage: React.FC = () => {
                   </span>
                 </h2>
                 
-                <div className="absolute -top-4 -right-16 transform rotate-12">
-                  <Badge className="bg-guay-orange border-0 px-4 py-1 text-white font-bold shadow-md">
-                    <span className="mr-1">⭐</span> TOP
-                  </Badge>
+                <div className="absolute -top-6 -right-14 transform">
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-r from-guay-orange to-guay-purple rounded-lg blur-sm"></div>
+                    <Badge className="relative bg-gradient-to-r from-guay-orange to-guay-purple border-0 px-4 py-1.5 text-white font-bold shadow-lg scale-110">
+                      TOP <span className="text-yellow-200 ml-1">★</span>
+                    </Badge>
+                  </div>
                 </div>
               </div>
               
