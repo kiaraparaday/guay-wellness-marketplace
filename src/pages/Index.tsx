@@ -1,3 +1,4 @@
+
 import React from "react";
 import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
@@ -141,7 +142,7 @@ const IndexPage: React.FC = () => {
           </div>
           
           {/* SOLUTIONS SECTION */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg mb-12 border border-gray-blue/10">
+          <div id="soluciones" className="bg-white rounded-2xl p-6 shadow-lg mb-12 border border-gray-blue/10">
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
               <div>
                 <h2 className="text-2xl md:text-3xl font-playfair font-semibold mb-2 text-gray-dark">
@@ -185,7 +186,7 @@ const IndexPage: React.FC = () => {
           </div>
           
           {/* Top Solutions Section */}
-          <section className="mb-12">
+          <section id="destacadas" className="mb-12">
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
               <div className="relative">
                 <h2 className="text-2xl md:text-3xl font-playfair font-semibold mb-2 text-gray-dark">
@@ -239,7 +240,7 @@ const IndexPage: React.FC = () => {
           </section>
 
           {/* NEW SECTION: Casos de Éxito */}
-          <section className="mb-12">
+          <section id="casos-exito" className="mb-12">
             <div className="relative overflow-hidden bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
               <div className="absolute -top-24 -right-24 w-48 h-48 bg-guay-purple/10 rounded-full blur-xl"></div>
               <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-guay-blue/10 rounded-full blur-xl"></div>
@@ -303,7 +304,7 @@ const IndexPage: React.FC = () => {
           </section>
       
           {/* CTA Section */}
-          <section className="py-20 px-6 bg-gradient-to-b from-white to-primary/5">
+          <section id="contacto" className="py-20 px-6 bg-gradient-to-b from-white to-primary/5">
             <div className="max-w-7xl mx-auto">
               <div className="bg-white rounded-2xl shadow-subtle overflow-hidden">
                 <div className="grid grid-cols-1 lg:grid-cols-2">

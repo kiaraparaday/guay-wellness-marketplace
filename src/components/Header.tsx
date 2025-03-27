@@ -1,15 +1,28 @@
 
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Search, Filter, X } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { Search, Filter, X, Menu, X as Close } from "lucide-react";
 import { cn } from "@/lib/utils";
 import SearchBar from "./SearchBar";
 import FilterBar from "./FilterBar";
+import { 
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+import { Button } from "@/components/ui/button";
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,11 +36,29 @@ const Header: React.FC = () => {
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
     if (isFilterOpen) setIsFilterOpen(false);
+    if (isMobileMenuOpen) setIsMobileMenuOpen(false);
   };
 
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
     if (isSearchOpen) setIsSearchOpen(false);
+    if (isMobileMenuOpen) setIsMobileMenuOpen(false);
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+    if (isSearchOpen) setIsSearchOpen(false);
+    if (isFilterOpen) setIsFilterOpen(false);
+  };
+
+  const scrollToSection = (sectionId: string) => {
+    if (isHomePage) {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
+      if (isMobileMenuOpen) setIsMobileMenuOpen(false);
+    }
   };
 
   return (
@@ -50,7 +81,64 @@ const Header: React.FC = () => {
             </span>
           </Link>
 
+          {/* Navigation Menu - Desktop */}
+          {isHomePage && (
+            <div className="hidden md:flex">
+              <NavigationMenu>
+                <NavigationMenuList>
+                  <NavigationMenuItem>
+                    <Button 
+                      onClick={() => scrollToSection("soluciones")} 
+                      variant="ghost" 
+                      className="text-foreground font-medium"
+                    >
+                      Soluciones
+                    </Button>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <Button 
+                      onClick={() => scrollToSection("destacadas")} 
+                      variant="ghost" 
+                      className="text-foreground font-medium"
+                    >
+                      Destacadas
+                    </Button>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <Button 
+                      onClick={() => scrollToSection("casos-exito")} 
+                      variant="ghost" 
+                      className="text-foreground font-medium"
+                    >
+                      Casos de Éxito
+                    </Button>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <Button 
+                      onClick={() => scrollToSection("contacto")} 
+                      variant="ghost" 
+                      className="text-foreground font-medium"
+                    >
+                      Contacto
+                    </Button>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+            </div>
+          )}
+
           <div className="flex items-center space-x-1 sm:space-x-3">
+            {/* Mobile Menu Toggle */}
+            {isHomePage && (
+              <button
+                onClick={toggleMobileMenu}
+                className="p-2 md:hidden rounded-full hover:bg-accent"
+                aria-label="Menu"
+              >
+                {isMobileMenuOpen ? <Close className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            )}
+
             <button
               onClick={toggleSearch}
               className={cn(
@@ -94,6 +182,53 @@ const Header: React.FC = () => {
           </div>
         </div>
       </header>
+
+      {/* Mobile Navigation Menu */}
+      {isHomePage && (
+        <div
+          className={cn(
+            "fixed top-16 left-0 right-0 z-40 bg-white shadow-md transition-all duration-300 transform md:hidden",
+            isMobileMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0 pointer-events-none"
+          )}
+        >
+          <div className="p-4 space-y-3">
+            <Button 
+              onClick={() => scrollToSection("soluciones")} 
+              variant="ghost" 
+              className="text-foreground w-full justify-start font-medium"
+            >
+              Soluciones
+            </Button>
+            <Button 
+              onClick={() => scrollToSection("destacadas")} 
+              variant="ghost" 
+              className="text-foreground w-full justify-start font-medium"
+            >
+              Destacadas
+            </Button>
+            <Button 
+              onClick={() => scrollToSection("casos-exito")} 
+              variant="ghost" 
+              className="text-foreground w-full justify-start font-medium"
+            >
+              Casos de Éxito
+            </Button>
+            <Button 
+              onClick={() => scrollToSection("contacto")} 
+              variant="ghost" 
+              className="text-foreground w-full justify-start font-medium"
+            >
+              Contacto
+            </Button>
+            <Link
+              to="/appointment"
+              className="flex w-full items-center justify-center px-4 py-2 bg-primary text-white rounded-full font-medium hover:bg-primary/90 transition-all-200"
+            >
+              Agendar cita
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* Expandable Search Area */}
       <div
