@@ -50,6 +50,7 @@ const competenciesByDimension: Record<string, CompetencyType[]> = {
       description: "Estrategias para distribuir y gestionar eficientemente las demandas cognitivas del trabajo, evitando el agotamiento mental.",
       icon: "/placeholder.svg",
       color: "#4f46e5",
+      image: "https://images.unsplash.com/photo-1456406644174-8ddd4cd52a06?auto=format&fit=crop&q=80", // Person with head in hands
     },
     {
       id: "work-autonomy",
@@ -58,6 +59,7 @@ const competenciesByDimension: Record<string, CompetencyType[]> = {
       description: "Fortalecimiento de la capacidad de toma de decisiones, control del tiempo y métodos de trabajo para un mayor sentido de independencia.",
       icon: "/placeholder.svg",
       color: "#4f46e5",
+      image: "https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?auto=format&fit=crop&q=80", // Person working independently
     },
     {
       id: "work-life-balance",
@@ -66,6 +68,7 @@ const competenciesByDimension: Record<string, CompetencyType[]> = {
       description: "Herramientas para armonizar las responsabilidades laborales y personales, mejorando la calidad de vida y reduciendo el estrés.",
       icon: "/placeholder.svg",
       color: "#4f46e5",
+      image: "https://images.unsplash.com/photo-1684160083886-216a464462a6?auto=format&fit=crop&q=80", // Work-life balance concept
     },
     {
       id: "stress-management",
@@ -74,6 +77,7 @@ const competenciesByDimension: Record<string, CompetencyType[]> = {
       description: "Técnicas efectivas para identificar, reducir y gestionar el estrés laboral, promoviendo el bienestar psicológico.",
       icon: "/placeholder.svg",
       color: "#4f46e5",
+      image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80", // Meditation/calm scene
     },
   ],
   "climate": [
@@ -84,6 +88,7 @@ const competenciesByDimension: Record<string, CompetencyType[]> = {
       description: "Desarrollo de canales y estrategias para una comunicación clara, efectiva y transparente en todos los niveles organizacionales.",
       icon: "/placeholder.svg",
       color: "#f59e0b",
+      image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80", // Team communication
     },
     {
       id: "motivation",
@@ -92,6 +97,7 @@ const competenciesByDimension: Record<string, CompetencyType[]> = {
       description: "Herramientas para impulsar la motivación intrínseca y extrínseca, fomentando el compromiso y satisfacción laboral.",
       icon: "/placeholder.svg",
       color: "#f59e0b",
+      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80", // Motivated team celebrating
     },
     {
       id: "equity",
@@ -100,6 +106,7 @@ const competenciesByDimension: Record<string, CompetencyType[]> = {
       description: "Implementación de prácticas justas y equitativas en reconocimiento, compensación y oportunidades para todos los colaboradores.",
       icon: "/placeholder.svg",
       color: "#f59e0b",
+      image: "https://images.unsplash.com/photo-1582213782179-e0d4d3cce817?auto=format&fit=crop&q=80", // Equality concept
     },
     {
       id: "integration",
@@ -108,6 +115,7 @@ const competenciesByDimension: Record<string, CompetencyType[]> = {
       description: "Metodologías para fortalecer el sentido de pertenencia, cohesión y trabajo en equipo en toda la organización.",
       icon: "/placeholder.svg",
       color: "#f59e0b",
+      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80", // Team building activity
     },
   ],
   "culture": [
@@ -118,6 +126,7 @@ const competenciesByDimension: Record<string, CompetencyType[]> = {
       description: "Programas para identificar, cultivar y potenciar las habilidades y competencias claves para el éxito organizacional.",
       icon: "/placeholder.svg",
       color: "#10b981",
+      image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80", // Learning/development scene
     },
     {
       id: "coordination-integration",
@@ -126,6 +135,7 @@ const competenciesByDimension: Record<string, CompetencyType[]> = {
       description: "Optimización de procesos internos para facilitar la colaboración entre áreas y alinear esfuerzos hacia objetivos comunes.",
       icon: "/placeholder.svg",
       color: "#10b981",
+      image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80", // Coordinated teamwork
     },
     {
       id: "organizational-learning",
@@ -134,6 +144,7 @@ const competenciesByDimension: Record<string, CompetencyType[]> = {
       description: "Sistemas y prácticas para capturar, compartir y aplicar conocimientos, promoviendo la mejora continua y adaptabilidad.",
       icon: "/placeholder.svg",
       color: "#10b981",
+      image: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&q=80", // Learning environment
     },
     {
       id: "values",
@@ -142,6 +153,7 @@ const competenciesByDimension: Record<string, CompetencyType[]> = {
       description: "Estrategias para definir, comunicar y vivir los principios fundamentales que guían la conducta y decisiones en la empresa.",
       icon: "/placeholder.svg",
       color: "#10b981",
+      image: "https://images.unsplash.com/photo-1552581234-26160f608093?auto=format&fit=crop&q=80", // Values concept
     },
   ],
   "dei": [
@@ -152,6 +164,7 @@ const competenciesByDimension: Record<string, CompetencyType[]> = {
       description: "Enfoques para valorar y aprovechar la variedad de perspectivas, experiencias y talentos en una fuerza laboral diversa.",
       icon: "/placeholder.svg",
       color: "#ec4899",
+      image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80", // Diverse team
     },
     {
       id: "equity-inclusion",
@@ -160,6 +173,7 @@ const competenciesByDimension: Record<string, CompetencyType[]> = {
       description: "Prácticas para garantizar oportunidades justas y crear un ambiente donde todas las personas se sientan valoradas y respetadas.",
       icon: "/placeholder.svg",
       color: "#ec4899",
+      image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80", // Inclusion concept
     },
     {
       id: "accessibility",
@@ -168,6 +182,7 @@ const competenciesByDimension: Record<string, CompetencyType[]> = {
       description: "Soluciones para eliminar barreras físicas y digitales, asegurando que todos los colaboradores puedan participar plenamente.",
       icon: "/placeholder.svg",
       color: "#ec4899",
+      image: "https://images.unsplash.com/photo-1624522004646-adee90cb6769?auto=format&fit=crop&q=80", // Accessibility features
     },
     {
       id: "belonging",
@@ -176,6 +191,7 @@ const competenciesByDimension: Record<string, CompetencyType[]> = {
       description: "Iniciativas para fortalecer la conexión emocional con la organización, donde todos se sienten parte integral del equipo.",
       icon: "/placeholder.svg",
       color: "#ec4899",
+      image: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&q=80", // Team togetherness
     },
   ],
 };
