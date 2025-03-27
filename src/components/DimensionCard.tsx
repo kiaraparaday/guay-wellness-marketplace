@@ -29,7 +29,7 @@ const DimensionCard: React.FC<DimensionCardProps> = ({ dimension, index }) => {
         animationFillMode: "forwards"
       }}
     >
-      <Link to={`/dimension/${dimension.id}`} className="block">
+      <Link to={`/dimension/${dimension.id}`} className="block h-full">
         <div className="relative">
           <img 
             src={dimension.image} 
