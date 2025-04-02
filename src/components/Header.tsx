@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Search, Filter, X, Menu, X as Close, FilterX } from "lucide-react";
@@ -21,6 +20,30 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+export const filterEventBus = {
+  handlers: new Map(),
+  subscribe(event: string, handler: Function) {
+    if (!this.handlers.has(event)) {
+      this.handlers.set(event, []);
+    }
+    this.handlers.get(event)?.push(handler);
+    
+    return () => {
+      const handlers = this.handlers.get(event);
+      if (handlers) {
+        const index = handlers.indexOf(handler);
+        if (index !== -1) handlers.splice(index, 1);
+      }
+    };
+  },
+  publish(event: string, data: any) {
+    const handlers = this.handlers.get(event);
+    if (handlers) {
+      handlers.forEach(handler => handler(data));
+    }
+  }
+};
+
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -31,9 +54,17 @@ const Header: React.FC = () => {
   const isHomePage = location.pathname === "/";
   const isCompetencyPage = location.pathname.includes('/competency/');
   
-  // Filter states for competency pages
-  const [typeFilters, setTypeFilters] = useState<string[]>([]);
-  const [modalityFilters, setModalityFilters] = useState<string[]>([]);
+  const [activeFilters, setActiveFilters] = useState<{
+    solutionTypes: string[];
+    modalities: string[];
+    durations: string[];
+    audiences: string[];
+  }>({
+    solutionTypes: [],
+    modalities: [],
+    durations: [],
+    audiences: []
+  });
   
   const filterOptions = {
     type: [
@@ -58,6 +89,15 @@ const Header: React.FC = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    setActiveFilters({
+      solutionTypes: [],
+      modalities: [],
+      durations: [],
+      audiences: []
+    });
+  }, [location.pathname]);
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
@@ -97,29 +137,54 @@ const Header: React.FC = () => {
     }
   };
 
+  const handleApplyFilters = (filters: typeof activeFilters) => {
+    setActiveFilters(filters);
+    setIsFilterOpen(false);
+    filterEventBus.publish('filtersChanged', filters);
+  };
+
+  const clearAllFilters = () => {
+    const emptyFilters = {
+      solutionTypes: [],
+      modalities: [],
+      durations: [],
+      audiences: []
+    };
+    setActiveFilters(emptyFilters);
+    filterEventBus.publish('filtersChanged', emptyFilters);
+    setIsCompetencyFiltersOpen(false);
+  };
+
   const toggleTypeFilter = (filterId: string) => {
-    setTypeFilters(prev => {
-      if (prev.includes(filterId)) {
-        return prev.filter(id => id !== filterId);
+    setActiveFilters(prev => {
+      if (prev.solutionTypes.includes(filterId)) {
+        return {
+          ...prev,
+          solutionTypes: prev.solutionTypes.filter(id => id !== filterId)
+        };
       } else {
-        return [...prev, filterId];
+        return {
+          ...prev,
+          solutionTypes: [...prev.solutionTypes, filterId]
+        };
       }
     });
   };
 
   const toggleModalityFilter = (filterId: string) => {
-    setModalityFilters(prev => {
-      if (prev.includes(filterId)) {
-        return prev.filter(id => id !== filterId);
+    setActiveFilters(prev => {
+      if (prev.modalities.includes(filterId)) {
+        return {
+          ...prev,
+          modalities: prev.modalities.filter(id => id !== filterId)
+        };
       } else {
-        return [...prev, filterId];
+        return {
+          ...prev,
+          modalities: [...prev.modalities, filterId]
+        };
       }
     });
-  };
-
-  const clearAllFilters = () => {
-    setTypeFilters([]);
-    setModalityFilters([]);
   };
 
   return (
@@ -142,7 +207,6 @@ const Header: React.FC = () => {
             </span>
           </Link>
 
-          {/* Navigation Menu - Desktop */}
           {isHomePage && (
             <div className="hidden md:flex">
               <NavigationMenu>
@@ -189,7 +253,6 @@ const Header: React.FC = () => {
           )}
 
           <div className="flex items-center space-x-1 sm:space-x-3">
-            {/* Mobile Menu Toggle */}
             {isHomePage && (
               <button
                 onClick={toggleMobileMenu}
@@ -200,7 +263,6 @@ const Header: React.FC = () => {
               </button>
             )}
 
-            {/* Competency Filter Button - Only show on competency pages */}
             {isCompetencyPage && (
               <DropdownMenu open={isCompetencyFiltersOpen} onOpenChange={setIsCompetencyFiltersOpen}>
                 <DropdownMenuTrigger asChild>
@@ -224,7 +286,7 @@ const Header: React.FC = () => {
                   <div>
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="text-sm font-medium">Filtros de soluciones</h3>
-                      {(typeFilters.length > 0 || modalityFilters.length > 0) && (
+                      {(activeFilters.solutionTypes.length > 0 || activeFilters.modalities.length > 0) && (
                         <button
                           onClick={clearAllFilters}
                           className="text-xs text-muted-foreground hover:text-primary transition-all-200"
@@ -234,7 +296,6 @@ const Header: React.FC = () => {
                       )}
                     </div>
                     
-                    {/* Type filters */}
                     <div className="mb-4">
                       <h4 className="text-sm font-medium mb-2">Tipo de solución</h4>
                       <div className="flex flex-wrap gap-2">
@@ -244,7 +305,7 @@ const Header: React.FC = () => {
                             onClick={() => toggleTypeFilter(option.id)}
                             className={cn(
                               "px-2 py-1 text-xs rounded-full transition-all-200",
-                              typeFilters.includes(option.id)
+                              activeFilters.solutionTypes.includes(option.id)
                                 ? "bg-primary text-white"
                                 : "bg-secondary hover:bg-secondary/70"
                             )}
@@ -255,7 +316,6 @@ const Header: React.FC = () => {
                       </div>
                     </div>
                     
-                    {/* Modality filters */}
                     <div>
                       <h4 className="text-sm font-medium mb-2">Modalidad</h4>
                       <div className="flex flex-wrap gap-2">
@@ -265,7 +325,7 @@ const Header: React.FC = () => {
                             onClick={() => toggleModalityFilter(option.id)}
                             className={cn(
                               "px-2 py-1 text-xs rounded-full transition-all-200",
-                              modalityFilters.includes(option.id)
+                              activeFilters.modalities.includes(option.id)
                                 ? "bg-primary text-white"
                                 : "bg-secondary hover:bg-secondary/70"
                             )}
@@ -333,7 +393,6 @@ const Header: React.FC = () => {
         </div>
       </header>
 
-      {/* Mobile Navigation Menu */}
       {isHomePage && (
         <div
           className={cn(
@@ -380,7 +439,6 @@ const Header: React.FC = () => {
         </div>
       )}
 
-      {/* Expandable Search Area */}
       <div
         className={cn(
           "fixed top-16 left-0 right-0 z-40 bg-white shadow-md transition-all duration-300 transform",
@@ -390,17 +448,19 @@ const Header: React.FC = () => {
         <SearchBar onClose={() => setIsSearchOpen(false)} />
       </div>
 
-      {/* Expandable Filter Area */}
       <div
         className={cn(
           "fixed top-16 left-0 right-0 z-40 bg-white shadow-md transition-all duration-300 transform",
           isFilterOpen ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0 pointer-events-none"
         )}
       >
-        <FilterBar onClose={() => setIsFilterOpen(false)} />
+        <FilterBar 
+          onClose={() => setIsFilterOpen(false)} 
+          onApplyFilters={handleApplyFilters}
+          initialFilters={activeFilters}
+        />
       </div>
 
-      {/* Header Spacer */}
       <div className="h-16"></div>
     </>
   );

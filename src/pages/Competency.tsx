@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import SolutionCard, { SolutionType } from "@/components/SolutionCard";
 import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { filterEventBus } from "@/components/Header";
 
 // Sample competencies mapping
 const competenciesData = {
@@ -188,6 +189,12 @@ const CompetencyPage: React.FC = () => {
   const competency = id ? competenciesData[id as keyof typeof competenciesData] : null;
   
   const [solutions, setSolutions] = useState<SolutionType[]>([]);
+  const [filters, setFilters] = useState({
+    solutionTypes: [] as string[],
+    modalities: [] as string[],
+    durations: [] as string[],
+    audiences: [] as string[],
+  });
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -198,7 +205,22 @@ const CompetencyPage: React.FC = () => {
       );
       setSolutions(filtered);
     }
+    
+    const unsubscribe = filterEventBus.subscribe('filtersChanged', (newFilters: typeof filters) => {
+      setFilters(newFilters);
+    });
+    
+    return () => {
+      unsubscribe();
+    };
   }, [id]);
+
+  const filteredSolutions = solutions.filter(solution => {
+    const typeMatch = filters.solutionTypes.length === 0 || filters.solutionTypes.includes(solution.type);
+    const modalityMatch = filters.modalities.length === 0 || filters.modalities.includes(solution.modality);
+    
+    return typeMatch && modalityMatch;
+  });
 
   if (!competency) {
     return (
@@ -217,7 +239,6 @@ const CompetencyPage: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30">
       <Header />
       
-      {/* Hero Section */}
       <section className="py-12 px-6 bg-white border-b border-border">
         <div className="max-w-7xl mx-auto">
           <Link 
@@ -250,21 +271,37 @@ const CompetencyPage: React.FC = () => {
         </div>
       </section>
       
-      {/* Solutions Section */}
       <section className="py-12 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl font-semibold">
               Soluciones disponibles 
               <span className="ml-2 text-lg text-muted-foreground font-normal">
-                ({solutions.length})
+                ({filteredSolutions.length})
               </span>
             </h2>
+            {(filters.solutionTypes.length > 0 || filters.modalities.length > 0) && (
+              <button
+                onClick={() => {
+                  const emptyFilters = {
+                    solutionTypes: [],
+                    modalities: [],
+                    durations: [],
+                    audiences: []
+                  };
+                  setFilters(emptyFilters);
+                  filterEventBus.publish('filtersChanged', emptyFilters);
+                }}
+                className="text-sm text-primary hover:underline"
+              >
+                Limpiar filtros ({filters.solutionTypes.length + filters.modalities.length})
+              </button>
+            )}
           </div>
           
-          {solutions.length > 0 ? (
+          {filteredSolutions.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {solutions.map((solution, index) => (
+              {filteredSolutions.map((solution, index) => (
                 <SolutionCard
                   key={solution.id}
                   solution={solution}
@@ -274,19 +311,27 @@ const CompetencyPage: React.FC = () => {
             </div>
           ) : (
             <div className="text-center py-12 bg-secondary/30 rounded-lg">
-              <p className="text-lg mb-4">No se encontraron soluciones disponibles.</p>
-              <Link
-                to="/request-solution"
+              <p className="text-lg mb-4">No se encontraron soluciones con los filtros aplicados.</p>
+              <button
+                onClick={() => {
+                  const emptyFilters = {
+                    solutionTypes: [],
+                    modalities: [],
+                    durations: [],
+                    audiences: []
+                  };
+                  setFilters(emptyFilters);
+                  filterEventBus.publish('filtersChanged', emptyFilters);
+                }}
                 className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all-200"
               >
-                Solicitar una solución personalizada
-              </Link>
+                Limpiar filtros
+              </button>
             </div>
           )}
         </div>
       </section>
       
-      {/* CTA Section */}
       <section className="py-16 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="bg-gradient-to-r from-primary to-primary/80 rounded-2xl overflow-hidden shadow-md">
@@ -317,7 +362,6 @@ const CompetencyPage: React.FC = () => {
         </div>
       </section>
       
-      {/* Footer */}
       <footer className="py-8 px-6 bg-white border-t border-border">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center mb-4 md:mb-0">

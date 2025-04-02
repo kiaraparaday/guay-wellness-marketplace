@@ -16,6 +16,18 @@ interface FilterGroupProps {
 
 interface FilterBarProps {
   onClose: () => void;
+  onApplyFilters?: (filters: {
+    solutionTypes: string[];
+    modalities: string[];
+    durations: string[];
+    audiences: string[];
+  }) => void;
+  initialFilters?: {
+    solutionTypes?: string[];
+    modalities?: string[];
+    durations?: string[];
+    audiences?: string[];
+  };
 }
 
 const FilterGroup: React.FC<FilterGroupProps> = ({
@@ -54,19 +66,21 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
   );
 };
 
-const FilterBar: React.FC<FilterBarProps> = ({ onClose }) => {
-  const [solutionTypes, setSolutionTypes] = useState<string[]>([]);
-  const [modalities, setModalities] = useState<string[]>([]);
-  const [durations, setDurations] = useState<string[]>([]);
-  const [audiences, setAudiences] = useState<string[]>([]);
+const FilterBar: React.FC<FilterBarProps> = ({ onClose, onApplyFilters, initialFilters = {} }) => {
+  const [solutionTypes, setSolutionTypes] = useState<string[]>(initialFilters.solutionTypes || []);
+  const [modalities, setModalities] = useState<string[]>(initialFilters.modalities || []);
+  const [durations, setDurations] = useState<string[]>(initialFilters.durations || []);
+  const [audiences, setAudiences] = useState<string[]>(initialFilters.audiences || []);
 
   const handleApplyFilters = () => {
-    console.log({
-      solutionTypes,
-      modalities,
-      durations,
-      audiences,
-    });
+    if (onApplyFilters) {
+      onApplyFilters({
+        solutionTypes,
+        modalities,
+        durations,
+        audiences,
+      });
+    }
     onClose();
   };
 
