@@ -188,6 +188,7 @@ const CompetencyPage: React.FC = () => {
   const competency = id ? competenciesData[id as keyof typeof competenciesData] : null;
   
   const [solutions, setSolutions] = useState<SolutionType[]>([]);
+  
   const [filters, setFilters] = useState({
     type: [] as string[],
     modality: [] as string[],
@@ -196,7 +197,6 @@ const CompetencyPage: React.FC = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     
-    // Filter solutions for this competency
     if (id) {
       const filtered = solutionsData.filter(solution => 
         solution.competencies.includes(id)
