@@ -189,11 +189,6 @@ const CompetencyPage: React.FC = () => {
   
   const [solutions, setSolutions] = useState<SolutionType[]>([]);
   
-  const [filters, setFilters] = useState({
-    type: [] as string[],
-    modality: [] as string[],
-  });
-  
   useEffect(() => {
     window.scrollTo(0, 0);
     
@@ -204,12 +199,6 @@ const CompetencyPage: React.FC = () => {
       setSolutions(filtered);
     }
   }, [id]);
-
-  const filteredSolutions = solutions.filter(solution => {
-    const typeMatch = filters.type.length === 0 || filters.type.includes(solution.type);
-    const modalityMatch = filters.modality.length === 0 || filters.modality.includes(solution.modality);
-    return typeMatch && modalityMatch;
-  });
 
   if (!competency) {
     return (
@@ -268,14 +257,14 @@ const CompetencyPage: React.FC = () => {
             <h2 className="text-2xl font-semibold">
               Soluciones disponibles 
               <span className="ml-2 text-lg text-muted-foreground font-normal">
-                ({filteredSolutions.length})
+                ({solutions.length})
               </span>
             </h2>
           </div>
           
-          {filteredSolutions.length > 0 ? (
+          {solutions.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredSolutions.map((solution, index) => (
+              {solutions.map((solution, index) => (
                 <SolutionCard
                   key={solution.id}
                   solution={solution}
@@ -285,13 +274,13 @@ const CompetencyPage: React.FC = () => {
             </div>
           ) : (
             <div className="text-center py-12 bg-secondary/30 rounded-lg">
-              <p className="text-lg mb-4">No se encontraron soluciones con los filtros aplicados.</p>
-              <button
-                onClick={() => setFilters({ type: [], modality: [] })}
+              <p className="text-lg mb-4">No se encontraron soluciones disponibles.</p>
+              <Link
+                to="/request-solution"
                 className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all-200"
               >
-                Limpiar filtros
-              </button>
+                Solicitar una solución personalizada
+              </Link>
             </div>
           )}
         </div>
