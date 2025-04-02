@@ -1,9 +1,8 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "@/components/Header";
 import SolutionCard, { SolutionType } from "@/components/SolutionCard";
-import { ArrowLeft, Filter } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // Sample competencies mapping
@@ -184,22 +183,6 @@ const solutionsData: SolutionType[] = [
   },
 ];
 
-// Filter types
-const filterOptions = {
-  type: [
-    { id: "workshop", label: "Taller" },
-    { id: "course", label: "Curso" },
-    { id: "webinar", label: "Webinar" },
-    { id: "coaching", label: "Coaching" },
-    { id: "assessment", label: "Evaluación" },
-  ],
-  modality: [
-    { id: "in-person", label: "Presencial" },
-    { id: "virtual", label: "Virtual" },
-    { id: "hybrid", label: "Híbrido" },
-  ],
-};
-
 const CompetencyPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const competency = id ? competenciesData[id as keyof typeof competenciesData] : null;
@@ -222,32 +205,6 @@ const CompetencyPage: React.FC = () => {
     }
   }, [id]);
 
-  const toggleFilter = (filterType: 'type' | 'modality', filterId: string) => {
-    setFilters(prev => {
-      const current = [...prev[filterType]];
-      const index = current.indexOf(filterId);
-      
-      if (index === -1) {
-        current.push(filterId);
-      } else {
-        current.splice(index, 1);
-      }
-      
-      return {
-        ...prev,
-        [filterType]: current,
-      };
-    });
-  };
-
-  const clearFilters = () => {
-    setFilters({
-      type: [],
-      modality: [],
-    });
-  };
-
-  // Apply filters
   const filteredSolutions = solutions.filter(solution => {
     const typeMatch = filters.type.length === 0 || filters.type.includes(solution.type);
     const modalityMatch = filters.modality.length === 0 || filters.modality.includes(solution.modality);
@@ -304,69 +261,6 @@ const CompetencyPage: React.FC = () => {
         </div>
       </section>
       
-      {/* Filters Section (Always Visible) */}
-      <div className="bg-white border-b border-border py-6">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center mb-4">
-            <Filter className="w-4 h-4 mr-2 text-primary" />
-            <h2 className="font-medium">Filtros</h2>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div>
-              <h3 className="font-medium mb-3">Tipo de solución</h3>
-              <div className="flex flex-wrap gap-2">
-                {filterOptions.type.map(option => (
-                  <button
-                    key={option.id}
-                    onClick={() => toggleFilter('type', option.id)}
-                    className={cn(
-                      "px-3 py-1 rounded-full text-sm font-medium transition-all-200",
-                      filters.type.includes(option.id)
-                        ? "bg-primary text-white"
-                        : "bg-secondary hover:bg-secondary/70"
-                    )}
-                  >
-                    {option.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-            
-            <div>
-              <h3 className="font-medium mb-3">Modalidad</h3>
-              <div className="flex flex-wrap gap-2">
-                {filterOptions.modality.map(option => (
-                  <button
-                    key={option.id}
-                    onClick={() => toggleFilter('modality', option.id)}
-                    className={cn(
-                      "px-3 py-1 rounded-full text-sm font-medium transition-all-200",
-                      filters.modality.includes(option.id)
-                        ? "bg-primary text-white"
-                        : "bg-secondary hover:bg-secondary/70"
-                    )}
-                  >
-                    {option.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-            
-            <div className="flex items-end">
-              {(filters.type.length > 0 || filters.modality.length > 0) && (
-                <button
-                  onClick={clearFilters}
-                  className="px-3 py-1 text-sm text-muted-foreground hover:text-primary transition-all-200"
-                >
-                  Limpiar filtros
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-      
       {/* Solutions Section */}
       <section className="py-12 px-6">
         <div className="max-w-7xl mx-auto">
@@ -393,7 +287,7 @@ const CompetencyPage: React.FC = () => {
             <div className="text-center py-12 bg-secondary/30 rounded-lg">
               <p className="text-lg mb-4">No se encontraron soluciones con los filtros aplicados.</p>
               <button
-                onClick={clearFilters}
+                onClick={() => setFilters({ type: [], modality: [] })}
                 className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all-200"
               >
                 Limpiar filtros

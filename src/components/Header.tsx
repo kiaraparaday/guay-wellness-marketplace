@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Search, Filter, X, Menu, X as Close } from "lucide-react";
+import { Search, Filter, X, Menu, X as Close, FilterX } from "lucide-react";
 import { cn } from "@/lib/utils";
 import SearchBar from "./SearchBar";
 import FilterBar from "./FilterBar";
@@ -9,20 +9,46 @@ import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCompetencyFiltersOpen, setIsCompetencyFiltersOpen] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === "/";
+  const isCompetencyPage = location.pathname.includes('/competency/');
+  
+  // Filter states for competency pages
+  const [typeFilters, setTypeFilters] = useState<string[]>([]);
+  const [modalityFilters, setModalityFilters] = useState<string[]>([]);
+  
+  const filterOptions = {
+    type: [
+      { id: "workshop", label: "Taller" },
+      { id: "course", label: "Curso" },
+      { id: "webinar", label: "Webinar" },
+      { id: "coaching", label: "Coaching" },
+      { id: "assessment", label: "Evaluación" },
+    ],
+    modality: [
+      { id: "in-person", label: "Presencial" },
+      { id: "virtual", label: "Virtual" },
+      { id: "hybrid", label: "Híbrido" },
+    ],
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,11 +63,20 @@ const Header: React.FC = () => {
     setIsSearchOpen(!isSearchOpen);
     if (isFilterOpen) setIsFilterOpen(false);
     if (isMobileMenuOpen) setIsMobileMenuOpen(false);
+    if (isCompetencyFiltersOpen) setIsCompetencyFiltersOpen(false);
   };
 
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
     if (isSearchOpen) setIsSearchOpen(false);
+    if (isMobileMenuOpen) setIsMobileMenuOpen(false);
+    if (isCompetencyFiltersOpen) setIsCompetencyFiltersOpen(false);
+  };
+
+  const toggleCompetencyFilters = () => {
+    setIsCompetencyFiltersOpen(!isCompetencyFiltersOpen);
+    if (isSearchOpen) setIsSearchOpen(false);
+    if (isFilterOpen) setIsFilterOpen(false);
     if (isMobileMenuOpen) setIsMobileMenuOpen(false);
   };
 
@@ -49,6 +84,7 @@ const Header: React.FC = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
     if (isSearchOpen) setIsSearchOpen(false);
     if (isFilterOpen) setIsFilterOpen(false);
+    if (isCompetencyFiltersOpen) setIsCompetencyFiltersOpen(false);
   };
 
   const scrollToSection = (sectionId: string) => {
@@ -59,6 +95,31 @@ const Header: React.FC = () => {
       }
       if (isMobileMenuOpen) setIsMobileMenuOpen(false);
     }
+  };
+
+  const toggleTypeFilter = (filterId: string) => {
+    setTypeFilters(prev => {
+      if (prev.includes(filterId)) {
+        return prev.filter(id => id !== filterId);
+      } else {
+        return [...prev, filterId];
+      }
+    });
+  };
+
+  const toggleModalityFilter = (filterId: string) => {
+    setModalityFilters(prev => {
+      if (prev.includes(filterId)) {
+        return prev.filter(id => id !== filterId);
+      } else {
+        return [...prev, filterId];
+      }
+    });
+  };
+
+  const clearAllFilters = () => {
+    setTypeFilters([]);
+    setModalityFilters([]);
   };
 
   return (
@@ -137,6 +198,95 @@ const Header: React.FC = () => {
               >
                 {isMobileMenuOpen ? <Close className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
+            )}
+
+            {/* Competency Filter Button - Only show on competency pages */}
+            {isCompetencyPage && (
+              <DropdownMenu open={isCompetencyFiltersOpen} onOpenChange={setIsCompetencyFiltersOpen}>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className={cn(
+                      "p-2 rounded-full transition-all-200",
+                      isCompetencyFiltersOpen
+                        ? "bg-primary text-white"
+                        : "hover:bg-accent"
+                    )}
+                    aria-label="Filtros de competencia"
+                  >
+                    {isCompetencyFiltersOpen ? (
+                      <FilterX className="w-5 h-5" />
+                    ) : (
+                      <Filter className="w-5 h-5" />
+                    )}
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-screen max-w-sm p-4 mr-4 bg-white shadow-lg border border-border">
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-sm font-medium">Filtros de soluciones</h3>
+                      {(typeFilters.length > 0 || modalityFilters.length > 0) && (
+                        <button
+                          onClick={clearAllFilters}
+                          className="text-xs text-muted-foreground hover:text-primary transition-all-200"
+                        >
+                          Limpiar filtros
+                        </button>
+                      )}
+                    </div>
+                    
+                    {/* Type filters */}
+                    <div className="mb-4">
+                      <h4 className="text-sm font-medium mb-2">Tipo de solución</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {filterOptions.type.map(option => (
+                          <button
+                            key={option.id}
+                            onClick={() => toggleTypeFilter(option.id)}
+                            className={cn(
+                              "px-2 py-1 text-xs rounded-full transition-all-200",
+                              typeFilters.includes(option.id)
+                                ? "bg-primary text-white"
+                                : "bg-secondary hover:bg-secondary/70"
+                            )}
+                          >
+                            {option.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    {/* Modality filters */}
+                    <div>
+                      <h4 className="text-sm font-medium mb-2">Modalidad</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {filterOptions.modality.map(option => (
+                          <button
+                            key={option.id}
+                            onClick={() => toggleModalityFilter(option.id)}
+                            className={cn(
+                              "px-2 py-1 text-xs rounded-full transition-all-200",
+                              modalityFilters.includes(option.id)
+                                ? "bg-primary text-white"
+                                : "bg-secondary hover:bg-secondary/70"
+                            )}
+                          >
+                            {option.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="mt-4 pt-4 border-t border-border">
+                      <button
+                        onClick={() => setIsCompetencyFiltersOpen(false)}
+                        className="w-full px-4 py-2 text-sm bg-primary text-white rounded-md hover:bg-primary/90 transition-all-200"
+                      >
+                        Aplicar filtros
+                      </button>
+                    </div>
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
 
             <button
