@@ -16,6 +16,15 @@ export interface SolutionType {
   image: string;
   competencies: string[]; // ids of related competencies
   categories?: string[]; // New field for category tags
+  detailedDescription?: string;
+  benefits?: string[];
+  includes?: string[];
+  facilitator?: {
+    name: string;
+    position: string;
+    image: string;
+  };
+  images?: string[];
 }
 
 interface SolutionCardProps {
@@ -93,7 +102,7 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
     <Link 
       to={`/solution/${solution.id}`}
       className={cn(
-        "group flex flex-col overflow-hidden rounded-xl bg-white border border-border hover:border-primary/20 shadow-subtle hover:shadow-md transition-all duration-300 animate-fade-in",
+        "group flex flex-col overflow-hidden rounded-xl bg-white border border-border hover:border-primary/20 shadow-subtle hover:shadow-md transition-all duration-300 animate-fade-in font-poppins",
         "opacity-0"
       )}
       style={{ 

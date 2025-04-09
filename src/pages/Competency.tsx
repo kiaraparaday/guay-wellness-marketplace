@@ -1,9 +1,11 @@
+
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header, { filterEventBus } from "@/components/Header";
-import SolutionCard, { SolutionType } from "@/components/SolutionCard";
+import SolutionCard from "@/components/SolutionCard";
 import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { solutionsArray } from "@/data/solutions";
 
 // Sample competencies mapping
 const competenciesData = {
@@ -55,139 +57,48 @@ const competenciesData = {
     dimensionTitle: "Diversidad, Equidad e Inclusión",
     color: "#ec4899",
   },
+  "leadership": {
+    id: "leadership",
+    title: "Liderazgo",
+    description: "Desarrollo de líderes efectivos que inspiren, guíen y potencien a sus equipos para alcanzar objetivos compartidos.",
+    dimensionId: "culture",
+    dimensionTitle: "Cultura Organizacional",
+    color: "#10b981",
+  },
+  "teamwork": {
+    id: "teamwork",
+    title: "Trabajo en Equipo",
+    description: "Fomento de la colaboración, comunicación y sinergia entre los miembros de un equipo para lograr resultados superiores.",
+    dimensionId: "climate",
+    dimensionTitle: "Clima Laboral",
+    color: "#f59e0b",
+  },
+  "innovation": {
+    id: "innovation",
+    title: "Innovación",
+    description: "Creación de entornos que estimulen la creatividad, el pensamiento disruptivo y la implementación de nuevas ideas.",
+    dimensionId: "culture",
+    dimensionTitle: "Cultura Organizacional",
+    color: "#10b981",
+  },
+  "integrity": {
+    id: "integrity",
+    title: "Integridad",
+    description: "Promoción de valores éticos y comportamientos que reflejen honestidad, transparencia y coherencia en todas las acciones.",
+    dimensionId: "culture",
+    dimensionTitle: "Cultura Organizacional",
+    color: "#10b981",
+  }
 };
 
 type CompetencyDataType = typeof competenciesData[keyof typeof competenciesData];
-
-// Sample solutions data
-const solutionsData: SolutionType[] = [
-  {
-    id: "solution-1",
-    title: "Taller de Gestión del Estrés y Carga Mental",
-    type: "workshop",
-    modality: "in-person",
-    duration: "4 horas",
-    audience: "Todos los colaboradores",
-    description: "Aprende técnicas prácticas para identificar y manejar el estrés laboral y distribuir mejor las cargas cognitivas.",
-    image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80",
-    competencies: ["mental-workload"],
-    categories: ["Carga Mental", "Bienestar", "Estrés"]
-  },
-  {
-    id: "solution-2",
-    title: "Curso Online de Comunicación Efectiva",
-    type: "course",
-    modality: "virtual",
-    duration: "6 semanas",
-    audience: "Líderes",
-    description: "Desarrolla habilidades para transmitir mensajes claros, escuchar activamente y gestionar conversaciones difíciles en entornos laborales.",
-    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80",
-    competencies: ["communication"],
-    categories: ["Comunicación", "Liderazgo", "Trabajo en Equipo"]
-  },
-  {
-    id: "solution-3",
-    title: "Programa de Desarrollo de Capacidades de Liderazgo",
-    type: "coaching",
-    modality: "hybrid",
-    duration: "3 meses",
-    audience: "Gerentes y directivos",
-    description: "Fortalece tus habilidades de liderazgo con un programa personalizado que combina sesiones individuales y grupales.",
-    image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80",
-    competencies: ["capability-development"],
-    categories: ["Liderazgo", "Desarrollo Personal", "Integridad"]
-  },
-  {
-    id: "solution-4",
-    title: "Webinar: Diversidad e Inclusión en el Trabajo",
-    type: "webinar",
-    modality: "virtual",
-    duration: "90 minutos",
-    audience: "Toda la organización",
-    description: "Comprende la importancia de la diversidad en el lugar de trabajo y cómo crear un entorno inclusivo para todos.",
-    image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80",
-    competencies: ["diversity"],
-    categories: ["Diversidad", "Inclusión", "Cultura Organizacional"]
-  },
-  {
-    id: "solution-5",
-    title: "Evaluación de Factores Psicosociales",
-    type: "assessment",
-    modality: "virtual",
-    duration: "2 semanas",
-    audience: "Todos los colaboradores",
-    description: "Diagnostica los factores de riesgo psicosocial en tu organización para desarrollar estrategias efectivas de prevención.",
-    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80",
-    competencies: ["mental-workload"],
-    categories: ["Carga Mental", "Evaluación", "Prevención"]
-  },
-  {
-    id: "solution-6",
-    title: "Taller de Comunicación Asertiva",
-    type: "workshop",
-    modality: "in-person",
-    duration: "8 horas",
-    audience: "Todos los niveles",
-    description: "Aprende a comunicarte con claridad y respeto, defendiendo tus ideas mientras respetas las de los demás.",
-    image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80",
-    competencies: ["communication"],
-    categories: ["Comunicación", "Asertividad", "Resolución de Conflictos"]
-  },
-  {
-    id: "solution-7",
-    title: "Programa de Pausas Activas Mentales",
-    type: "workshop",
-    modality: "hybrid",
-    duration: "4 sesiones de 1 hora",
-    audience: "Todos los colaboradores",
-    description: "Implementa micro-descansos estratégicos para reducir la fatiga mental y mejorar la concentración durante la jornada laboral.",
-    image: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&q=80",
-    competencies: ["mental-workload", "work-life-balance"],
-    categories: ["Carga Mental", "Bienestar", "Productividad"]
-  },
-  {
-    id: "solution-8",
-    title: "Consultoría en Diseño de Puestos de Trabajo",
-    type: "coaching",
-    modality: "in-person",
-    duration: "1 mes",
-    audience: "Directivos y RRHH",
-    description: "Reestructura roles y responsabilidades para optimizar la carga mental y fomentar un ambiente más productivo y saludable.",
-    image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80",
-    competencies: ["mental-workload", "work-autonomy"],
-    categories: ["Carga Mental", "Autonomía", "Diseño Organizacional"]
-  },
-  {
-    id: "solution-9",
-    title: "Mindfulness para la Gestión del Estrés Laboral",
-    type: "course",
-    modality: "virtual",
-    duration: "8 semanas, sesiones de 30 min",
-    audience: "Todos los colaboradores",
-    description: "Aprende técnicas de atención plena para reducir el estrés, mejorar la concentración y tomar mejores decisiones bajo presión.",
-    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80",
-    competencies: ["mental-workload", "work-life-balance"],
-    categories: ["Mindfulness", "Estrés", "Bienestar"]
-  },
-  {
-    id: "solution-10",
-    title: "Herramientas para el Trabajo Colaborativo Eficiente",
-    type: "webinar",
-    modality: "virtual",
-    duration: "2 horas",
-    audience: "Equipos de trabajo",
-    description: "Optimiza la colaboración y comunicación en equipo mediante metodologías y herramientas digitales que reducen la carga mental.",
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80",
-    competencies: ["mental-workload", "communication"],
-    categories: ["Trabajo en Equipo", "Productividad", "Herramientas Digitales"]
-  },
-];
 
 const CompetencyPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const competency = id ? competenciesData[id as keyof typeof competenciesData] : null;
   
-  const [solutions, setSolutions] = useState<SolutionType[]>([]);
+  const [solutions, setSolutions] = useState(solutionsArray);
+  const [filteredSolutions, setFilteredSolutions] = useState(solutionsArray);
   const [filters, setFilters] = useState({
     solutionTypes: [] as string[],
     modalities: [] as string[],
@@ -199,10 +110,11 @@ const CompetencyPage: React.FC = () => {
     window.scrollTo(0, 0);
     
     if (id) {
-      const filtered = solutionsData.filter(solution => 
+      const relatedSolutions = solutionsArray.filter(solution => 
         solution.competencies.includes(id)
       );
-      setSolutions(filtered);
+      setSolutions(relatedSolutions);
+      setFilteredSolutions(relatedSolutions);
     }
     
     const unsubscribe = filterEventBus.subscribe('filtersChanged', (newFilters: typeof filters) => {
@@ -214,12 +126,16 @@ const CompetencyPage: React.FC = () => {
     };
   }, [id]);
 
-  const filteredSolutions = solutions.filter(solution => {
-    const typeMatch = filters.solutionTypes.length === 0 || filters.solutionTypes.includes(solution.type);
-    const modalityMatch = filters.modalities.length === 0 || filters.modalities.includes(solution.modality);
+  useEffect(() => {
+    const filtered = solutions.filter(solution => {
+      const typeMatch = filters.solutionTypes.length === 0 || filters.solutionTypes.includes(solution.type);
+      const modalityMatch = filters.modalities.length === 0 || filters.modalities.includes(solution.modality);
+      
+      return typeMatch && modalityMatch;
+    });
     
-    return typeMatch && modalityMatch;
-  });
+    setFilteredSolutions(filtered);
+  }, [filters, solutions]);
 
   if (!competency) {
     return (
@@ -241,7 +157,7 @@ const CompetencyPage: React.FC = () => {
     filters.audiences.length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30">
+    <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30 font-poppins">
       <Header />
       
       <section className="pt-20 pb-12 px-6 bg-white border-b border-border">

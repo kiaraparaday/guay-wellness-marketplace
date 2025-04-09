@@ -2,11 +2,12 @@
 import React from "react";
 import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
-import SolutionCard, { SolutionType } from "@/components/SolutionCard";
+import SolutionCard from "@/components/SolutionCard";
 import { Link } from "react-router-dom";
 import { ArrowRight, Star, Quote, Users, Building } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { solutionsData } from "@/data/solutions";
 
 const dimensions: DimensionType[] = [
   {
@@ -39,56 +40,8 @@ const dimensions: DimensionType[] = [
   },
 ];
 
-const topSolutions: SolutionType[] = [
-  {
-    id: "mindfulness-program",
-    title: "Programa de mindfulness corporativo",
-    type: "workshop",
-    modality: "hybrid",
-    duration: "8 semanas",
-    audience: "Equipos",
-    description: "Programa de 8 semanas para mejorar la concentración y reducir el estrés laboral en equipos de trabajo",
-    image: "/lovable-uploads/4155b648-99dc-4b36-9b11-b2ce846309e6.png",
-    competencies: ["mental-workload", "work-life-balance"],
-    categories: ["Mindfulness", "Bienestar Mental"]
-  },
-  {
-    id: "leadership-training",
-    title: "Formación en liderazgo consciente",
-    type: "course",
-    modality: "virtual",
-    duration: "12 horas",
-    audience: "Directivos",
-    description: "Desarrollo de habilidades de liderazgo empático y consciente para potenciar equipos de alto rendimiento",
-    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80",
-    competencies: ["leadership", "capability-development"],
-    categories: ["Liderazgo", "Desarrollo"]
-  },
-  {
-    id: "team-building",
-    title: "Taller de construcción de equipos diversos",
-    type: "workshop",
-    modality: "in-person",
-    duration: "1 día",
-    audience: "Todos",
-    description: "Experiencia inmersiva para fortalecer lazos de equipo y valorar la diversidad en entornos laborales",
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80",
-    competencies: ["teamwork", "diversity"],
-    categories: ["Trabajo en Equipo", "Diversidad"]
-  },
-  {
-    id: "stress-management",
-    title: "Gestión del estrés laboral",
-    type: "course",
-    modality: "virtual",
-    duration: "6 horas",
-    audience: "Todos",
-    description: "Estrategias prácticas para identificar y gestionar el estrés en el entorno laboral actual",
-    image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?auto=format&fit=crop&q=80",
-    competencies: ["mental-workload", "work-life-balance"],
-    categories: ["Bienestar", "Equilibrio"]
-  }
-];
+const topSolutionIds = ["mindfulness-program", "leadership-training", "team-building", "stress-management"];
+const topSolutions = topSolutionIds.map(id => solutionsData[id]);
 
 const testimonials = [
   {
@@ -122,7 +75,7 @@ const testimonials = [
 
 const IndexPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30">
+    <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30 font-poppins">
       <Header />
       
       {/* Hero Section with Solutions CTA */}
@@ -156,7 +109,7 @@ const IndexPage: React.FC = () => {
               </div>
               
               <Link 
-                to="/dimension/psychosocial" 
+                to="/solutions" 
                 className="hidden md:flex items-center mt-4 md:mt-0 px-6 py-3 bg-guay-blue text-white rounded-full font-medium hover:shadow-md hover:bg-guay-blue/90 transition-all-200 group"
               >
                 Ver todas las soluciones
@@ -176,7 +129,7 @@ const IndexPage: React.FC = () => {
             
             <div className="flex justify-center mt-6 md:hidden">
               <Link 
-                to="/dimension/psychosocial" 
+                to="/solutions" 
                 className="flex items-center px-6 py-3 bg-guay-blue text-white rounded-full font-medium hover:shadow-md hover:bg-guay-blue/90 transition-all-200 group"
               >
                 Ver todas las soluciones
@@ -210,7 +163,7 @@ const IndexPage: React.FC = () => {
               </p>
               
               <Link 
-                to="/solution" 
+                to="/solutions" 
                 className="hidden md:flex items-center mt-4 md:mt-0 px-6 py-3 bg-guay-purple text-white rounded-full font-medium hover:shadow-md hover:bg-guay-purple/90 transition-all-200 group"
               >
                 Ver todo el catálogo
@@ -230,7 +183,7 @@ const IndexPage: React.FC = () => {
             
             <div className="flex justify-center mt-6 md:hidden">
               <Link 
-                to="/solution" 
+                to="/solutions" 
                 className="flex items-center px-6 py-3 bg-guay-purple text-white rounded-full font-medium hover:shadow-md hover:bg-guay-purple/90 transition-all-200 group"
               >
                 Ver todo el catálogo
@@ -239,7 +192,7 @@ const IndexPage: React.FC = () => {
             </div>
           </section>
 
-          {/* NEW SECTION: Casos de Éxito */}
+          {/* Testimonials Section */}
           <section id="casos-exito" className="mb-12">
             <div className="relative overflow-hidden bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
               <div className="absolute -top-24 -right-24 w-48 h-48 bg-guay-purple/10 rounded-full blur-xl"></div>
