@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import Header from "@/components/Header";
+import Header, { filterEventBus } from "@/components/Header";
 import SolutionCard, { SolutionType } from "@/components/SolutionCard";
 import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { filterEventBus } from "@/components/Header";
 
 // Sample competencies mapping
 const competenciesData = {
@@ -235,11 +234,17 @@ const CompetencyPage: React.FC = () => {
     );
   }
 
+  const totalActiveFilters = 
+    filters.solutionTypes.length + 
+    filters.modalities.length + 
+    filters.durations.length + 
+    filters.audiences.length;
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30">
       <Header />
       
-      <section className="py-12 px-6 bg-white border-b border-border">
+      <section className="pt-20 pb-12 px-6 bg-white border-b border-border">
         <div className="max-w-7xl mx-auto">
           <Link 
             to={`/dimension/${competency.dimensionId}`} 
@@ -271,7 +276,7 @@ const CompetencyPage: React.FC = () => {
         </div>
       </section>
       
-      <section className="py-12 px-6">
+      <section className="py-12 px-6 mt-10">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl font-semibold">
@@ -280,23 +285,6 @@ const CompetencyPage: React.FC = () => {
                 ({filteredSolutions.length})
               </span>
             </h2>
-            {(filters.solutionTypes.length > 0 || filters.modalities.length > 0) && (
-              <button
-                onClick={() => {
-                  const emptyFilters = {
-                    solutionTypes: [],
-                    modalities: [],
-                    durations: [],
-                    audiences: []
-                  };
-                  setFilters(emptyFilters);
-                  filterEventBus.publish('filtersChanged', emptyFilters);
-                }}
-                className="text-sm text-primary hover:underline"
-              >
-                Limpiar filtros ({filters.solutionTypes.length + filters.modalities.length})
-              </button>
-            )}
           </div>
           
           {filteredSolutions.length > 0 ? (
