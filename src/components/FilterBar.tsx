@@ -45,14 +45,14 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
 
   return (
     <div className="mb-4">
-      <h3 className="font-medium mb-2">{title}</h3>
+      <h3 className="font-poppins font-medium mb-2">{title}</h3>
       <div className="flex flex-wrap gap-2">
         {options.map((option) => (
           <button
             key={option.id}
             onClick={() => toggleOption(option.id)}
             className={cn(
-              "px-3 py-1.5 rounded-full text-sm font-medium transition-all-200",
+              "px-3 py-1.5 rounded-full text-sm font-medium transition-all-200 font-poppins",
               selectedOptions.includes(option.id)
                 ? "bg-primary text-white"
                 : "bg-secondary hover:bg-primary/10"
@@ -92,7 +92,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ onClose, onApplyFilters, initialF
   };
 
   return (
-    <div className="max-w-5xl mx-auto py-4 px-6">
+    <div className="max-w-5xl mx-auto py-4 px-6 font-poppins">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <FilterGroup
           title="Tipo de solución"
@@ -147,13 +147,13 @@ const FilterBar: React.FC<FilterBarProps> = ({ onClose, onApplyFilters, initialF
       <div className="flex justify-between mt-6">
         <button
           onClick={clearAllFilters}
-          className="text-sm text-muted-foreground hover:text-primary transition-all-200"
+          className="text-sm text-muted-foreground hover:text-primary transition-all-200 font-poppins"
         >
           Limpiar filtros
         </button>
         <button
           onClick={handleApplyFilters}
-          className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all-200"
+          className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all-200 font-poppins"
         >
           Aplicar filtros
         </button>
