@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import AppointmentForm from "@/components/AppointmentForm";
-import { ArrowLeft, Calendar, CheckCircle, Users } from "lucide-react";
+import { ArrowLeft, Calendar, CheckCircle, Users, ClipboardList } from "lucide-react";
 
 const AppointmentPage: React.FC = () => {
   return (
@@ -23,6 +23,15 @@ const AppointmentPage: React.FC = () => {
               Nuestro equipo de expertos en bienestar organizacional está listo para ayudarte 
               a encontrar las soluciones ideales para tu organización.
             </p>
+            <div className="mt-4">
+              <Link 
+                to="/my-appointments" 
+                className="inline-flex items-center text-primary hover:text-primary/80 transition-colors"
+              >
+                <ClipboardList className="mr-2 h-4 w-4" />
+                Ver mis citas programadas
+              </Link>
+            </div>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">

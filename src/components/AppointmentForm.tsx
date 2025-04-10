@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { Calendar as CalendarIcon, Clock, CheckCircle } from "lucide-react";
+import { Calendar as CalendarIcon, Clock, CheckCircle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -12,6 +12,7 @@ import {
   getFirstAvailableDate,
   formatAppointmentDate
 } from "@/services/appointmentService";
+import { saveAppointment } from "@/services/firebaseService";
 
 const AppointmentForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -24,6 +25,7 @@ const AppointmentForm: React.FC = () => {
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [timeSlots, setTimeSlots] = useState<{ time: string, available: boolean }[]>([]);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   useEffect(() => {
     const firstAvailableDate = getFirstAvailableDate();
@@ -54,7 +56,7 @@ const AppointmentForm: React.FC = () => {
     setSelectedTime(time);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.name || !formData.email || !date || !selectedTime) {
@@ -62,23 +64,41 @@ const AppointmentForm: React.FC = () => {
       return;
     }
     
-    const appointmentDate = formatAppointmentDate(date, selectedTime);
+    setIsSubmitting(true);
     
-    console.log("Form data:", {
-      ...formData,
-      date: format(date, "yyyy-MM-dd"),
-      time: selectedTime
-    });
-    
-    toast.success(`Su cita ha sido agendada exitosamente para el ${appointmentDate}`);
-    
-    setFormData({
-      name: "",
-      email: "",
-      company: "",
-      message: "",
-    });
-    setSelectedTime(null);
+    try {
+      const appointmentDate = formatAppointmentDate(date, selectedTime);
+      
+      const result = await saveAppointment({
+        name: formData.name,
+        email: formData.email,
+        company: formData.company || undefined,
+        message: formData.message || undefined,
+        date: date,
+        time: selectedTime
+      });
+      
+      if (result.success) {
+        toast.success(`Su cita ha sido agendada exitosamente para el ${appointmentDate}`);
+        
+        // Reset form
+        setFormData({
+          name: "",
+          email: "",
+          company: "",
+          message: "",
+        });
+        setSelectedTime(null);
+      } else {
+        toast.error("Ha ocurrido un error al agendar su cita. Por favor intente nuevamente.");
+        console.error("Error al guardar la cita:", result.error);
+      }
+    } catch (error) {
+      toast.error("Ha ocurrido un error al agendar su cita. Por favor intente nuevamente.");
+      console.error("Error al procesar la cita:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const disabledDays = (date: Date) => {
@@ -265,10 +285,23 @@ const AppointmentForm: React.FC = () => {
         
         <button
           type="submit"
-          className="w-full py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-all-200 shadow-sm hover:shadow flex items-center justify-center"
+          disabled={isSubmitting}
+          className={cn(
+            "w-full py-3 bg-primary text-white rounded-lg font-medium transition-all-200 shadow-sm hover:shadow flex items-center justify-center",
+            isSubmitting ? "opacity-70 cursor-not-allowed" : "hover:bg-primary/90"
+          )}
         >
-          <CalendarIcon className="mr-2 h-5 w-5" />
-          Agendar cita
+          {isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              Procesando...
+            </>
+          ) : (
+            <>
+              <CalendarIcon className="mr-2 h-5 w-5" />
+              Agendar cita
+            </>
+          )}
         </button>
         
         <p className="text-xs text-muted-foreground text-center">
