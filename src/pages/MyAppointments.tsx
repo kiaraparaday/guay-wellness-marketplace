@@ -4,10 +4,12 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { ArrowLeft, Calendar, Clock, Building, Mail, MessageSquare } from "lucide-react";
-import Header from "@/components/Header";
+import { ArrowLeft, Calendar, Clock, Building, Mail, MessageSquare, Download } from "lucide-react";
 import { getAppointmentsByEmail } from "@/services/firebaseService";
 import type { AppointmentData } from "@/services/firebaseService";
+import { exportAppointmentsToCSV } from "@/utils/exportUtils";
+import { Button } from "@/components/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const MyAppointmentsPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -47,6 +49,21 @@ const MyAppointmentsPage: React.FC = () => {
     }
   };
 
+  const handleExportCSV = () => {
+    if (appointments.length === 0) {
+      toast.info("No hay citas para exportar");
+      return;
+    }
+    
+    try {
+      exportAppointmentsToCSV(appointments);
+      toast.success("Citas exportadas correctamente");
+    } catch (error) {
+      console.error("Error al exportar citas:", error);
+      toast.error("Ha ocurrido un error al exportar las citas");
+    }
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'confirmed':
@@ -71,8 +88,6 @@ const MyAppointmentsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30">
-      <Header />
-      
       <section className="py-16 px-6">
         <div className="max-w-4xl mx-auto">
           <Link to="/" className="inline-flex items-center text-muted-foreground hover:text-foreground mb-6 transition-colors group">
@@ -116,17 +131,33 @@ const MyAppointmentsPage: React.FC = () => {
             </div>
           ) : (
             <div className="animate-fade-in">
-              <button
-                onClick={() => setShowAppointments(false)}
-                className="mb-6 text-primary hover:text-primary/80 transition-colors flex items-center"
-              >
-                <ArrowLeft className="w-4 h-4 mr-1" />
-                Buscar con otro correo
-              </button>
+              <div className="flex justify-between items-center mb-6">
+                <button
+                  onClick={() => setShowAppointments(false)}
+                  className="text-primary hover:text-primary/80 transition-colors flex items-center"
+                >
+                  <ArrowLeft className="w-4 h-4 mr-1" />
+                  Buscar con otro correo
+                </button>
+                
+                <Button 
+                  onClick={handleExportCSV} 
+                  variant="outline" 
+                  size="sm"
+                  disabled={appointments.length === 0}
+                  className="flex items-center gap-2"
+                >
+                  <Download className="h-4 w-4" />
+                  Exportar como CSV
+                </Button>
+              </div>
               
               <div className="bg-white rounded-xl shadow-subtle border border-border overflow-hidden">
-                <div className="p-4 bg-primary/5 border-b border-border">
+                <div className="p-4 bg-primary/5 border-b border-border flex justify-between items-center">
                   <h2 className="font-medium">Citas asociadas a {email}</h2>
+                  <span className="text-sm text-muted-foreground">
+                    {appointments.length} {appointments.length === 1 ? "cita encontrada" : "citas encontradas"}
+                  </span>
                 </div>
                 
                 {appointments.length === 0 ? (
@@ -202,7 +233,6 @@ const MyAppointmentsPage: React.FC = () => {
         </div>
       </section>
       
-      {/* Footer */}
       <footer className="py-8 px-6 bg-white border-t border-border mt-8">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center mb-4 md:mb-0">
