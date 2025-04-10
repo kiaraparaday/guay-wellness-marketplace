@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from "react";
-import { Calendar as CalendarIcon, Clock } from "lucide-react";
+import { Calendar as CalendarIcon, Clock, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -95,13 +96,13 @@ const AppointmentForm: React.FC = () => {
 
   return (
     <div className="p-6 bg-white rounded-xl shadow-subtle border border-border">
-      <h2 className="text-2xl font-medium mb-6">Agende una cita con nosotros</h2>
+      <h2 className="text-2xl font-semibold mb-6 text-center text-guay-dark">Agende una cita con nosotros</h2>
       
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="space-y-2">
             <label htmlFor="name" className="block text-sm font-medium text-foreground">
-              Nombre completo *
+              Nombre completo <span className="text-primary">*</span>
             </label>
             <input
               id="name"
@@ -109,14 +110,14 @@ const AppointmentForm: React.FC = () => {
               type="text"
               value={formData.name}
               onChange={handleChange}
-              className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200"
+              className="w-full px-4 py-2.5 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200"
               required
             />
           </div>
           
           <div className="space-y-2">
             <label htmlFor="email" className="block text-sm font-medium text-foreground">
-              Correo electrónico *
+              Correo electrónico <span className="text-primary">*</span>
             </label>
             <input
               id="email"
@@ -124,7 +125,7 @@ const AppointmentForm: React.FC = () => {
               type="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200"
+              className="w-full px-4 py-2.5 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200"
               required
             />
           </div>
@@ -140,73 +141,107 @@ const AppointmentForm: React.FC = () => {
             type="text"
             value={formData.company}
             onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200"
+            className="w-full px-4 py-2.5 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200"
           />
         </div>
         
-        <div className="space-y-2">
+        <div className="space-y-3">
           <label className="block text-sm font-medium text-foreground mb-2">
-            Seleccione una fecha y hora *
+            Seleccione una fecha y hora <span className="text-primary">*</span>
           </label>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-card rounded-lg border border-border p-3">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate as any}
-                disabled={disabledDays}
-                locale={es}
-                className="rounded-md border"
-              />
+            <div className="bg-white rounded-lg border border-border shadow-sm overflow-hidden transition-all hover:shadow-md">
+              <div className="bg-primary/5 p-3 border-b border-border">
+                <div className="flex items-center space-x-2 text-primary font-medium">
+                  <CalendarIcon className="h-5 w-5" />
+                  <span>Seleccione una fecha</span>
+                </div>
+              </div>
+              <div className="p-3">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate as any}
+                  disabled={disabledDays}
+                  locale={es}
+                  className="rounded-md border border-border overflow-hidden"
+                />
+              </div>
             </div>
             
-            <div>
-              <div className="mb-2 flex items-center">
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                <span>
-                  {date ? format(date, "EEEE, d 'de' MMMM", { locale: es }) : "Seleccione una fecha"}
-                </span>
+            <div className="bg-white rounded-lg border border-border shadow-sm overflow-hidden transition-all hover:shadow-md">
+              <div className="bg-primary/5 p-3 border-b border-border">
+                <div className="flex items-center space-x-2">
+                  {date ? (
+                    <div className="flex items-center text-primary font-medium">
+                      <CalendarIcon className="mr-2 h-5 w-5" />
+                      <span>
+                        {format(date, "EEEE, d 'de' MMMM", { locale: es })}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="text-muted-foreground">
+                      <span>Seleccione una fecha para ver horarios</span>
+                    </div>
+                  )}
+                </div>
               </div>
               
-              {timeSlots.length > 0 ? (
-                <div className="grid grid-cols-2 gap-2 max-h-[280px] overflow-y-auto p-1">
-                  {timeSlots.map((slot) => (
-                    <button
-                      key={slot.time}
-                      type="button"
-                      disabled={!slot.available}
-                      onClick={() => handleTimeSelect(slot.time)}
-                      className={cn(
-                        "flex items-center justify-center py-2 px-3 rounded-md border text-sm transition-colors",
-                        slot.available 
-                          ? selectedTime === slot.time
-                            ? "bg-primary text-primary-foreground border-primary"
-                            : "bg-background hover:bg-muted"
-                          : "bg-muted/50 text-muted-foreground cursor-not-allowed opacity-50"
-                      )}
-                    >
-                      <Clock className="mr-2 h-4 w-4" />
-                      {slot.time}
-                    </button>
-                  ))}
-                </div>
-              ) : date ? (
-                <p className="text-muted-foreground text-sm p-4 text-center">
-                  No hay horarios disponibles para esta fecha. Por favor seleccione otra fecha.
-                </p>
-              ) : (
-                <p className="text-muted-foreground text-sm p-4 text-center">
-                  Seleccione una fecha para ver los horarios disponibles.
-                </p>
-              )}
+              <div className="p-4 h-[290px] overflow-y-auto">
+                {timeSlots.length > 0 ? (
+                  <div className="grid grid-cols-2 gap-3">
+                    {timeSlots.map((slot) => (
+                      <button
+                        key={slot.time}
+                        type="button"
+                        disabled={!slot.available}
+                        onClick={() => handleTimeSelect(slot.time)}
+                        className={cn(
+                          "relative flex items-center justify-center p-3 rounded-md border transition-colors",
+                          slot.available 
+                            ? selectedTime === slot.time
+                              ? "bg-primary/10 text-primary border-primary/50 ring-1 ring-primary/20"
+                              : "bg-white hover:bg-muted/30"
+                            : "bg-muted/30 text-muted-foreground cursor-not-allowed opacity-50"
+                        )}
+                      >
+                        <Clock className="mr-2 h-4 w-4" />
+                        <span>{slot.time}</span>
+                        {selectedTime === slot.time && (
+                          <CheckCircle className="absolute right-2 h-4 w-4 text-primary" />
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                ) : date ? (
+                  <div className="h-full flex items-center justify-center">
+                    <p className="text-muted-foreground text-sm p-4 text-center">
+                      No hay horarios disponibles para esta fecha. <br />
+                      Por favor seleccione otra fecha.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="h-full flex items-center justify-center">
+                    <p className="text-muted-foreground text-sm p-4 text-center">
+                      Seleccione una fecha para ver <br />
+                      los horarios disponibles.
+                    </p>
+                  </div>
+                )}
+              </div>
               
               {selectedTime && date && (
-                <div className="mt-4 p-3 bg-muted/30 rounded-md border border-border">
-                  <p className="text-sm font-medium">Cita seleccionada:</p>
-                  <p className="text-sm text-muted-foreground">
-                    {format(date, "EEEE, d 'de' MMMM 'de' yyyy", { locale: es })} a las {selectedTime}
-                  </p>
+                <div className="p-3 border-t border-border bg-primary/5">
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="h-5 w-5 text-primary" />
+                    <div>
+                      <p className="text-sm font-medium">Cita seleccionada:</p>
+                      <p className="text-sm text-muted-foreground">
+                        {format(date, "EEEE, d 'de' MMMM 'de' yyyy", { locale: es })} a las {selectedTime}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -223,15 +258,16 @@ const AppointmentForm: React.FC = () => {
             value={formData.message}
             onChange={handleChange}
             rows={4}
-            className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200"
+            className="w-full px-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200"
             placeholder="Cuéntenos sobre sus necesidades específicas..."
           />
         </div>
         
         <button
           type="submit"
-          className="w-full py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-all-200"
+          className="w-full py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-all-200 shadow-sm hover:shadow flex items-center justify-center"
         >
+          <CalendarIcon className="mr-2 h-5 w-5" />
           Agendar cita
         </button>
         
