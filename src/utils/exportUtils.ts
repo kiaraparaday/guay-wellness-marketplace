@@ -98,8 +98,7 @@ export const exportSolutionsToCSV = (): void => {
       Modalidad: solution.modality,
       Duración: solution.duration || "",
       Audiencia: solution.audience || "",
-      Precio: solution.pricing?.price || "",
-      TipoPrecio: solution.pricing?.type || ""
+      // Eliminamos las referencias a la propiedad pricing que no existe en el tipo SolutionType
     };
   });
   
