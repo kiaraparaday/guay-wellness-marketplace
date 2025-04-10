@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Calendar as CalendarIcon, Clock } from "lucide-react";
 import { toast } from "sonner";
@@ -25,7 +24,6 @@ const AppointmentForm: React.FC = () => {
   const [timeSlots, setTimeSlots] = useState<{ time: string, available: boolean }[]>([]);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   
-  // Set initial date to first available date
   useEffect(() => {
     const firstAvailableDate = getFirstAvailableDate();
     if (firstAvailableDate) {
@@ -33,12 +31,11 @@ const AppointmentForm: React.FC = () => {
     }
   }, []);
   
-  // Update time slots when date changes
   useEffect(() => {
     if (date) {
       const slots = getTimeSlots(date);
       setTimeSlots(slots);
-      setSelectedTime(null); // Clear selected time when date changes
+      setSelectedTime(null);
     }
   }, [date]);
 
@@ -59,26 +56,21 @@ const AppointmentForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate form
     if (!formData.name || !formData.email || !date || !selectedTime) {
       toast.error("Por favor complete todos los campos requeridos");
       return;
     }
     
-    // Format appointment information for confirmation message
     const appointmentDate = formatAppointmentDate(date, selectedTime);
     
-    // In a real app, you would send this data to your backend
     console.log("Form data:", {
       ...formData,
       date: format(date, "yyyy-MM-dd"),
       time: selectedTime
     });
     
-    // Confirm submission
     toast.success(`Su cita ha sido agendada exitosamente para el ${appointmentDate}`);
     
-    // Reset form
     setFormData({
       name: "",
       email: "",
@@ -86,22 +78,15 @@ const AppointmentForm: React.FC = () => {
       message: "",
     });
     setSelectedTime(null);
-    
-    // Don't reset date to allow booking another slot easily
   };
 
-  // Function to determine if a day should be disabled
   const disabledDays = (date: Date) => {
-    // Get all available dates
     const availableDates = getAvailableDates();
-    
-    // Check if the current date is in the list of available dates and has at least one available slot
     return !availableDates.some(availableDate => 
       isSameDay(availableDate, date) && getTimeSlots(availableDate).some(slot => slot.available)
     );
   };
-  
-  // Helper function to check if date is same day
+
   const isSameDay = (date1: Date, date2: Date) => {
     return date1.getDate() === date2.getDate() &&
            date1.getMonth() === date2.getMonth() &&
@@ -165,7 +150,6 @@ const AppointmentForm: React.FC = () => {
           </label>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Calendar */}
             <div className="bg-card rounded-lg border border-border p-3">
               <Calendar
                 mode="single"
@@ -177,7 +161,6 @@ const AppointmentForm: React.FC = () => {
               />
             </div>
             
-            {/* Time slots */}
             <div>
               <div className="mb-2 flex items-center">
                 <CalendarIcon className="mr-2 h-4 w-4" />
