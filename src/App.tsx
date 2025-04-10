@@ -14,6 +14,7 @@ import MyAppointments from "./pages/MyAppointments";
 import RequestSolution from "./pages/RequestSolution";
 import Testimonials from "./pages/Testimonials";
 import NotFound from "./pages/NotFound";
+import Header from "./components/Header";
 
 // Initialize Firebase in App.tsx for global availability
 import "./services/firebaseService";
@@ -21,11 +22,12 @@ import "./services/firebaseService";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
+  <BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <Header />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/dimension/:id" element={<Dimension />} />
@@ -38,9 +40,9 @@ const App = () => (
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </BrowserRouter>
 );
 
 export default App;
