@@ -6,6 +6,7 @@
 import { AppointmentData } from "@/services/firebaseService";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import { solutionsArray } from "@/data/solutions";
 
 /**
  * Convierte un array de objetos a formato CSV
@@ -81,6 +82,64 @@ export const exportAppointmentsToCSV = (appointments: AppointmentData[]): void =
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+};
+
+/**
+ * Función para exportar soluciones a un archivo CSV
+ */
+export const exportSolutionsToCSV = (): void => {
+  // Formatear los datos para que sean más legibles en el CSV
+  const formattedSolutions = solutionsArray.map(solution => {
+    return {
+      ID: solution.id,
+      Título: solution.title,
+      Descripción: solution.description,
+      Tipo: solution.type,
+      Modalidad: solution.modality,
+      Duración: solution.duration || "",
+      Audiencia: solution.audience || "",
+      Precio: solution.pricing?.price || "",
+      TipoPrecio: solution.pricing?.type || ""
+    };
+  });
+  
+  // Convertir a CSV
+  const csv = objectsToCSV(formattedSolutions);
+  
+  // Crear un blob con el contenido CSV
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  
+  // Crear URL para el blob
+  const url = URL.createObjectURL(blob);
+  
+  // Crear un elemento de enlace para descargar
+  const link = document.createElement("a");
+  link.setAttribute("href", url);
+  link.setAttribute("download", `soluciones_guay_${format(new Date(), "yyyy-MM-dd")}.csv`);
+  link.style.visibility = "hidden";
+  
+  // Agregar al DOM, hacer click y eliminar
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+/**
+ * Función para exportar todos los datos del marketplace a un archivo CSV
+ */
+export const exportAllMarketplaceData = async (): Promise<void> => {
+  try {
+    // Exportar soluciones
+    exportSolutionsToCSV();
+    
+    // Podríamos añadir más exportaciones aquí según sea necesario
+    // Por ejemplo, testimonios, dimensiones, competencias, etc.
+    
+    return Promise.resolve();
+  } catch (error) {
+    console.error("Error al exportar todos los datos:", error);
+    return Promise.reject(error);
+  }
 };
 
 /**
