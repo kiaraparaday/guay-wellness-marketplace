@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { ArrowLeft, Calendar, Clock, Building, Mail, MessageSquare, Download } from "lucide-react";
-import { getAppointmentsByEmail } from "@/services/firebaseService";
+import { ArrowLeft, Calendar, Clock, Building, Mail, MessageSquare, Download, RefreshCw } from "lucide-react";
+import { getAppointmentsByEmail, getAllAppointments } from "@/services/firebaseService";
 import type { AppointmentData } from "@/services/firebaseService";
 import { exportAppointmentsToCSV } from "@/utils/exportUtils";
 import { Button } from "@/components/ui/button";
@@ -14,6 +13,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 const MyAppointmentsPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
   const [appointments, setAppointments] = useState<AppointmentData[]>([]);
   const [showAppointments, setShowAppointments] = useState(false);
 
@@ -49,18 +49,40 @@ const MyAppointmentsPage: React.FC = () => {
     }
   };
 
-  const handleExportCSV = () => {
+  const handleExportCSV = async () => {
     if (appointments.length === 0) {
       toast.info("No hay citas para exportar");
       return;
     }
     
     try {
-      exportAppointmentsToCSV(appointments);
-      toast.success("Citas exportadas correctamente");
+      setIsSyncing(true);
+      await exportAppointmentsToCSV();
+      toast.success("Citas exportadas correctamente desde Firebase");
     } catch (error) {
       console.error("Error al exportar citas:", error);
       toast.error("Ha ocurrido un error al exportar las citas");
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+  
+  const handleSyncAllAppointments = async () => {
+    try {
+      setIsSyncing(true);
+      const result = await getAllAppointments();
+      
+      if (result.success && result.appointments) {
+        setAppointments(result.appointments);
+        toast.success("Todas las citas sincronizadas correctamente desde Firebase");
+      } else {
+        toast.error("Error al sincronizar citas con Firebase");
+      }
+    } catch (error) {
+      console.error("Error al sincronizar citas:", error);
+      toast.error("Ha ocurrido un error al sincronizar citas");
+    } finally {
+      setIsSyncing(false);
     }
   };
 
@@ -98,12 +120,26 @@ const MyAppointmentsPage: React.FC = () => {
           <div className="text-center mb-12 animate-fade-in">
             <h1 className="text-4xl font-semibold mb-4 text-guay-dark">Mis Citas</h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Consulte el estado de sus citas programadas ingresando su correo electrónico.
+              Consulte el estado de sus citas programadas ingresando su correo electrónico o consulte todas las citas sincronizadas con Firebase.
             </p>
           </div>
           
           {!showAppointments ? (
             <div className="max-w-md mx-auto bg-white p-6 rounded-xl shadow-subtle border border-border">
+              <div className="mb-4 flex justify-between items-center">
+                <h3 className="font-medium">Buscar por email</h3>
+                <Button
+                  onClick={handleSyncAllAppointments}
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center gap-2"
+                  disabled={isSyncing}
+                >
+                  <RefreshCw className={`h-4 w-4 ${isSyncing ? 'animate-spin' : ''}`} />
+                  Ver todas
+                </Button>
+              </div>
+              
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
                   <label htmlFor="email" className="block text-sm font-medium text-foreground">
@@ -140,21 +176,36 @@ const MyAppointmentsPage: React.FC = () => {
                   Buscar con otro correo
                 </button>
                 
-                <Button 
-                  onClick={handleExportCSV} 
-                  variant="outline" 
-                  size="sm"
-                  disabled={appointments.length === 0}
-                  className="flex items-center gap-2"
-                >
-                  <Download className="h-4 w-4" />
-                  Exportar como CSV
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button 
+                    onClick={handleSyncAllAppointments} 
+                    variant="outline" 
+                    size="sm"
+                    disabled={isSyncing}
+                    className="flex items-center gap-2"
+                  >
+                    <RefreshCw className={`h-4 w-4 ${isSyncing ? 'animate-spin' : ''}`} />
+                    Sincronizar
+                  </Button>
+                  
+                  <Button 
+                    onClick={handleExportCSV} 
+                    variant="outline" 
+                    size="sm"
+                    disabled={appointments.length === 0 || isSyncing}
+                    className="flex items-center gap-2"
+                  >
+                    <Download className="h-4 w-4" />
+                    Exportar como CSV
+                  </Button>
+                </div>
               </div>
               
               <div className="bg-white rounded-xl shadow-subtle border border-border overflow-hidden">
                 <div className="p-4 bg-primary/5 border-b border-border flex justify-between items-center">
-                  <h2 className="font-medium">Citas asociadas a {email}</h2>
+                  <h2 className="font-medium">
+                    {email ? `Citas asociadas a ${email}` : 'Todas las citas sincronizadas con Firebase'}
+                  </h2>
                   <span className="text-sm text-muted-foreground">
                     {appointments.length} {appointments.length === 1 ? "cita encontrada" : "citas encontradas"}
                   </span>

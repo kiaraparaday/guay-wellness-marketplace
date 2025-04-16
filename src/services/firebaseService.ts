@@ -1,7 +1,8 @@
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, addDoc, getDocs, query, where, Timestamp } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs, query, where, Timestamp, DocumentData } from "firebase/firestore";
+import { solutionsArray } from "@/data/solutions";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -66,6 +67,86 @@ export const getAppointmentsByEmail = async (email: string) => {
     return { success: true, appointments };
   } catch (error) {
     console.error("Error getting appointments: ", error);
+    return { success: false, error };
+  }
+};
+
+// Get all appointments from Firestore
+export const getAllAppointments = async () => {
+  try {
+    const appointmentsSnapshot = await getDocs(collection(db, "appointments"));
+    
+    const appointments: AppointmentData[] = [];
+    appointmentsSnapshot.forEach((doc) => {
+      const data = doc.data();
+      appointments.push({
+        ...data,
+        date: data.date.toDate(),
+        createdAt: data.createdAt.toDate()
+      } as AppointmentData);
+    });
+    
+    return { success: true, appointments };
+  } catch (error) {
+    console.error("Error getting all appointments: ", error);
+    return { success: false, error, appointments: [] };
+  }
+};
+
+// Sync solutions with Firestore
+export const syncSolutionsWithFirebase = async () => {
+  try {
+    // Check if solutions collection exists and has data
+    const solutionsSnapshot = await getDocs(collection(db, "solutions"));
+    
+    // If no solutions in Firebase, upload them from local data
+    if (solutionsSnapshot.empty) {
+      console.log("No hay soluciones en Firebase, sincronizando datos locales...");
+      
+      for (const solution of solutionsArray) {
+        await addDoc(collection(db, "solutions"), solution);
+      }
+      console.log("Soluciones sincronizadas correctamente");
+    }
+    
+    return { success: true };
+  } catch (error) {
+    console.error("Error al sincronizar soluciones con Firebase:", error);
+    return { success: false, error };
+  }
+};
+
+// Get all solutions from Firestore
+export const getAllSolutionsFromFirebase = async () => {
+  try {
+    await syncSolutionsWithFirebase(); // Ensure solutions are synced
+    
+    const solutionsSnapshot = await getDocs(collection(db, "solutions"));
+    
+    const solutions: DocumentData[] = [];
+    solutionsSnapshot.forEach((doc) => {
+      solutions.push({ id: doc.id, ...doc.data() });
+    });
+    
+    return { success: true, solutions };
+  } catch (error) {
+    console.error("Error getting solutions from Firebase:", error);
+    return { success: false, error, solutions: [] };
+  }
+};
+
+// Sync all marketplace data with Firebase
+export const syncAllMarketplaceData = async () => {
+  try {
+    // Sync solutions
+    await syncSolutionsWithFirebase();
+    
+    // Here you can add more sync functions as needed
+    // For example: syncTestimonialsWithFirebase(), syncDimensionsWithFirebase(), etc.
+    
+    return { success: true, message: "Todos los datos del marketplace han sido sincronizados con Firebase" };
+  } catch (error) {
+    console.error("Error al sincronizar datos del marketplace con Firebase:", error);
     return { success: false, error };
   }
 };

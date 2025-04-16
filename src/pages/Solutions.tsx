@@ -4,9 +4,10 @@ import Header, { filterEventBus } from "@/components/Header";
 import SolutionCard from "@/components/SolutionCard";
 import { solutionsArray } from "@/data/solutions";
 import { Link } from "react-router-dom";
-import { Download } from "lucide-react";
+import { Download, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { exportSolutionsToCSV, exportAllMarketplaceData } from "@/utils/exportUtils";
+import { syncAllMarketplaceData } from "@/services/firebaseService";
 import { toast } from "sonner";
 
 const SolutionsPage: React.FC = () => {
@@ -18,6 +19,7 @@ const SolutionsPage: React.FC = () => {
   });
   
   const [filteredSolutions, setFilteredSolutions] = useState(solutionsArray);
+  const [isSyncing, setIsSyncing] = useState(false);
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -48,23 +50,40 @@ const SolutionsPage: React.FC = () => {
     filters.durations.length + 
     filters.audiences.length;
     
-  const handleExportSolutions = () => {
+  const handleExportSolutions = async () => {
     try {
-      exportSolutionsToCSV();
-      toast.success("Soluciones exportadas correctamente");
+      await exportSolutionsToCSV();
+      toast.success("Soluciones exportadas correctamente desde Firebase");
     } catch (error) {
       console.error("Error al exportar soluciones:", error);
       toast.error("Ha ocurrido un error al exportar las soluciones");
     }
   };
   
-  const handleExportAllData = () => {
+  const handleExportAllData = async () => {
     try {
-      exportAllMarketplaceData();
-      toast.success("Datos del marketplace exportados correctamente");
+      await exportAllMarketplaceData();
+      toast.success("Datos del marketplace exportados correctamente desde Firebase");
     } catch (error) {
       console.error("Error al exportar todos los datos:", error);
       toast.error("Ha ocurrido un error al exportar los datos del marketplace");
+    }
+  };
+  
+  const handleSyncWithFirebase = async () => {
+    try {
+      setIsSyncing(true);
+      const result = await syncAllMarketplaceData();
+      if (result.success) {
+        toast.success("Datos sincronizados correctamente con Firebase");
+      } else {
+        toast.error("Error al sincronizar datos con Firebase");
+      }
+    } catch (error) {
+      console.error("Error al sincronizar con Firebase:", error);
+      toast.error("Ha ocurrido un error al sincronizar con Firebase");
+    } finally {
+      setIsSyncing(false);
     }
   };
 
@@ -84,6 +103,15 @@ const SolutionsPage: React.FC = () => {
               </p>
             </div>
             <div className="lg:col-span-2 flex flex-col sm:flex-row gap-3 justify-end items-start">
+              <Button 
+                onClick={handleSyncWithFirebase} 
+                variant="outline"
+                className="flex items-center gap-2"
+                disabled={isSyncing}
+              >
+                <RefreshCw className={`h-4 w-4 ${isSyncing ? 'animate-spin' : ''}`} />
+                {isSyncing ? 'Sincronizando...' : 'Sincronizar con Firebase'}
+              </Button>
               <Button 
                 onClick={handleExportSolutions} 
                 variant="outline"
