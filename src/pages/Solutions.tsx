@@ -1,13 +1,11 @@
-
 import React, { useState, useEffect } from "react";
 import Header, { filterEventBus } from "@/components/Header";
 import SolutionCard from "@/components/SolutionCard";
 import { solutionsArray } from "@/data/solutions";
 import { Link } from "react-router-dom";
-import { Download, RefreshCw } from "lucide-react";
+import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { exportSolutionsToCSV, exportAllMarketplaceData } from "@/utils/exportUtils";
-import { syncAllMarketplaceData } from "@/services/firebaseService";
 import { toast } from "sonner";
 
 const SolutionsPage: React.FC = () => {
@@ -69,23 +67,6 @@ const SolutionsPage: React.FC = () => {
       toast.error("Ha ocurrido un error al exportar los datos del marketplace");
     }
   };
-  
-  const handleSyncWithFirebase = async () => {
-    try {
-      setIsSyncing(true);
-      const result = await syncAllMarketplaceData();
-      if (result.success) {
-        toast.success("Datos sincronizados correctamente con Firebase");
-      } else {
-        toast.error("Error al sincronizar datos con Firebase");
-      }
-    } catch (error) {
-      console.error("Error al sincronizar con Firebase:", error);
-      toast.error("Ha ocurrido un error al sincronizar con Firebase");
-    } finally {
-      setIsSyncing(false);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30 font-poppins">
@@ -103,15 +84,6 @@ const SolutionsPage: React.FC = () => {
               </p>
             </div>
             <div className="lg:col-span-2 flex flex-col sm:flex-row gap-3 justify-end items-start">
-              <Button 
-                onClick={handleSyncWithFirebase} 
-                variant="outline"
-                className="flex items-center gap-2"
-                disabled={isSyncing}
-              >
-                <RefreshCw className={`h-4 w-4 ${isSyncing ? 'animate-spin' : ''}`} />
-                {isSyncing ? 'Sincronizando...' : 'Sincronizar con Firebase'}
-              </Button>
               <Button 
                 onClick={handleExportSolutions} 
                 variant="outline"
