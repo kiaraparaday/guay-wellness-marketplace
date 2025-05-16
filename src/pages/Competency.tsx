@@ -1,11 +1,12 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import Header, { filterEventBus } from "@/components/Header";
+import Header from "@/components/Header";
 import SolutionCard from "@/components/SolutionCard";
 import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { solutionsArray } from "@/data/solutions";
+// Import the filterEventBus from our services
+import { filterEventBus } from "@/services/eventBus";
 
 // Sample competencies mapping
 const competenciesData = {

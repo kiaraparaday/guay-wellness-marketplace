@@ -1,8 +1,8 @@
-
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { filterEventBus } from "@/services/eventBus";
 
 interface FilterOption {
   id: string;
@@ -134,6 +134,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
         audiences,
       });
     }
+    // Use the filterEventBus to publish the filters
+    filterEventBus.publish('filtersChanged', {
+      solutionTypes,
+      modalities,
+      durations,
+      audiences,
+    });
     onClose();
   };
 

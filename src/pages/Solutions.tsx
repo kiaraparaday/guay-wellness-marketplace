@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import Header, { filterEventBus } from "@/components/Header";
+import Header from "@/components/Header";
 import SolutionCard from "@/components/SolutionCard";
 import { solutionsArray } from "@/data/solutions";
 import { Link } from "react-router-dom";
@@ -8,6 +8,8 @@ import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { exportSolutionsToCSV, exportAllMarketplaceData } from "@/utils/exportUtils";
 import { toast } from "sonner";
+// Import the filterEventBus from our services
+import { filterEventBus } from "@/services/eventBus";
 
 const SolutionsPage: React.FC = () => {
   const [filters, setFilters] = useState({
