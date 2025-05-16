@@ -13,8 +13,8 @@ const GuayLogo: React.FC<GuayLogoProps> = ({
   className, 
   showText = false 
 }) => {
-  // Use the direct path to the image in the public folder
-  const logoSrc = '/lovable-uploads/ad18a7b7-67f7-4cf8-b003-e35fb2355a01.png';
+  // Update to use the new logo path
+  const logoSrc = '/lovable-uploads/450a23d6-8055-47fd-b5f5-c9d28bbd23d8.png';
 
   return (
     <div className={cn("flex items-center", className)}>
