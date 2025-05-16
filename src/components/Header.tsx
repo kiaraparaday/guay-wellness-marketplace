@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Search, Filter, X, Menu, X as Close, FilterX, Tag, Layers, ChevronDown, ChevronUp } from "lucide-react";
@@ -207,12 +206,11 @@ const Header: React.FC = () => {
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link to="/" className="group flex items-center space-x-2">
-            <span className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-guay-600 to-guay-400 transition-all duration-300 group-hover:from-guay-700 group-hover:to-guay-500">
-              GUAY
-            </span>
-            <span className="text-sm text-muted-foreground transition-all duration-300 group-hover:text-primary">
-              Wellness Marketplace
-            </span>
+            <img 
+              src="/guay-logo.png" 
+              alt="GUAY Logo" 
+              className="h-8 transition-transform duration-300 group-hover:scale-105" 
+            />
           </Link>
 
           {isHomePage && (

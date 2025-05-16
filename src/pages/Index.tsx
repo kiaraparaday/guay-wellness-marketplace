@@ -303,9 +303,11 @@ const IndexPage: React.FC = () => {
       <footer className="py-8 px-6 bg-white border-t border-border">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center mb-4 md:mb-0">
-            <span className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-guay-600 to-guay-400">
-              GUAY
-            </span>
+            <img 
+              src="/guay-logo.png" 
+              alt="GUAY Logo" 
+              className="h-6 mr-2" 
+            />
             <span className="ml-2 text-sm text-muted-foreground">
               Wellness Marketplace
             </span>
