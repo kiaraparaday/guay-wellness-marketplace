@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import Header, { filterEventBus } from "@/components/Header";
 import SolutionCard from "@/components/SolutionCard";
@@ -69,14 +70,14 @@ const SolutionsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30 font-poppins">
+    <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30 font-quicksand">
       <Header />
       
       <section className="pt-20 pb-12 px-6 bg-white border-b border-border">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
             <div className="lg:col-span-3">
-              <h1 className="text-3xl sm:text-4xl font-semibold mb-4 animate-fade-in font-poppins">
+              <h1 className="text-3xl sm:text-4xl font-semibold mb-4 animate-fade-in font-quicksand">
                 Catálogo de Soluciones
               </h1>
               <p className="text-muted-foreground mb-6 animate-fade-in" style={{ animationDelay: "100ms" }}>
@@ -108,7 +109,7 @@ const SolutionsPage: React.FC = () => {
       <section className="py-12 px-6 mt-10">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-2xl font-semibold font-poppins">
+            <h2 className="text-2xl font-semibold font-quicksand">
               Soluciones disponibles 
               <span className="ml-2 text-lg text-muted-foreground font-normal">
                 ({filteredSolutions.length})
@@ -140,7 +141,7 @@ const SolutionsPage: React.FC = () => {
                   setFilters(emptyFilters);
                   filterEventBus.publish('filtersChanged', emptyFilters);
                 }}
-                className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all-200 font-poppins"
+                className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all-200 font-quicksand"
               >
                 Limpiar filtros
               </button>
@@ -153,7 +154,7 @@ const SolutionsPage: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <div className="bg-gradient-to-r from-primary to-primary/80 rounded-2xl overflow-hidden shadow-md">
             <div className="p-8 sm:p-12 text-white">
-              <h2 className="text-3xl font-semibold mb-4 font-poppins">
+              <h2 className="text-3xl font-semibold mb-4 font-quicksand">
                 ¿Necesitas una solución personalizada?
               </h2>
               <p className="text-white/90 mb-6 max-w-2xl">
@@ -163,13 +164,13 @@ const SolutionsPage: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link 
                   to="/appointment" 
-                  className="inline-block px-6 py-3 bg-white text-primary rounded-lg font-medium hover:bg-opacity-90 transition-all-200 font-poppins"
+                  className="inline-block px-6 py-3 bg-white text-primary rounded-lg font-medium hover:bg-opacity-90 transition-all-200 font-quicksand"
                 >
                   Agendar una cita
                 </Link>
                 <Link 
                   to="/request-solution" 
-                  className="inline-block px-6 py-3 bg-transparent text-white rounded-lg font-medium border border-white/30 hover:bg-white/10 transition-all-200 font-poppins"
+                  className="inline-block px-6 py-3 bg-transparent text-white rounded-lg font-medium border border-white/30 hover:bg-white/10 transition-all-200 font-quicksand"
                 >
                   Solicitar una solución
                 </Link>
@@ -182,7 +183,7 @@ const SolutionsPage: React.FC = () => {
       <footer className="py-8 px-6 bg-white border-t border-border">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center mb-4 md:mb-0">
-            <span className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-guay-600 to-guay-400">
+            <span className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-guay-blue to-guay-purple">
               GUAY
             </span>
             <span className="ml-2 text-sm text-muted-foreground">

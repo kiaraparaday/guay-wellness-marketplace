@@ -63,13 +63,13 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// GUAY Brand Colors updated based on the uploaded image
-				'guay-green': '#B5CF4F',  // Lime green
-				'guay-blue': '#49A1C9',   // Medium blue
-				'guay-purple': '#BF5C95', // Magenta purple
-				'guay-orange': '#E9A15B', // Orange/gold
-				'guay-dark': '#1A2138',   // Dark navy
-				'guay-light': '#F8F9FA',  // Light background
+				// GUAY Brand Colors exactos según manual de identidad
+				'guay-green': '#B5CF4F',  // Verde GUAY 
+				'guay-blue': '#49A1C9',   // Azul GUAY
+				'guay-purple': '#BF5C95', // Magenta GUAY
+				'guay-orange': '#E9A15B', // Naranja GUAY
+				'guay-dark': '#1A2138',   // Azul oscuro GUAY
+				'guay-light': '#F8F9FA',  // Fondo claro GUAY
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -139,6 +139,7 @@ export default {
 				'playfair': ['Playfair Display', 'serif'],
 				'inter': ['Inter', 'sans-serif'],
 				'poppins': ['Poppins', 'sans-serif'],
+				'quicksand': ['Quicksand', 'sans-serif'], // Añadimos Quicksand como fuente principal de GUAY
 			},
 		}
 	},

@@ -1,4 +1,8 @@
 
+/* Importar Quicksand (fuente principal de GUAY) */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+/* Importar fuentes secundarias que ya se estaban usando */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
 
 @tailwind base;
@@ -16,8 +20,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    /* GUAY brand colors updated based on image */
-    --primary: 195 65% 54%; /* Updated blue (#49A1C9) */
+    /* GUAY brand colors basados en el manual de identidad */
+    --primary: 195 65% 54%; /* Azul GUAY (#49A1C9) */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 240 4.8% 95.9%;
@@ -26,7 +30,7 @@
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
 
-    --accent: 80 53% 56%; /* Lime green (#B5CF4F) */
+    --accent: 80 53% 56%; /* Verde GUAY (#B5CF4F) */
     --accent-foreground: 240 5.9% 10%;
 
     --destructive: 0 84.2% 60.2%;
@@ -34,7 +38,7 @@
 
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 330 81% 55%; /* Purple (#BF5C95) */
+    --ring: 330 81% 55%; /* Magenta GUAY (#BF5C95) */
 
     --radius: 0.75rem;
 
@@ -45,7 +49,7 @@
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 330 81% 55%; /* Purple (#BF5C95) */
+    --sidebar-ring: 330 81% 55%; /* Magenta GUAY (#BF5C95) */
   }
 
   .dark {
@@ -94,12 +98,14 @@
   }
 
   body {
-    @apply bg-background text-foreground font-poppins;
+    /* Cambiamos a Quicksand como fuente principal según las guías de GUAY */
+    @apply bg-background text-foreground font-quicksand;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-poppins font-semibold tracking-tight;
+    /* También cambiamos los encabezados a Quicksand */
+    @apply font-quicksand font-semibold tracking-tight;
   }
 
   h1 {
@@ -165,7 +171,7 @@
   }
   
   .guay-heading {
-    @apply font-poppins text-guay-dark font-medium;
+    @apply font-quicksand text-guay-dark font-medium;
   }
   
   .guay-text-gradient {
@@ -220,4 +226,8 @@
 
 .font-poppins {
   font-family: 'Poppins', sans-serif;
+}
+
+.font-quicksand {
+  font-family: 'Quicksand', sans-serif;
 }
