@@ -21,10 +21,18 @@ const GuayLogo: React.FC<GuayLogoProps> = ({
       <img 
         src={logoSrc} 
         alt="GUAY Logo" 
-        className="h-8" 
+        className={cn(
+          "h-8",
+          variant === 'white' && "brightness-0 invert"
+        )}
       />
       {showText && (
-        <span className="ml-2 text-sm text-muted-foreground">
+        <span className={cn(
+          "ml-2 text-sm",
+          variant === 'default' && "text-muted-foreground",
+          variant === 'white' && "text-white",
+          variant === 'dark' && "text-guay-dark-blue"
+        )}>
           Wellness Marketplace
         </span>
       )}
