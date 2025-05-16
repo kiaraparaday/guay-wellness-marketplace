@@ -1,4 +1,3 @@
-
 /* Importar Quicksand (fuente principal de GUAY) */
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 
@@ -103,33 +102,51 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    /* También mantenemos los encabezados con Quicksand */
-    @apply font-quicksand font-semibold tracking-tight;
-  }
-
+  /* Sistema tipográfico basado en Base 16 1.62 */
+  
+  /* Título / h1 - Size: 48px, Weight: Bold, Line Height: proporcional */
   h1 {
-    @apply text-4xl md:text-5xl;
+    @apply text-[48px] font-bold leading-tight tracking-tight;
   }
 
+  /* Título / h2 - Size: 40px, Weight: Bold, Line Height: proporcional */
   h2 {
-    @apply text-3xl md:text-4xl;
+    @apply text-[40px] font-bold leading-tight tracking-tight;
   }
 
+  /* Título / h3 - Size: 24px, Weight: Bold, Line Height: proporcional */
   h3 {
-    @apply text-2xl md:text-3xl;
+    @apply text-[24px] font-bold leading-tight tracking-tight;
   }
 
-  h4 {
-    @apply text-xl md:text-2xl;
+  /* Subtítulo (big copy) - Size: 24px, Weight: Semibold, Line Height: proporcional */
+  .subtitle {
+    @apply text-[24px] font-semibold leading-tight;
   }
 
-  h5 {
-    @apply text-lg md:text-xl;
+  /* Énfasis - Size: 20px, Weight: Bold, Line Height: proporcional */
+  .emphasis {
+    @apply text-[20px] font-bold leading-tight;
   }
 
-  h6 {
-    @apply text-base md:text-lg;
+  /* Bold copy - Size: 16px, Weight: Bold, Line Height: proporcional */
+  .bold-copy {
+    @apply text-[16px] font-bold leading-normal;
+  }
+
+  /* Cuerpo copy - Size: 16px, Weight: Medium, Line Height: proporcional */
+  p, .body-copy {
+    @apply text-[16px] font-medium leading-normal;
+  }
+
+  /* Small copy - Size: 14px, Weight: Semibold, Line Height: proporcional */
+  .small-copy {
+    @apply text-[14px] font-semibold leading-normal;
+  }
+
+  /* Pre title - Size: 12px, Weight: Bold, Line Height: 18px */
+  .pre-title {
+    @apply text-[12px] font-bold leading-[18px] uppercase tracking-wider;
   }
 }
 

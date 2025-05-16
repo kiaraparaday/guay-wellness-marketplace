@@ -23,8 +23,8 @@ const CompetencyPage: React.FC = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-semibold mb-4">Competencia no encontrada</h2>
-          <Link to="/" className="text-primary hover:underline">
+          <h2 className="text-[40px] font-bold mb-4">Competencia no encontrada</h2>
+          <Link to="/" className="text-primary hover:underline body-copy">
             Volver al inicio
           </Link>
         </div>
