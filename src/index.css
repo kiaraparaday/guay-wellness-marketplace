@@ -12,44 +12,44 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --foreground: 220 14% 16%; /* #15253C */
 
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 220 14% 16%; /* #15253C */
 
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --popover-foreground: 220 14% 16%; /* #15253C */
 
-    /* GUAY brand colors basados en el manual de identidad */
-    --primary: 195 65% 54%; /* Azul GUAY (#49A1C9) */
+    /* GUAY brand colors basados en los colores actualizados */
+    --primary: 198 55% 42%; /* #2188B4 (Azul GUAY) */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
+    --secondary-foreground: 220 14% 16%; /* #15253C */
 
     --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --muted-foreground: 0 0% 44%; /* #707070 */
 
-    --accent: 80 53% 56%; /* Verde GUAY (#B5CF4F) */
-    --accent-foreground: 240 5.9% 10%;
+    --accent: 74 54% 49%; /* #9CB537 (Verde GUAY) */
+    --accent-foreground: 220 14% 16%; /* #15253C */
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 100% 49%; /* #F90101 */
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 330 81% 55%; /* Magenta GUAY (#BF5C95) */
+    --border: 220 9% 85%; /* #D9D9D9 */
+    --input: 220 9% 85%; /* #D9D9D9 */
+    --ring: 330 60% 44%; /* #AF2F72 (Magenta GUAY) */
 
     --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-foreground: 225 10% 46%; /* #686D82 */
+    --sidebar-primary: 220 14% 16%; /* #15253C */
     --sidebar-primary-foreground: 0 0% 98%;
     --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 330 81% 55%; /* Magenta GUAY (#BF5C95) */
+    --sidebar-accent-foreground: 220 14% 16%; /* #15253C */
+    --sidebar-border: 220 9% 85%; /* #D9D9D9 */
+    --sidebar-ring: 330 60% 44%; /* #AF2F72 (Magenta GUAY) */
   }
 
   .dark {
@@ -62,7 +62,7 @@
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 195 66% 55%;
+    --primary: 198 55% 42%; /* #2188B4 (Azul GUAY) */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 240 3.7% 15.9%;
@@ -71,24 +71,24 @@
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
 
-    --accent: 252 84% 20%;
+    --accent: 74 54% 49%; /* #9CB537 (Verde GUAY) */
     --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 100% 49%; /* #F90101 */
     --destructive-foreground: 0 0% 98%;
 
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 252 84% 66%;
+    --ring: 330 60% 44%; /* #AF2F72 (Magenta GUAY) */
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 252 84% 66%;
+    --sidebar-primary: 198 55% 42%; /* #2188B4 (Azul GUAY) */
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 252 84% 66%;
+    --sidebar-ring: 330 60% 44%; /* #AF2F72 (Magenta GUAY) */
   }
 }
 
@@ -98,13 +98,13 @@
   }
 
   body {
-    /* Cambiamos a Quicksand como fuente principal según las guías de GUAY */
+    /* Mantenemos Quicksand como fuente principal */
     @apply bg-background text-foreground font-quicksand;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    /* También cambiamos los encabezados a Quicksand */
+    /* También mantenemos los encabezados con Quicksand */
     @apply font-quicksand font-semibold tracking-tight;
   }
 
@@ -171,14 +171,14 @@
   }
   
   .guay-heading {
-    @apply font-quicksand text-guay-dark font-medium;
+    @apply font-quicksand text-guay-dark-blue font-medium;
   }
   
   .guay-text-gradient {
     @apply bg-gradient-to-r from-guay-blue to-guay-purple bg-clip-text text-transparent;
   }
 
-  /* New colored circle backgrounds like in the reference image */
+  /* Colored circle backgrounds usando los nuevos colores exactos */
   .circle-bg-green {
     @apply bg-guay-green rounded-full;
   }
@@ -193,6 +193,19 @@
   
   .circle-bg-orange {
     @apply bg-guay-orange rounded-full;
+  }
+
+  /* Nuevas utilidades para los colores primarios */
+  .text-primary-guay {
+    @apply text-guay-dark-blue;
+  }
+  
+  .text-secondary-guay {
+    @apply text-guay-slate;
+  }
+  
+  .text-tertiary-guay {
+    @apply text-guay-gray;
   }
 }
 

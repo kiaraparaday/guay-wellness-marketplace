@@ -63,13 +63,28 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// GUAY Brand Colors exactos según manual de identidad
-				'guay-green': '#B5CF4F',  // Verde GUAY 
-				'guay-blue': '#49A1C9',   // Azul GUAY
-				'guay-purple': '#BF5C95', // Magenta GUAY
-				'guay-orange': '#E9A15B', // Naranja GUAY
-				'guay-dark': '#1A2138',   // Azul oscuro GUAY
-				'guay-light': '#F8F9FA',  // Fondo claro GUAY
+				// GUAY Colores Primarios (Textos)
+				'guay-gray': '#707070',
+				'guay-light-gray': '#D9D9D9', 
+				'guay-off-white': '#EFEFF6',
+				'guay-dark-blue': '#15253C',
+				'guay-slate': '#686D82',
+				'guay-blue-accent': '#1F7FA8',
+				
+				// GUAY Colores del Logotipo
+				'guay-green': '#9CB537',  // Verde GUAY actualizado
+				'guay-purple': '#AF2F72', // Magenta GUAY actualizado
+				'guay-blue': '#2188B4',   // Azul GUAY actualizado
+				'guay-orange': '#DFA444', // Naranja GUAY actualizado
+				
+				// GUAY Notificaciones, alertas y estatus
+				'guay-red': '#F90101',    // Rojo para errores
+				'guay-success': '#117701', // Verde para éxito
+				'guay-warning': '#F5BC00', // Amarillo para advertencias
+				
+				// Mantener los valores anteriores como alias para compatibilidad
+				'guay-dark': '#15253C',   // Alias para guay-dark-blue
+				'guay-light': '#F8F9FA',  // Se mantiene como estaba
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -139,7 +154,7 @@ export default {
 				'playfair': ['Playfair Display', 'serif'],
 				'inter': ['Inter', 'sans-serif'],
 				'poppins': ['Poppins', 'sans-serif'],
-				'quicksand': ['Quicksand', 'sans-serif'], // Añadimos Quicksand como fuente principal de GUAY
+				'quicksand': ['Quicksand', 'sans-serif'], // Mantenemos Quicksand como fuente principal
 			},
 		}
 	},
