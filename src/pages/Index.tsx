@@ -1,8 +1,8 @@
-
 import React from "react";
 import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
 import SolutionCard from "@/components/SolutionCard";
+import GuayLogo from "@/components/GuayLogo";
 import { Link } from "react-router-dom";
 import { ArrowRight, Star, Quote, Users, Building } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -303,14 +303,7 @@ const IndexPage: React.FC = () => {
       <footer className="py-8 px-6 bg-white border-t border-border">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center mb-4 md:mb-0">
-            <img 
-              src="/guay-logo.png" 
-              alt="GUAY Logo" 
-              className="h-6 mr-2" 
-            />
-            <span className="ml-2 text-sm text-muted-foreground">
-              Wellness Marketplace
-            </span>
+            <GuayLogo showText={true} className="h-6" />
           </div>
           
           <div className="text-sm text-muted-foreground">

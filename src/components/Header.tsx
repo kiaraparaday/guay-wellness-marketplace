@@ -4,6 +4,7 @@ import { Search, Filter, X, Menu, X as Close, FilterX, Tag, Layers, ChevronDown,
 import { cn } from "@/lib/utils";
 import SearchBar from "./SearchBar";
 import FilterBar from "./FilterBar";
+import GuayLogo from "./GuayLogo";
 import { 
   NavigationMenu,
   NavigationMenuContent,
@@ -206,11 +207,7 @@ const Header: React.FC = () => {
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link to="/" className="group flex items-center space-x-2">
-            <img 
-              src="/guay-logo.png" 
-              alt="GUAY Logo" 
-              className="h-8 transition-transform duration-300 group-hover:scale-105" 
-            />
+            <GuayLogo />
           </Link>
 
           {isHomePage && (
