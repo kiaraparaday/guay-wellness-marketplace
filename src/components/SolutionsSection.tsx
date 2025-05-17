@@ -2,6 +2,7 @@
 import React from "react";
 import SolutionCard from "@/components/SolutionCard";
 import { filterEventBus } from "@/services/eventBus";
+import { Button } from "@/components/ui/button";
 
 interface SolutionsSectionProps {
   filteredSolutions: any[];
@@ -42,7 +43,9 @@ const SolutionsSection: React.FC<SolutionsSectionProps> = ({
         ) : (
           <div className="text-center py-12 bg-secondary/30 rounded-lg">
             <p className="text-lg mb-4">No se encontraron soluciones con los filtros aplicados.</p>
-            <button
+            <Button
+              variant="accent"
+              size="mediano"
               onClick={() => {
                 const emptyFilters = {
                   solutionTypes: [],
@@ -53,10 +56,9 @@ const SolutionsSection: React.FC<SolutionsSectionProps> = ({
                 setFilters(emptyFilters);
                 filterEventBus.publish('filtersChanged', emptyFilters);
               }}
-              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all-200"
             >
               Limpiar filtros
-            </button>
+            </Button>
           </div>
         )}
       </div>

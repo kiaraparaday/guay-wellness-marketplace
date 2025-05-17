@@ -1,6 +1,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 interface CallToActionSectionProps {
   competencyTitle: string;
@@ -20,18 +21,20 @@ const CallToActionSection: React.FC<CallToActionSectionProps> = ({ competencyTit
               un programa a medida para desarrollar la competencia de {competencyTitle} en tu organización.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link 
-                to="/appointment" 
-                className="inline-block px-6 py-3 bg-white text-primary rounded-lg bold-copy hover:bg-opacity-90 transition-all-200"
+              <Button 
+                asChild 
+                size="grande" 
+                variant="white"
               >
-                Agendar una cita
-              </Link>
-              <Link 
-                to="/request-solution" 
-                className="inline-block px-6 py-3 bg-transparent text-white rounded-lg bold-copy border border-white/30 hover:bg-white/10 transition-all-200"
+                <Link to="/appointment">Agendar una cita</Link>
+              </Button>
+              <Button 
+                asChild 
+                size="grande" 
+                variant="light"
               >
-                Solicitar una solución
-              </Link>
+                <Link to="/request-solution">Solicitar una solución</Link>
+              </Button>
             </div>
           </div>
         </div>

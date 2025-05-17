@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -10,25 +11,29 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        accent: "bg-guay-green text-white hover:bg-guay-green/90", 
+        white: "bg-white text-guay-dark-blue border border-border hover:bg-gray-50",
+        light: "bg-white/10 text-white border border-white/30 hover:bg-white/20",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
-        icon: "h-10 w-10",
+        grande: "h-12 px-6 py-3 rounded-full text-base", // Botón grande
+        mediano: "h-10 px-5 py-2.5 rounded-full", // Botón mediano (estándar)
+        chico: "h-8 px-4 py-1.5 rounded-full text-sm", // Botón chico
+        default: "h-10 px-4 py-2", // Mantener compatibilidad
+        sm: "h-9 rounded-md px-3", // Mantener compatibilidad
+        lg: "h-11 rounded-md px-8", // Mantener compatibilidad
+        icon: "h-10 w-10 rounded-full", // Botón de icono
+        "icon-sm": "h-8 w-8 rounded-full", // Botón de icono pequeño
       },
     },
     defaultVariants: {
       variant: "default",
-      size: "default",
+      size: "mediano", // Cambiamos el tamaño por defecto a mediano
     },
   }
 )
