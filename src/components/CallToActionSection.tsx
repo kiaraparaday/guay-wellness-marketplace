@@ -2,12 +2,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 interface CallToActionSectionProps {
   competencyTitle: string;
+  showControls?: boolean;
 }
 
-const CallToActionSection: React.FC<CallToActionSectionProps> = ({ competencyTitle }) => {
+const CallToActionSection: React.FC<CallToActionSectionProps> = ({ 
+  competencyTitle, 
+  showControls = false
+}) => {
   return (
     <section className="py-16 px-6 bg-white">
       <div className="max-w-7xl mx-auto">
@@ -36,6 +42,13 @@ const CallToActionSection: React.FC<CallToActionSectionProps> = ({ competencyTit
                 <Link to="/request-solution">Solicitar una solución</Link>
               </Button>
             </div>
+            
+            {showControls && (
+              <div className="mt-6 flex items-center space-x-2 p-2 bg-white/10 rounded-lg inline-block">
+                <Switch id="newsletter" />
+                <Label htmlFor="newsletter" className="text-white">Suscribirme al newsletter</Label>
+              </div>
+            )}
           </div>
         </div>
       </div>
