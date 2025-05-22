@@ -13,8 +13,8 @@ const GuayLogo: React.FC<GuayLogoProps> = ({
   className, 
   showText = false 
 }) => {
-  // Usar la ruta del logo actualizado
-  const logoSrc = '/guay-logo.png';
+  // Usar la nueva imagen del logo subida
+  const logoSrc = '/lovable-uploads/43ea05ad-4bc5-42ff-ad25-53212843a9a7.png';
 
   return (
     <div className={cn("flex items-center", className)}>
@@ -23,7 +23,8 @@ const GuayLogo: React.FC<GuayLogoProps> = ({
         alt="GUAY Logo" 
         className={cn(
           "h-6 md:h-8",
-          variant === 'white' && "brightness-100" // Mantener el logo original en lugar de invertirlo
+          // El logo ya es blanco sobre fondo azul, por lo que no necesitamos invertirlo
+          variant !== 'white' && "hidden", // Solo mostrar la versión blanca
         )}
       />
       {showText && (
