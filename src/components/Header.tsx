@@ -1,17 +1,28 @@
+
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, Search } from "lucide-react";
+import { Menu, Search, User, LogOut, LogIn } from "lucide-react";
 import { cn } from "@/lib/utils";
 import SearchBar from "./SearchBar";
 import GuayLogo from "./GuayLogo";
 import { Button } from "@/components/ui/button";
 import { filterEventBus } from "@/services/eventBus";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export { filterEventBus };
 
 const Header: React.FC = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Mock login state
+  const [userName, setUserName] = useState("María López"); // Mock user name
   const location = useLocation();
   const navigate = useNavigate();
   
@@ -36,6 +47,15 @@ const Header: React.FC = () => {
   const handleMenuClick = (path: string) => {
     navigate(path);
     setIsMobileMenuOpen(false);
+  };
+
+  // Mock login/logout functions
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
   };
 
   return (
@@ -86,11 +106,40 @@ const Header: React.FC = () => {
               <Search className="w-5 h-5" />
             </button>
             
-            <Button
-              className="bg-guay-green hover:bg-guay-green/90 text-white rounded-full"
-            >
-              Configuración
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  className="bg-guay-green hover:bg-guay-green/90 text-white rounded-full flex items-center gap-1.5"
+                  variant="accent"
+                >
+                  <User className="w-4 h-4" />
+                  {isLoggedIn ? userName.split(' ')[0] : 'Usuario'}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="min-w-[200px] bg-white">
+                {isLoggedIn ? (
+                  <>
+                    <DropdownMenuLabel>{userName}</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Cerrar sesión</span>
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem onClick={handleLogin} className="cursor-pointer">
+                      <LogIn className="mr-2 h-4 w-4" />
+                      <span>Iniciar sesión</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer">
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Registrarse</span>
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
         
