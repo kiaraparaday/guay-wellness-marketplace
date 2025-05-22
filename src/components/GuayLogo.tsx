@@ -13,8 +13,8 @@ const GuayLogo: React.FC<GuayLogoProps> = ({
   className, 
   showText = false 
 }) => {
-  // Update to use the new logo path
-  const logoSrc = '/lovable-uploads/450a23d6-8055-47fd-b5f5-c9d28bbd23d8.png';
+  // Usar la ruta del logo actualizado
+  const logoSrc = '/guay-logo.png';
 
   return (
     <div className={cn("flex items-center", className)}>
@@ -22,8 +22,8 @@ const GuayLogo: React.FC<GuayLogoProps> = ({
         src={logoSrc} 
         alt="GUAY Logo" 
         className={cn(
-          "h-8",
-          variant === 'white' && "brightness-0 invert"
+          "h-6 md:h-8",
+          variant === 'white' && "brightness-100" // Mantener el logo original en lugar de invertirlo
         )}
       />
       {showText && (

@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, Search } from "lucide-react";
@@ -42,7 +43,7 @@ const Header: React.FC = () => {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#15253C] text-white">
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-2">
           <div className="flex items-center">
             <button
               onClick={toggleMobileMenu}
@@ -53,7 +54,7 @@ const Header: React.FC = () => {
             </button>
             
             <Link to="/" className="flex items-center">
-              <GuayLogo variant="white" />
+              <GuayLogo variant="white" className="py-1" />
             </Link>
           </div>
 
