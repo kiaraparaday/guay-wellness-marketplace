@@ -18,6 +18,8 @@ import Testimonials from "./pages/Testimonials";
 import NotFound from "./pages/NotFound";
 import Header from "./components/Header";
 import ControlDemo from "./pages/ControlDemo";
+import Categories from "./pages/Categories";
+import AboutUs from "./pages/AboutUs";
 
 // Initialize Firebase in App.tsx for global availability
 import "./services/firebaseService";
@@ -52,8 +54,8 @@ const App = () => {
                 <Route path="/request-solution" element={<RequestSolution />} />
                 <Route path="/testimonials" element={<Testimonials />} />
                 <Route path="/controls" element={<ControlDemo />} />
-                <Route path="/categorias" element={<NotFound />} />
-                <Route path="/nosotras" element={<NotFound />} />
+                <Route path="/categorias" element={<Categories />} />
+                <Route path="/nosotras" element={<AboutUs />} />
                 <Route path="/agenda" element={<Appointment />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
