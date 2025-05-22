@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -29,6 +28,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onClose }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Search for:", searchTerm);
+    
+    if (!searchTerm.trim()) return;
     
     // Convert search term to lowercase for case-insensitive comparison
     const lowerSearchTerm = searchTerm.toLowerCase();
@@ -70,12 +71,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onClose }) => {
       navigate("/solutions");
       onClose();
     } else {
-      // For other search terms, we could implement a general search results page
-      // For now, just show a toast with the search term
-      toast({
-        title: "Búsqueda realizada",
-        description: `Buscando: "${searchTerm}"`,
-      });
+      // Navigate to search results page with the search term as a query parameter
+      navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
+      onClose();
     }
   };
 

@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,6 +9,7 @@ import Dimension from "./pages/Dimension";
 import Competency from "./pages/Competency";
 import Solution from "./pages/Solution";
 import Solutions from "./pages/Solutions";
+import SearchResults from "./pages/SearchResults";
 import Appointment from "./pages/Appointment";
 import MyAppointments from "./pages/MyAppointments";
 import RequestSolution from "./pages/RequestSolution";
@@ -42,6 +44,7 @@ const App = () => {
                 <Route path="/competency/:id" element={<Competency />} />
                 <Route path="/solution/:id" element={<Solution />} />
                 <Route path="/solutions" element={<Solutions />} />
+                <Route path="/search" element={<SearchResults />} />
                 <Route path="/appointment" element={<Appointment />} />
                 <Route path="/my-appointments" element={<MyAppointments />} />
                 <Route path="/request-solution" element={<RequestSolution />} />
