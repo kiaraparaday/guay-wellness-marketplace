@@ -4,7 +4,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import SolutionCard from "@/components/SolutionCard";
 import { solutionsArray } from "@/data/solutions";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Filter } from "lucide-react";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 const ResultadosPage = () => {
   const location = useLocation();
@@ -13,6 +15,7 @@ const ResultadosPage = () => {
   const query = searchParams.get("q") || "";
   
   const [filteredSolutions, setFilteredSolutions] = useState(solutionsArray);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   
   useEffect(() => {
     // Scroll to top when page loads
@@ -52,46 +55,83 @@ const ResultadosPage = () => {
       setFilteredSolutions(filtered);
     }
   }, [query]);
+
+  // Function to highlight the search term in a text
+  const highlightSearchTerm = (text: string) => {
+    if (!query || !text) return text;
+    
+    const parts = text.split(new RegExp(`(${query})`, 'gi'));
+    
+    return parts.map((part, index) => 
+      part.toLowerCase() === query.toLowerCase() ? 
+        <span key={index} className="bg-yellow-200 text-primary-800 font-medium">{part}</span> : 
+        part
+    );
+  };
   
   return (
     <div className="container py-8 md:py-12">
-      <Button 
-        variant="outline" 
-        className="mb-6 flex items-center gap-2"
-        onClick={() => navigate(-1)}
-      >
-        <ArrowLeft className="h-4 w-4" /> Volver
-      </Button>
+      <div className="flex justify-between items-center mb-6">
+        <Button 
+          variant="outline" 
+          className="flex items-center gap-2"
+          onClick={() => navigate(-1)}
+        >
+          <ArrowLeft className="h-4 w-4" /> Volver
+        </Button>
+        
+        <Button
+          variant="outline"
+          className="flex items-center gap-2"
+          onClick={() => setIsFilterOpen(!isFilterOpen)}
+        >
+          <Filter className="h-4 w-4" /> Filtrar resultados
+        </Button>
+      </div>
       
-      <h1 className="text-3xl sm:text-4xl font-semibold mb-3 animate-fade-in">
-        Resultados de búsqueda
-      </h1>
+      <Card className="bg-white/70 backdrop-blur-sm mb-8">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-3xl sm:text-4xl font-semibold animate-fade-in">
+            Resultados de búsqueda
+          </CardTitle>
+          <CardDescription className="text-lg">
+            Mostrando resultados para: <span className="font-medium text-primary">{query}</span>
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {filteredSolutions.length > 0 && (
+            <p className="text-sm">
+              Se encontraron <span className="font-medium">{filteredSolutions.length}</span> soluciones
+            </p>
+          )}
+        </CardContent>
+      </Card>
       
-      <p className="text-muted-foreground mb-8 animate-fade-in">
-        Mostrando resultados para: <span className="font-medium text-primary">{query}</span>
-      </p>
+      {/* Filter area would go here - can be implemented in the future */}
       
       {filteredSolutions.length > 0 ? (
-        <>
-          <p className="text-sm mb-6">
-            Se encontraron <span className="font-medium">{filteredSolutions.length}</span> soluciones
-          </p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredSolutions.map((solution, index) => (
-              <SolutionCard
-                key={solution.id}
-                solution={solution}
-                index={index}
-              />
-            ))}
-          </div>
-        </>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredSolutions.map((solution, index) => (
+            <SolutionCard
+              key={solution.id}
+              solution={{
+                ...solution,
+                // Optionally highlight the search term in the title and description
+                // This is commented out as it would require modifying the SolutionCard component
+                // title: highlightSearchTerm(solution.title),
+                // description: highlightSearchTerm(solution.description),
+              }}
+              index={index}
+            />
+          ))}
+        </div>
       ) : (
         <div className="text-center py-16 bg-secondary/30 rounded-lg">
           <h2 className="text-xl font-medium mb-2">No se encontraron resultados</h2>
           <p className="text-muted-foreground mb-6">
             No hemos encontrado soluciones que coincidan con "{query}".
+            <br />
+            Intenta con otro término como: liderazgo, estrés, comunicación, trabajo en equipo, inclusión...
           </p>
           <Button 
             onClick={() => navigate("/solutions")}

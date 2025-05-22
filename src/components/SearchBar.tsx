@@ -29,20 +29,25 @@ const SearchBar: React.FC<SearchBarProps> = ({ onClose }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!searchTerm.trim()) return;
+    if (!searchTerm.trim()) {
+      toast({
+        title: "Búsqueda vacía",
+        description: "Por favor, escribe algo para buscar.",
+        variant: "destructive",
+      });
+      return;
+    }
     
     // Navigate to search results page with the search term
-    navigate(`/resultados?q=${encodeURIComponent(searchTerm)}`);
+    navigate(`/resultados?q=${encodeURIComponent(searchTerm.trim())}`);
     onClose();
   };
 
   const handlePopularSearch = (term: string) => {
     setSearchTerm(term);
-    // Submit the form after a small delay to allow the UI to update
-    setTimeout(() => {
-      const form = document.querySelector("form");
-      form?.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }));
-    }, 100);
+    // Navigate directly instead of using form submission
+    navigate(`/resultados?q=${encodeURIComponent(term)}`);
+    onClose();
   };
 
   return (
@@ -61,7 +66,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onClose }) => {
         <div className="mt-4 text-sm text-muted-foreground">
           <p>Búsquedas populares:</p>
           <div className="flex flex-wrap gap-2 mt-1">
-            {["Estrés", "Comunicación", "Liderazgo", "Trabajo en equipo", "Inclusión"].map((term) => (
+            {["Estrés", "Comunicación", "Liderazgo", "Trabajo en equipo", "Inclusión", "Mindfulness"].map((term) => (
               <button
                 key={term}
                 type="button"
