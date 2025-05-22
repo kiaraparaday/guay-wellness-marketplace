@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, Search } from "lucide-react";
@@ -20,7 +19,6 @@ const Header: React.FC = () => {
     { label: "Inicio", path: "/" },
     { label: "Soluciones", path: "/solutions" },
     { label: "Testimonios", path: "/testimonials" },
-    { label: "Categorías", path: "/categorias" },
     { label: "Agenda una cita", path: "/appointment" },
     { label: "Sobre Guay", path: "/nosotras" },
   ];
