@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -27,54 +28,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ onClose }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Search for:", searchTerm);
     
     if (!searchTerm.trim()) return;
     
-    // Convert search term to lowercase for case-insensitive comparison
-    const lowerSearchTerm = searchTerm.toLowerCase();
-    
-    // Check if searchTerm is related to specific tags and navigate accordingly
-    if (lowerSearchTerm === "estrés" || lowerSearchTerm === "estres") {
-      toast({
-        title: "Navegando a soluciones de estrés",
-        description: "Redirigiendo a soluciones relacionadas con el manejo del estrés",
-      });
-      navigate("/dimension/psychosocial");
-      onClose();
-    } else if (lowerSearchTerm === "comunicación" || lowerSearchTerm === "comunicacion") {
-      toast({
-        title: "Navegando a soluciones de comunicación",
-        description: "Redirigiendo a soluciones relacionadas con comunicación efectiva",
-      });
-      navigate("/dimension/climate");
-      onClose();
-    } else if (lowerSearchTerm === "liderazgo") {
-      toast({
-        title: "Navegando a soluciones de liderazgo",
-        description: "Redirigiendo a soluciones relacionadas con liderazgo",
-      });
-      navigate("/dimension/culture");
-      onClose();
-    } else if (lowerSearchTerm === "inclusión" || lowerSearchTerm === "inclusion") {
-      toast({
-        title: "Navegando a soluciones de inclusión",
-        description: "Redirigiendo a soluciones relacionadas con diversidad e inclusión",
-      });
-      navigate("/dimension/dei");
-      onClose();
-    } else if (lowerSearchTerm === "trabajo en equipo") {
-      toast({
-        title: "Navegando a soluciones de trabajo en equipo",
-        description: "Redirigiendo a soluciones relacionadas con trabajo en equipo",
-      });
-      navigate("/solutions");
-      onClose();
-    } else {
-      // Navigate to search results page with the search term as a query parameter
-      navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
-      onClose();
-    }
+    // Navigate to search results page with the search term
+    navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
+    onClose();
   };
 
   const handlePopularSearch = (term: string) => {
