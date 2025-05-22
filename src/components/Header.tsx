@@ -17,12 +17,12 @@ const Header: React.FC = () => {
   const navigate = useNavigate();
   
   const menuItems = [
-    { label: "Sección menú", path: "/" },
-    { label: "Sección menú", path: "/solutions" },
-    { label: "Sección menú", path: "/testimonials" },
-    { label: "Sección menú", path: "/appointment" },
-    { label: "Sección menú", path: "/my-appointments" },
-    { label: "Sección menú", path: "/request-solution" },
+    { label: "Inicio", path: "/" },
+    { label: "Soluciones", path: "/solutions" },
+    { label: "Testimonios", path: "/testimonials" },
+    { label: "Categorías", path: "/categorias" },
+    { label: "Agenda una cita", path: "/appointment" },
+    { label: "Sobre Guay", path: "/nosotras" },
   ];
 
   const toggleSearch = () => {
