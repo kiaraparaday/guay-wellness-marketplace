@@ -23,36 +23,42 @@ const ResultadosPage = () => {
     
     // Filter solutions based on search query
     if (query) {
+      console.log(`Filtering solutions for query: ${query}`);
       const lowerQuery = query.toLowerCase();
       
       const filtered = solutionsArray.filter(solution => {
         // Check if the query matches the solution title, description, type, or competencies
-        return (
-          solution.title.toLowerCase().includes(lowerQuery) ||
-          solution.description.toLowerCase().includes(lowerQuery) ||
-          solution.type.toLowerCase().includes(lowerQuery) ||
-          (solution.categories && solution.categories.some(cat => cat.toLowerCase().includes(lowerQuery))) ||
-          solution.competencies.some(comp => {
-            // Map competency ID to name for searching
-            const competencyMap: Record<string, string> = {
-              "mental-workload": "carga mental estrés estres",
-              "work-autonomy": "autonomía autonomia laboral",
-              "work-life-balance": "equilibrio vida trabajo",
-              "communication": "comunicación comunicacion",
-              "capability-development": "desarrollo capacidades",
-              "diversity": "diversidad inclusión inclusion",
-              "leadership": "liderazgo",
-              "teamwork": "trabajo equipo",
-              "innovation": "innovación innovacion",
-              "integrity": "integridad"
-            };
-            
-            return competencyMap[comp]?.toLowerCase().includes(lowerQuery);
-          })
+        const titleMatch = solution.title.toLowerCase().includes(lowerQuery);
+        const descMatch = solution.description.toLowerCase().includes(lowerQuery);
+        const typeMatch = solution.type.toLowerCase().includes(lowerQuery);
+        const categoryMatch = solution.categories && solution.categories.some(cat => 
+          cat.toLowerCase().includes(lowerQuery)
         );
+        const competencyMatch = solution.competencies.some(comp => {
+          // Map competency ID to name for searching
+          const competencyMap: Record<string, string> = {
+            "mental-workload": "carga mental estrés estres",
+            "work-autonomy": "autonomía autonomia laboral",
+            "work-life-balance": "equilibrio vida trabajo",
+            "communication": "comunicación comunicacion",
+            "capability-development": "desarrollo capacidades",
+            "diversity": "diversidad inclusión inclusion",
+            "leadership": "liderazgo",
+            "teamwork": "trabajo equipo",
+            "innovation": "innovación innovacion",
+            "integrity": "integridad"
+          };
+          
+          return competencyMap[comp]?.toLowerCase().includes(lowerQuery);
+        });
+        
+        return titleMatch || descMatch || typeMatch || categoryMatch || competencyMatch;
       });
       
+      console.log(`Found ${filtered.length} matching solutions`);
       setFilteredSolutions(filtered);
+    } else {
+      setFilteredSolutions([]);
     }
   }, [query]);
 
@@ -114,13 +120,7 @@ const ResultadosPage = () => {
           {filteredSolutions.map((solution, index) => (
             <SolutionCard
               key={solution.id}
-              solution={{
-                ...solution,
-                // Optionally highlight the search term in the title and description
-                // This is commented out as it would require modifying the SolutionCard component
-                // title: highlightSearchTerm(solution.title),
-                // description: highlightSearchTerm(solution.description),
-              }}
+              solution={solution}
               index={index}
             />
           ))}
@@ -131,7 +131,7 @@ const ResultadosPage = () => {
           <p className="text-muted-foreground mb-6">
             No hemos encontrado soluciones que coincidan con "{query}".
             <br />
-            Intenta con otro término como: liderazgo, estrés, comunicación, trabajo en equipo, inclusión...
+            Intenta con otro término como: liderazgo, estrés, comunicación, trabajo en equipo, inclusión, mindfulness...
           </p>
           <Button 
             onClick={() => navigate("/solutions")}

@@ -39,13 +39,16 @@ const SearchBar: React.FC<SearchBarProps> = ({ onClose }) => {
     }
     
     // Navigate to search results page with the search term
-    navigate(`/resultados?q=${encodeURIComponent(searchTerm.trim())}`);
+    const trimmedTerm = searchTerm.trim();
+    console.log(`Searching for: ${trimmedTerm}`);
+    navigate(`/resultados?q=${encodeURIComponent(trimmedTerm)}`);
     onClose();
   };
 
   const handlePopularSearch = (term: string) => {
     setSearchTerm(term);
     // Navigate directly instead of using form submission
+    console.log(`Popular search: ${term}`);
     navigate(`/resultados?q=${encodeURIComponent(term)}`);
     onClose();
   };
@@ -66,7 +69,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onClose }) => {
         <div className="mt-4 text-sm text-muted-foreground">
           <p>Búsquedas populares:</p>
           <div className="flex flex-wrap gap-2 mt-1">
-            {["Estrés", "Comunicación", "Liderazgo", "Trabajo en equipo", "Inclusión", "Mindfulness"].map((term) => (
+            {["Estrés", "Comunicación", "Liderazgo", "Trabajo en equipo", "Inclusión", "Mindfulness", "Bienestar", "Innovación"].map((term) => (
               <button
                 key={term}
                 type="button"
