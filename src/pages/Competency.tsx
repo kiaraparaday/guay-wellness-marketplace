@@ -5,6 +5,7 @@ import { getCompetencyById } from "@/services/competenciesDataService";
 import { useCompetencySolutions } from "@/hooks/useCompetencySolutions";
 import Header from "@/components/Header";
 import CompetencyHeader from "@/components/CompetencyHeader";
+import CompetencyFilterBar from "@/components/CompetencyFilterBar";
 import SolutionsSection from "@/components/SolutionsSection";
 import CallToActionSection from "@/components/CallToActionSection";
 import SimpleFooter from "@/components/SimpleFooter";
@@ -38,6 +39,9 @@ const CompetencyPage: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30 font-poppins">
       <Header />
       <CompetencyHeader competency={competency} />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <CompetencyFilterBar initialFilters={filters} />
+      </div>
       <SolutionsSection 
         filteredSolutions={filteredSolutions} 
         setFilters={setFilters} 
