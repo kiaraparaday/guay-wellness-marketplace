@@ -20,6 +20,7 @@ import Header from "./components/Header";
 import ControlDemo from "./pages/ControlDemo";
 import Categories from "./pages/Categories";
 import AboutUs from "./pages/AboutUs";
+import { AuthProvider } from "./contexts/AuthContext";
 
 // Initialize Firebase in App.tsx for global availability
 import "./services/firebaseService";
@@ -30,38 +31,40 @@ const App = () => {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <div className="min-h-screen bg-[#f0f2f8]">
-            {/* Decorative elements */}
-            <div className="fixed top-0 left-0 w-32 h-32 bg-guay-green rounded-br-full -z-10"></div>
-            <div className="fixed bottom-0 right-0 w-64 h-64 bg-guay-purple rounded-tl-full -z-10"></div>
-            <div className="fixed top-20 left-8 w-12 h-12 bg-guay-orange rounded-full -z-10"></div>
-            
-            <Header />
-            <div className="pt-16 px-4 md:px-8 max-w-7xl mx-auto">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/dimension/:id" element={<Dimension />} />
-                <Route path="/competency/:id" element={<Competency />} />
-                <Route path="/solution/:id" element={<Solution />} />
-                <Route path="/solutions" element={<Solutions />} />
-                <Route path="/search" element={<SearchResults />} />
-                <Route path="/resultados" element={<ResultadosPage />} />
-                <Route path="/appointment" element={<Appointment />} />
-                <Route path="/my-appointments" element={<MyAppointments />} />
-                <Route path="/request-solution" element={<RequestSolution />} />
-                <Route path="/testimonials" element={<Testimonials />} />
-                <Route path="/controls" element={<ControlDemo />} />
-                <Route path="/categorias" element={<Categories />} />
-                <Route path="/nosotras" element={<AboutUs />} />
-                <Route path="/agenda" element={<Appointment />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+        <AuthProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <div className="min-h-screen bg-[#f0f2f8]">
+              {/* Decorative elements */}
+              <div className="fixed top-0 left-0 w-32 h-32 bg-guay-green rounded-br-full -z-10"></div>
+              <div className="fixed bottom-0 right-0 w-64 h-64 bg-guay-purple rounded-tl-full -z-10"></div>
+              <div className="fixed top-20 left-8 w-12 h-12 bg-guay-orange rounded-full -z-10"></div>
+              
+              <Header />
+              <div className="pt-16 px-4 md:px-8 max-w-7xl mx-auto">
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/dimension/:id" element={<Dimension />} />
+                  <Route path="/competency/:id" element={<Competency />} />
+                  <Route path="/solution/:id" element={<Solution />} />
+                  <Route path="/solutions" element={<Solutions />} />
+                  <Route path="/search" element={<SearchResults />} />
+                  <Route path="/resultados" element={<ResultadosPage />} />
+                  <Route path="/appointment" element={<Appointment />} />
+                  <Route path="/my-appointments" element={<MyAppointments />} />
+                  <Route path="/request-solution" element={<RequestSolution />} />
+                  <Route path="/testimonials" element={<Testimonials />} />
+                  <Route path="/controls" element={<ControlDemo />} />
+                  <Route path="/categorias" element={<Categories />} />
+                  <Route path="/nosotras" element={<AboutUs />} />
+                  <Route path="/agenda" element={<Appointment />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </div>
             </div>
-          </div>
-        </TooltipProvider>
+          </TooltipProvider>
+        </AuthProvider>
       </QueryClientProvider>
     </BrowserRouter>
   );

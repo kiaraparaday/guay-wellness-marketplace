@@ -1,7 +1,7 @@
-
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, addDoc, getDocs, query, where, Timestamp, DocumentData } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs, query, where, Timestamp, DocumentData, setDoc, doc } from "firebase/firestore";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from "firebase/auth";
 import { solutionsArray } from "@/data/solutions";
 
 // Firebase configuration
@@ -19,6 +19,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 // Interfaces
 export interface AppointmentData {
@@ -31,6 +32,92 @@ export interface AppointmentData {
   status: 'pending' | 'confirmed' | 'cancelled';
   createdAt: Date;
 }
+
+export interface UserData {
+  nombre: string;
+  email: string;
+  password?: string; // Only used during registration, not stored in Firestore
+  empresa?: string;
+  rol: string;
+  fechaRegistro: Date;
+  uid?: string; // Added by the registerUser function
+}
+
+// Authentication functions
+export const registerUser = async (userData: UserData): Promise<void> => {
+  if (!userData.password) {
+    throw new Error("Password is required for registration");
+  }
+  
+  try {
+    // Create the user with email and password
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      userData.email,
+      userData.password
+    );
+    
+    const user = userCredential.user;
+    
+    // Remove password from the userData object before saving to Firestore
+    const { password, ...userDataForFirestore } = userData;
+    
+    // Add the UID to the user data
+    userDataForFirestore.uid = user.uid;
+    
+    // Save additional user data to Firestore
+    await setDoc(doc(db, "usuarios", user.uid), {
+      ...userDataForFirestore,
+      fechaRegistro: Timestamp.fromDate(userData.fechaRegistro || new Date())
+    });
+  } catch (error) {
+    console.error("Error registering user:", error);
+    throw error;
+  }
+};
+
+export const loginUser = async (email: string, password: string): Promise<User> => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    return userCredential.user;
+  } catch (error) {
+    console.error("Error logging in:", error);
+    throw error;
+  }
+};
+
+export const logoutUser = async (): Promise<void> => {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    console.error("Error signing out:", error);
+    throw error;
+  }
+};
+
+// Function to get current authentication state
+export const getCurrentUser = (): Promise<User | null> => {
+  return new Promise((resolve) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      unsubscribe();
+      resolve(user);
+    });
+  });
+};
+
+// Function to get user data from Firestore
+export const getUserData = async (uid: string): Promise<UserData | null> => {
+  try {
+    const userDoc = await doc(db, "usuarios", uid).get();
+    if (userDoc.exists()) {
+      return userDoc.data() as UserData;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error getting user data:", error);
+    return null;
+  }
+};
 
 // Save appointment to Firestore
 export const saveAppointment = async (appointmentData: Omit<AppointmentData, 'createdAt' | 'status'>) => {
@@ -151,4 +238,4 @@ export const syncAllMarketplaceData = async () => {
   }
 };
 
-export { app, db, analytics };
+export { app, db, analytics, auth };

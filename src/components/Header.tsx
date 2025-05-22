@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, Search, User, LogOut, LogIn } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -7,6 +7,10 @@ import SearchBar from "./SearchBar";
 import GuayLogo from "./GuayLogo";
 import { Button } from "@/components/ui/button";
 import { filterEventBus } from "@/services/eventBus";
+import { auth, logoutUser } from "@/services/firebaseService";
+import { onAuthStateChanged } from "firebase/auth";
+import UserRegistrationModal from "./UserRegistrationModal";
+import UserLoginModal from "./UserLoginModal";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,16 +19,35 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
 
 export { filterEventBus };
 
 const Header: React.FC = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Mock login state
-  const [userName, setUserName] = useState("María López"); // Mock user name
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  
+  // Listen for authentication state changes
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLoggedIn(true);
+        setUserName(user.displayName || user.email?.split('@')[0] || "Usuario");
+      } else {
+        setIsLoggedIn(false);
+        setUserName("");
+      }
+    });
+    
+    // Clean up subscription
+    return () => unsubscribe();
+  }, []);
   
   const menuItems = [
     { label: "Inicio", path: "/" },
@@ -49,13 +72,26 @@ const Header: React.FC = () => {
     setIsMobileMenuOpen(false);
   };
 
-  // Mock login/logout functions
   const handleLogin = () => {
-    setIsLoggedIn(true);
+    setIsLoginModalOpen(true);
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
+  const handleRegister = () => {
+    setIsRegisterModalOpen(true);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      toast.success("Sesión cerrada correctamente");
+    } catch (error) {
+      console.error("Error logging out:", error);
+      toast.error("Error al cerrar sesión");
+    }
+  };
+
+  const handleLoginSuccess = () => {
+    // Refresh user data or perform any other necessary actions after successful login
   };
 
   return (
@@ -113,7 +149,7 @@ const Header: React.FC = () => {
                   variant="accent"
                 >
                   <User className="w-4 h-4" />
-                  {isLoggedIn ? userName.split(' ')[0] : 'Usuario'}
+                  {isLoggedIn ? userName : 'Usuario'}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="min-w-[200px] bg-white">
@@ -132,7 +168,7 @@ const Header: React.FC = () => {
                       <LogIn className="mr-2 h-4 w-4" />
                       <span>Iniciar sesión</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
+                    <DropdownMenuItem onClick={handleRegister} className="cursor-pointer">
                       <User className="mr-2 h-4 w-4" />
                       <span>Registrarse</span>
                     </DropdownMenuItem>
@@ -194,6 +230,23 @@ const Header: React.FC = () => {
       >
         <SearchBar onClose={() => setIsSearchOpen(false)} />
       </div>
+
+      {/* Modals */}
+      <UserLoginModal 
+        isOpen={isLoginModalOpen} 
+        onClose={() => setIsLoginModalOpen(false)} 
+        onRegisterClick={() => {
+          setIsLoginModalOpen(false);
+          setIsRegisterModalOpen(true);
+        }}
+        onSuccess={handleLoginSuccess}
+      />
+      
+      <UserRegistrationModal 
+        isOpen={isRegisterModalOpen} 
+        onClose={() => setIsRegisterModalOpen(false)} 
+        onSuccess={handleLoginSuccess}
+      />
 
       <div className="h-16"></div>
     </>
