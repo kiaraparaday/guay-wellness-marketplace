@@ -32,7 +32,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onClose }) => {
     if (!searchTerm.trim()) return;
     
     // Navigate to search results page with the search term
-    navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
+    navigate(`/resultados?q=${encodeURIComponent(searchTerm)}`);
     onClose();
   };
 

@@ -10,6 +10,7 @@ import Competency from "./pages/Competency";
 import Solution from "./pages/Solution";
 import Solutions from "./pages/Solutions";
 import SearchResults from "./pages/SearchResults";
+import ResultadosPage from "./pages/ResultadosPage";
 import Appointment from "./pages/Appointment";
 import MyAppointments from "./pages/MyAppointments";
 import RequestSolution from "./pages/RequestSolution";
@@ -45,6 +46,7 @@ const App = () => {
                 <Route path="/solution/:id" element={<Solution />} />
                 <Route path="/solutions" element={<Solutions />} />
                 <Route path="/search" element={<SearchResults />} />
+                <Route path="/resultados" element={<ResultadosPage />} />
                 <Route path="/appointment" element={<Appointment />} />
                 <Route path="/my-appointments" element={<MyAppointments />} />
                 <Route path="/request-solution" element={<RequestSolution />} />
