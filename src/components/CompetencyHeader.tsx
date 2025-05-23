@@ -19,7 +19,7 @@ const CompetencyHeader: React.FC<CompetencyHeaderProps> = ({ competency }) => {
       <div className="max-w-7xl mx-auto">
         <Link 
           to={`/dimension/${competency.dimensionId}`} 
-          className="inline-flex items-center text-muted-foreground hover:text-foreground mb-6 transition-colors small-copy"
+          className="inline-flex items-center text-muted-foreground hover:text-foreground mb-6 transition-colors small-copy font-quicksand"
         >
           <ArrowLeft className="w-4 h-4 mr-1" />
           Volver a {competency.dimensionTitle}
@@ -36,7 +36,7 @@ const CompetencyHeader: React.FC<CompetencyHeaderProps> = ({ competency }) => {
             
             <div className="flex flex-wrap gap-3 animate-fade-in" style={{ animationDelay: "200ms" }}>
               <span 
-                className="px-3 py-1 rounded-full pre-title"
+                className="px-3 py-1 rounded-full pre-title font-quicksand"
                 style={{ backgroundColor: `${competency.color}20`, color: competency.color }}
               >
                 {competency.dimensionTitle}

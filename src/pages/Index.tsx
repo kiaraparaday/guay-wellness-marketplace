@@ -75,7 +75,7 @@ const testimonials = [
 
 const IndexPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30 font-poppins">
+    <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30 font-quicksand">
       <Header />
       
       {/* Hero Section with Solutions CTA */}
@@ -98,7 +98,7 @@ const IndexPage: React.FC = () => {
           <div id="soluciones" className="bg-white rounded-2xl p-6 shadow-lg mb-12 border border-gray-blue/10">
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
               <div>
-                <h2 className="text-2xl md:text-3xl font-playfair font-semibold mb-2 text-gray-dark">
+                <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-gray-dark">
                   <span className="bg-clip-text text-transparent bg-gradient-to-r from-gray-purple to-gray-blue">
                     SOLUCIONES
                   </span>
@@ -142,7 +142,7 @@ const IndexPage: React.FC = () => {
           <section id="destacadas" className="mb-12">
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
               <div className="relative">
-                <h2 className="text-2xl md:text-3xl font-playfair font-semibold mb-2 text-gray-dark">
+                <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-gray-dark">
                   <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-guay-purple to-guay-blue">
                     SOLUCIONES DESTACADAS
                   </span>
@@ -200,7 +200,7 @@ const IndexPage: React.FC = () => {
               
               <div className="flex flex-col md:flex-row justify-between items-center mb-8 relative z-10">
                 <div>
-                  <h2 className="text-2xl md:text-3xl font-playfair font-semibold mb-2">
+                  <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2">
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-guay-blue via-guay-purple to-guay-orange">
                       Casos de Éxito
                     </span>
