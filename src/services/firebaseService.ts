@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, addDoc, getDocs, query, where, Timestamp, DocumentData, setDoc, doc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs, query, where, Timestamp, DocumentData, setDoc, doc, getDoc } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from "firebase/auth";
 import { solutionsArray } from "@/data/solutions";
 
@@ -108,9 +108,10 @@ export const getCurrentUser = (): Promise<User | null> => {
 // Function to get user data from Firestore
 export const getUserData = async (uid: string): Promise<UserData | null> => {
   try {
-    const userDoc = await doc(db, "usuarios", uid).get();
-    if (userDoc.exists()) {
-      return userDoc.data() as UserData;
+    const userDocRef = doc(db, "usuarios", uid);
+    const userDocSnap = await getDoc(userDocRef);
+    if (userDocSnap.exists()) {
+      return userDocSnap.data() as UserData;
     }
     return null;
   } catch (error) {

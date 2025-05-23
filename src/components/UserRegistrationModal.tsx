@@ -26,8 +26,8 @@ const formSchema = z.object({
   password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
   empresa: z.string().optional(),
   rol: z.string().min(1, "Selecciona un rol"),
-  terminos: z.literal(true, {
-    errorMap: () => ({ message: "Debes aceptar los términos y condiciones" }),
+  terminos: z.boolean().refine(val => val === true, {
+    message: "Debes aceptar los términos y condiciones"
   }),
 });
 
