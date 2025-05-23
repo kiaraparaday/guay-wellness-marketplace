@@ -40,8 +40,8 @@ const App = () => {
               {/* Decorative circles for the main layout based on the reference image */}
               {/* Top left green circle */}
               <div className="fixed -top-32 -left-32 w-64 h-64 rounded-full bg-guay-green opacity-90 z-0"></div>
-              {/* Small mustard circle below */}
-              <div className="fixed top-20 left-8 w-8 h-8 rounded-full bg-guay-orange opacity-90 z-0"></div>
+              {/* Small mustard circle - repositioned to not be inside the green circle */}
+              <div className="fixed top-48 left-12 w-8 h-8 rounded-full bg-guay-orange opacity-90 z-0"></div>
               
               {/* Right side magenta circle */}
               <div className="fixed top-1/2 -right-32 transform -translate-y-1/2 w-64 h-64 rounded-full bg-guay-purple opacity-90 z-0"></div>
