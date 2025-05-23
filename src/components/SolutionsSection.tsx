@@ -3,6 +3,7 @@ import React from "react";
 import SolutionCard from "@/components/SolutionCard";
 import { filterEventBus } from "@/services/eventBus";
 import { Button } from "@/components/ui/button";
+import CompetencyFilterBar from "@/components/CompetencyFilterBar";
 
 interface SolutionsSectionProps {
   filteredSolutions: any[];
@@ -21,13 +22,15 @@ const SolutionsSection: React.FC<SolutionsSectionProps> = ({
   return (
     <section className="py-12 px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <h2 className="text-2xl font-semibold font-quicksand">
             Soluciones disponibles 
             <span className="ml-2 text-lg text-muted-foreground font-normal">
               ({filteredSolutions.length})
             </span>
           </h2>
+          
+          <CompetencyFilterBar />
         </div>
         
         {filteredSolutions.length > 0 ? (

@@ -3,8 +3,14 @@ import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { X, Filter as FilterIcon } from "lucide-react";
+import { X, Filter as FilterIcon, ChevronDown } from "lucide-react";
 import { filterEventBus } from "@/services/eventBus";
+import { 
+  Popover, 
+  PopoverContent, 
+  PopoverTrigger 
+} from "@/components/ui/popover";
+import { Card } from "@/components/ui/card";
 
 interface FilterOption {
   id: string;
@@ -23,15 +29,11 @@ interface CompetencyFilterBarProps {
 const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({ 
   initialFilters = {} 
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [solutionTypes, setSolutionTypes] = useState<string[]>(initialFilters.solutionTypes || []);
   const [modalities, setModalities] = useState<string[]>(initialFilters.modalities || []);
   const [durations, setDurations] = useState<string[]>(initialFilters.durations || []);
   const [audiences, setAudiences] = useState<string[]>(initialFilters.audiences || []);
-
-  const toggleFilter = () => {
-    setIsOpen(!isOpen);
-  };
 
   const applyFilters = () => {
     filterEventBus.publish('filtersChanged', {
@@ -40,6 +42,7 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({
       durations,
       audiences,
     });
+    setOpen(false);
   };
 
   const clearFilters = () => {
@@ -64,7 +67,9 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({
 
   // Apply filters when any filter value changes
   useEffect(() => {
-    applyFilters();
+    if (totalSelectedFilters > 0) {
+      applyFilters();
+    }
   }, [solutionTypes, modalities, durations, audiences]);
 
   const toggleOption = (array: string[], setArray: React.Dispatch<React.SetStateAction<string[]>>, id: string) => {
@@ -87,17 +92,17 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({
     setSelectedOptions: React.Dispatch<React.SetStateAction<string[]>>;
   }) => (
     <div className="mb-4">
-      <h3 className="text-sm font-medium mb-2">{title}</h3>
+      <h3 className="text-sm font-medium mb-2 font-quicksand">{title}</h3>
       <div className="flex flex-wrap gap-2">
         {options.map(option => (
           <button
             key={option.id}
             onClick={() => toggleOption(selectedOptions, setSelectedOptions, option.id)}
             className={cn(
-              "px-3 py-1.5 rounded-full text-sm font-medium transition-colors",
+              "px-3 py-1.5 rounded-full text-sm font-medium transition-colors font-quicksand",
               selectedOptions.includes(option.id)
                 ? "bg-guay-purple text-white shadow-sm"
-                : "bg-gray-100 hover:bg-guay-purple/10"
+                : "bg-guay-purple/10 text-guay-purple hover:bg-guay-purple/20"
             )}
           >
             {option.label}
@@ -136,76 +141,90 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({
   ];
 
   return (
-    <div className="mb-6 w-full">
-      {/* Mobile Filter Toggle */}
-      <div className="lg:hidden mb-4">
-        <Button 
-          onClick={toggleFilter} 
-          variant="outline" 
-          className="w-full flex justify-between items-center gap-2"
-        >
-          <span className="flex items-center gap-2">
-            <FilterIcon className="w-4 h-4" />
-            Filtrar soluciones
-          </span>
-          {totalSelectedFilters > 0 && (
-            <Badge variant="secondary" className="ml-2">
-              {totalSelectedFilters}
-            </Badge>
-          )}
-        </Button>
-      </div>
+    <div className="mb-6 w-full font-quicksand">
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button 
+            variant="outline" 
+            className="w-full sm:w-auto flex justify-between items-center gap-2 border-guay-blue/20 hover:border-guay-blue/40 hover:bg-guay-blue/5 text-guay-dark-blue"
+          >
+            <span className="flex items-center gap-2">
+              <FilterIcon className="w-4 h-4" />
+              🔍 Filtrar soluciones
+            </span>
+            {totalSelectedFilters > 0 ? (
+              <Badge variant="secondary" className="ml-2 bg-guay-blue text-white">
+                {totalSelectedFilters}
+              </Badge>
+            ) : (
+              <ChevronDown className="w-4 h-4 ml-2" />
+            )}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-full p-0" align="start" sideOffset={5}>
+          <Card className="w-screen max-w-3xl border-guay-blue/10 shadow-lg">
+            <div className="p-4">
+              <div className="flex justify-between items-center mb-4 border-b pb-3 border-guay-blue/10">
+                <h2 className="text-lg font-medium text-guay-dark-blue font-quicksand">Filtrar soluciones</h2>
+                {totalSelectedFilters > 0 && (
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={clearFilters}
+                    className="flex items-center text-sm text-muted-foreground hover:text-guay-blue"
+                  >
+                    <X className="w-3 h-3 mr-1" /> 
+                    Limpiar filtros ({totalSelectedFilters})
+                  </Button>
+                )}
+              </div>
 
-      {/* Desktop and Mobile (when open) Filter Panel */}
-      <div className={cn(
-        "bg-white rounded-lg shadow-sm p-4 transition-all duration-300",
-        isOpen ? "block" : "hidden lg:block"
-      )}>
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-medium">Filtrar soluciones</h2>
-          {totalSelectedFilters > 0 && (
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={clearFilters}
-              className="flex items-center text-sm text-muted-foreground"
-            >
-              <X className="w-3 h-3 mr-1" /> 
-              Limpiar filtros ({totalSelectedFilters})
-            </Button>
-          )}
-        </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <FilterGroup
+                    title="Tipo de solución"
+                    options={typeOptions}
+                    selectedOptions={solutionTypes}
+                    setSelectedOptions={setSolutionTypes}
+                  />
+                  
+                  <FilterGroup
+                    title="Modalidad"
+                    options={modalityOptions}
+                    selectedOptions={modalities}
+                    setSelectedOptions={setModalities}
+                  />
+                </div>
+                
+                <div>
+                  <FilterGroup
+                    title="Dirigido a"
+                    options={audienceOptions}
+                    selectedOptions={audiences}
+                    setSelectedOptions={setAudiences}
+                  />
+                  
+                  <FilterGroup
+                    title="Duración"
+                    options={durationOptions}
+                    selectedOptions={durations}
+                    setSelectedOptions={setDurations}
+                  />
+                </div>
+              </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <FilterGroup
-            title="Tipo de solución"
-            options={typeOptions}
-            selectedOptions={solutionTypes}
-            setSelectedOptions={setSolutionTypes}
-          />
-          
-          <FilterGroup
-            title="Modalidad"
-            options={modalityOptions}
-            selectedOptions={modalities}
-            setSelectedOptions={setModalities}
-          />
-          
-          <FilterGroup
-            title="Dirigido a"
-            options={audienceOptions}
-            selectedOptions={audiences}
-            setSelectedOptions={setAudiences}
-          />
-          
-          <FilterGroup
-            title="Duración"
-            options={durationOptions}
-            selectedOptions={durations}
-            setSelectedOptions={setDurations}
-          />
-        </div>
-      </div>
+              <div className="flex justify-end mt-4 pt-3 border-t border-guay-blue/10">
+                <Button
+                  onClick={() => setOpen(false)}
+                  className="bg-guay-green text-white hover:bg-guay-green/90 font-quicksand"
+                >
+                  Aplicar filtros
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </PopoverContent>
+      </Popover>
       
       {/* Selected filters display */}
       {totalSelectedFilters > 0 && (
@@ -254,7 +273,7 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({
             return (
               <Badge 
                 key={`duration-${duration}`} 
-                className="py-1 px-3 bg-blue-100 text-blue-700 hover:bg-blue-200 cursor-pointer"
+                className="py-1 px-3 bg-guay-blue/10 text-guay-blue hover:bg-guay-blue/20 cursor-pointer"
                 onClick={() => toggleOption(durations, setDurations, duration)}
               >
                 {label} <X className="ml-1 w-3 h-3" />
