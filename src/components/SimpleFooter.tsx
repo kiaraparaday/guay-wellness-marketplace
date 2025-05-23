@@ -6,7 +6,7 @@ const SimpleFooter: React.FC = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="py-8 px-6 bg-guay-dark-blue relative overflow-hidden">
+    <footer className="py-8 px-6 bg-[#131f36] relative overflow-hidden">
       {/* Decorative circles */}
       {/* Top left corner circles */}
       <div className="absolute -top-16 -left-16 w-36 h-36 rounded-full bg-guay-purple opacity-80 blur-sm"></div>

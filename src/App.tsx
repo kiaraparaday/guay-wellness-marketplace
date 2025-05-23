@@ -17,6 +17,7 @@ import RequestSolution from "./pages/RequestSolution";
 import Testimonials from "./pages/Testimonials";
 import NotFound from "./pages/NotFound";
 import Header from "./components/Header";
+import SimpleFooter from "./components/SimpleFooter";
 import ControlDemo from "./pages/ControlDemo";
 import Categories from "./pages/Categories";
 import AboutUs from "./pages/AboutUs";
@@ -35,14 +36,18 @@ const App = () => {
           <TooltipProvider>
             <Toaster />
             <Sonner />
-            <div className="min-h-screen bg-[#f0f2f8]">
-              {/* Decorative elements */}
-              <div className="fixed top-0 left-0 w-32 h-32 bg-guay-green rounded-br-full -z-10"></div>
-              <div className="fixed bottom-0 right-0 w-64 h-64 bg-guay-purple rounded-tl-full -z-10"></div>
-              <div className="fixed top-20 left-8 w-12 h-12 bg-guay-orange rounded-full -z-10"></div>
+            <div className="min-h-screen bg-[#f0f2f8] relative overflow-hidden">
+              {/* Decorative circles for the main layout based on the reference image */}
+              {/* Top left green circle */}
+              <div className="fixed -top-32 -left-32 w-64 h-64 rounded-full bg-guay-green opacity-90 z-0"></div>
+              {/* Small mustard circle below */}
+              <div className="fixed top-20 left-8 w-8 h-8 rounded-full bg-guay-orange opacity-90 z-0"></div>
+              
+              {/* Right side magenta circle */}
+              <div className="fixed top-1/2 -right-32 transform -translate-y-1/2 w-64 h-64 rounded-full bg-guay-purple opacity-90 z-0"></div>
               
               <Header />
-              <div className="pt-16 px-4 md:px-8 max-w-7xl mx-auto">
+              <div className="pt-16 px-4 md:px-8 max-w-7xl mx-auto relative z-10">
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/dimension/:id" element={<Dimension />} />
@@ -62,6 +67,7 @@ const App = () => {
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </div>
+              <SimpleFooter />
             </div>
           </TooltipProvider>
         </AuthProvider>
