@@ -17,12 +17,12 @@ const CallToActionSection: React.FC<CallToActionSectionProps> = ({
   return (
     <section className="py-16 px-6 bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="bg-gradient-to-r from-primary to-primary/80 rounded-2xl overflow-hidden shadow-md">
+        <div className="bg-gradient-to-r from-guay-blue to-guay-blue-accent rounded-2xl overflow-hidden shadow-md">
           <div className="p-8 sm:p-12 text-white">
-            <h2 className="text-[40px] font-bold mb-4 leading-tight">
+            <h2 className="text-[40px] font-bold mb-4 leading-tight font-quicksand">
               ¿Necesitas una solución personalizada?
             </h2>
-            <p className="text-white/90 mb-6 max-w-2xl body-copy">
+            <p className="text-white/90 mb-6 max-w-2xl body-copy font-quicksand">
               Si no encuentras la solución que buscas, nuestro equipo puede diseñar
               un programa a medida para desarrollar la competencia de {competencyTitle} en tu organización.
             </p>

@@ -34,7 +34,7 @@ const SimpleFooter: React.FC = () => {
           <div className="md:col-span-1">
             <div className="flex items-center mb-4">
               <span className="text-xl font-semibold bg-clip-text text-white">
-                GUAY
+                guay
               </span>
               <span className="ml-2 text-sm text-white/80">
                 Wellness Marketplace
@@ -74,7 +74,7 @@ const SimpleFooter: React.FC = () => {
         
         <div className="border-t border-white/10 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
           <p className="small-copy text-white/60 mb-2 md:mb-0">
-            © {currentYear} Guay. Todos los derechos reservados.
+            © {currentYear} guay. Todos los derechos reservados.
           </p>
           <div className="flex space-x-4">
             <Link to="/privacy" className="small-copy text-white/60 hover:text-white transition-colors">Política de Privacidad</Link>

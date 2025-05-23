@@ -27,10 +27,10 @@ const CompetencyHeader: React.FC<CompetencyHeaderProps> = ({ competency }) => {
         
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           <div className="lg:col-span-3">
-            <h1 className="text-[48px] font-bold mb-4 animate-fade-in">
+            <h1 className="text-[48px] font-bold mb-4 animate-fade-in font-quicksand">
               {competency.title}
             </h1>
-            <p className="subtitle text-muted-foreground mb-6 animate-fade-in" style={{ animationDelay: "100ms" }}>
+            <p className="subtitle text-muted-foreground mb-6 animate-fade-in font-quicksand" style={{ animationDelay: "100ms" }}>
               {competency.description}
             </p>
             

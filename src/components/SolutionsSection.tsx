@@ -22,7 +22,7 @@ const SolutionsSection: React.FC<SolutionsSectionProps> = ({
     <section className="py-12 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl font-semibold">
+          <h2 className="text-2xl font-semibold font-quicksand">
             Soluciones disponibles 
             <span className="ml-2 text-lg text-muted-foreground font-normal">
               ({filteredSolutions.length})
@@ -42,7 +42,7 @@ const SolutionsSection: React.FC<SolutionsSectionProps> = ({
           </div>
         ) : (
           <div className="text-center py-12 bg-secondary/30 rounded-lg">
-            <p className="text-lg mb-4">No encontramos soluciones con esos filtros. Prueba cambiar alguno de los criterios.</p>
+            <p className="text-lg mb-4 font-quicksand">No encontramos soluciones con esos filtros. Prueba cambiar alguno de los criterios.</p>
             <Button
               variant="accent"
               size="mediano"

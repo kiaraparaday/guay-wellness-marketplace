@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, Search, User, LogOut, LogIn } from "lucide-react";
@@ -54,7 +53,7 @@ const Header: React.FC = () => {
     { label: "Soluciones", path: "/solutions" },
     { label: "Testimonios", path: "/testimonials" },
     { label: "Agenda una cita", path: "/appointment" },
-    { label: "Sobre Guay", path: "/nosotras" },
+    { label: "Sobre guay", path: "/nosotras" },
   ];
 
   const toggleSearch = () => {

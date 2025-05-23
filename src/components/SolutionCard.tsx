@@ -102,7 +102,7 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
     <Link 
       to={`/solution/${solution.id}`}
       className={cn(
-        "group flex flex-col overflow-hidden rounded-xl bg-white border border-border hover:border-primary/20 shadow-subtle hover:shadow-md transition-all duration-300 animate-fade-in font-poppins",
+        "group flex flex-col overflow-hidden rounded-xl bg-white border border-border hover:border-primary/20 shadow-subtle hover:shadow-md transition-all duration-300 animate-fade-in font-quicksand",
         "opacity-0"
       )}
       style={{ 
@@ -127,7 +127,7 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
       </div>
       
       <div className="flex flex-col flex-grow p-4">
-        <h3 className="text-lg font-playfair font-medium mb-2 line-clamp-2 group-hover:text-guay-blue transition-colors duration-300">
+        <h3 className="text-lg font-quicksand font-medium mb-2 line-clamp-2 group-hover:text-guay-blue transition-colors duration-300">
           {solution.title}
         </h3>
         
@@ -140,8 +140,8 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
           {getCategoryLabels().map((category, idx) => (
             <Badge 
               key={idx} 
-              variant="outline" 
-              className="text-xs bg-guay-purple/5 hover:bg-guay-purple/10 text-guay-purple border-guay-purple/20"
+              variant="purple" 
+              className="text-xs"
             >
               {category}
             </Badge>

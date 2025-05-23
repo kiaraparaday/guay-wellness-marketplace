@@ -63,21 +63,21 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// GUAY Colores Primarios (Textos)
+				// guay Colores Primarios (Textos) - Usando los valores exactos del manual de identidad
 				'guay-gray': '#707070',
 				'guay-light-gray': '#D9D9D9', 
 				'guay-off-white': '#EFEFF6',
 				'guay-dark-blue': '#15253C',
 				'guay-slate': '#686D82',
-				'guay-blue-accent': '#1F7FA8',
+				'guay-blue-accent': '#3C609B', // Azul para títulos destacados actualizado
 				
-				// GUAY Colores del Logotipo
-				'guay-green': '#9CB537',  // Verde GUAY actualizado
-				'guay-purple': '#AF2F72', // Magenta GUAY actualizado
-				'guay-blue': '#2188B4',   // Azul GUAY actualizado
-				'guay-orange': '#DFA444', // Naranja GUAY actualizado
+				// guay Colores del Logotipo - Actualizado con los valores exactos del manual de identidad
+				'guay-green': '#A2C73F',  // Verde guay actualizado
+				'guay-purple': '#B03A75', // Magenta guay actualizado
+				'guay-blue': '#3CA6D1',   // Azul guay actualizado
+				'guay-orange': '#E4A941', // Naranja guay actualizado
 				
-				// GUAY Notificaciones, alertas y estatus
+				// guay Notificaciones, alertas y estatus
 				'guay-red': '#F90101',    // Rojo para errores
 				'guay-success': '#117701', // Verde para éxito
 				'guay-warning': '#F5BC00', // Amarillo para advertencias
@@ -154,7 +154,7 @@ export default {
 				'playfair': ['Playfair Display', 'serif'],
 				'inter': ['Inter', 'sans-serif'],
 				'poppins': ['Poppins', 'sans-serif'],
-				'quicksand': ['Quicksand', 'sans-serif'], // Mantenemos Quicksand como fuente principal
+				'quicksand': ['Quicksand', 'sans-serif'], // Principal de guay
 			},
 		}
 	},
