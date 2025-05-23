@@ -9,15 +9,24 @@ const SimpleFooter: React.FC = () => {
     <footer className="py-8 px-6 bg-guay-dark-blue relative overflow-hidden">
       {/* Decorative circles */}
       {/* Top left corner circles */}
-      <div className="absolute -top-12 -left-12 w-28 h-28 rounded-full bg-guay-purple opacity-80 blur-sm"></div>
-      <div className="absolute top-6 left-8 w-12 h-12 rounded-full bg-guay-blue opacity-70"></div>
-      <div className="absolute top-16 left-20 w-6 h-6 rounded-full bg-guay-green opacity-80"></div>
+      <div className="absolute -top-16 -left-16 w-36 h-36 rounded-full bg-guay-purple opacity-80 blur-sm"></div>
+      <div className="absolute top-4 left-8 w-14 h-14 rounded-full bg-guay-blue opacity-70"></div>
+      <div className="absolute top-16 left-20 w-8 h-8 rounded-full bg-guay-green opacity-80"></div>
+      <div className="absolute top-28 left-10 w-5 h-5 rounded-full bg-guay-orange opacity-90"></div>
       
       {/* Bottom right corner circles */}
-      <div className="absolute -bottom-20 -right-16 w-36 h-36 rounded-full bg-guay-orange opacity-80 blur-sm"></div>
-      <div className="absolute bottom-12 right-8 w-14 h-14 rounded-full bg-guay-purple opacity-70"></div>
-      <div className="absolute bottom-6 right-28 w-8 h-8 rounded-full bg-guay-blue opacity-80"></div>
-      <div className="absolute bottom-20 right-16 w-5 h-5 rounded-full bg-guay-green opacity-90"></div>
+      <div className="absolute -bottom-24 -right-20 w-48 h-48 rounded-full bg-guay-orange opacity-80 blur-sm"></div>
+      <div className="absolute bottom-10 right-8 w-16 h-16 rounded-full bg-guay-purple opacity-70"></div>
+      <div className="absolute bottom-4 right-32 w-10 h-10 rounded-full bg-guay-blue opacity-80"></div>
+      <div className="absolute bottom-20 right-16 w-6 h-6 rounded-full bg-guay-green opacity-90"></div>
+      <div className="absolute bottom-28 right-28 w-4 h-4 rounded-full bg-guay-purple opacity-70"></div>
+      
+      {/* Middle left circles */}
+      <div className="absolute top-1/2 -left-10 w-20 h-20 rounded-full bg-guay-green opacity-60 blur-sm"></div>
+      <div className="absolute top-1/3 -left-4 w-8 h-8 rounded-full bg-guay-blue opacity-50"></div>
+      
+      {/* Middle right circles */}
+      <div className="absolute top-1/3 -right-8 w-16 h-16 rounded-full bg-guay-purple opacity-60 blur-sm"></div>
       
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
