@@ -1,4 +1,5 @@
 
+
 export const injectGoogleCalendarButton = (targetButton: HTMLElement) => {
   // Check if Google Calendar button already exists after this button
   const existingCalendarButton = targetButton.nextElementSibling?.classList.contains('google-calendar-container');
@@ -38,6 +39,23 @@ export const injectGoogleCalendarButton = (targetButton: HTMLElement) => {
   targetButton.parentNode?.insertBefore(calendarContainer, targetButton.nextSibling);
 };
 
+export const setupAgendarCitaRedirection = () => {
+  // Handle direct redirection for "Agendar cita" buttons
+  document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+    const button = target.closest('button, a') as HTMLElement;
+    
+    if (button && button.textContent?.trim().toLowerCase().includes('agendar cita')) {
+      event.preventDefault();
+      console.log('Redirecting to Google Calendar for appointment booking');
+      window.open(
+        'https://calendar.google.com/calendar/appointments/schedules/AcZssZ0CSfvvxue3MDVfGyXgfjnhXcsu6XkxEoXnnPXjb3J54puN0BGDnntVlpwPMihC6RTbeQ0j1gRZ?gv=true',
+        '_blank'
+      );
+    }
+  });
+};
+
 export const setupGlobalButtonHandler = () => {
   // Add global click handler for all buttons
   document.addEventListener('click', (event) => {
@@ -59,8 +77,14 @@ export const setupGlobalButtonHandler = () => {
         return;
       }
       
+      // Skip if it's an "Agendar cita" button (handled by direct redirection)
+      if (buttonElement.textContent?.trim().toLowerCase().includes('agendar cita')) {
+        return;
+      }
+      
       console.log('Button clicked, injecting Google Calendar button');
       injectGoogleCalendarButton(buttonElement);
     }
   });
 };
+

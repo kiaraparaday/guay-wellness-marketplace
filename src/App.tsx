@@ -1,11 +1,10 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
-import { setupGlobalButtonHandler } from "@/utils/googleCalendarButton";
+import { setupGlobalButtonHandler, setupAgendarCitaRedirection } from "@/utils/googleCalendarButton";
 import Index from "./pages/Index";
 import Dimension from "./pages/Dimension";
 import Competency from "./pages/Competency";
@@ -34,6 +33,8 @@ const App = () => {
   useEffect(() => {
     // Setup global button handler when app mounts
     setupGlobalButtonHandler();
+    // Setup direct redirection for "Agendar cita" buttons
+    setupAgendarCitaRedirection();
   }, []);
 
   return (
