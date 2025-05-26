@@ -32,24 +32,24 @@ interface SolutionCardProps {
 }
 
 const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
-  // Map solution type to Spanish with icons
+  // Map solution type to Spanish without icons
   const typeToSpanish = (type: string) => {
     const types: Record<string, string> = {
-      workshop: "🧠 Taller",
-      course: "🎓 Curso",
-      webinar: "📹 Webinar",
-      coaching: "💼 Coaching",
-      assessment: "📊 Evaluación",
+      workshop: "Taller",
+      course: "Curso",
+      webinar: "Webinar",
+      coaching: "Coaching",
+      assessment: "Evaluación",
     };
     return types[type] || type;
   };
 
-  // Map modality to Spanish with icons
+  // Map modality to Spanish without icons
   const modalityToSpanish = (modality: string) => {
     const modalities: Record<string, string> = {
-      "virtual": "🖥 Virtual",
-      "in-person": "👥 Presencial",
-      "hybrid": "🔀 Híbrido",
+      "virtual": "Virtual",
+      "in-person": "Presencial",
+      "hybrid": "Híbrido",
     };
     return modalities[modality] || modality;
   };
