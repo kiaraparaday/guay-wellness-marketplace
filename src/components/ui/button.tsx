@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -19,9 +18,9 @@ const buttonVariants = cva(
         accent: "bg-guay-green text-white hover:bg-guay-green/90", 
         white: "bg-white text-guay-dark-blue border border-border hover:bg-gray-50",
         light: "bg-white/10 text-white border border-white/30 hover:bg-white/20",
-        // Variantes guay con el color exacto del header #0F1C2D
-        "guay-primary": "bg-[#0F1C2D] text-white hover:bg-[#0F1C2D]/90 font-quicksand font-medium",
-        "guay-secondary": "bg-[#0F1C2D]/10 text-[#0F1C2D] hover:bg-[#0F1C2D]/20 font-quicksand font-medium border border-[#0F1C2D]/20",
+        // Variantes guay con el color exacto del header #131F36
+        "guay-primary": "bg-[#131F36] text-white hover:bg-[#131F36]/90 font-quicksand font-medium",
+        "guay-secondary": "bg-[#131F36]/10 text-[#131F36] hover:bg-[#131F36]/20 font-quicksand font-medium border border-[#131F36]/20",
         // Nuevas variantes CTA con verde institucional
         "guay-cta-primary": "bg-[#A2C73F] text-white hover:bg-[#A2C73F]/90 font-quicksand font-medium",
         "guay-cta-secondary": "bg-white text-[#A2C73F] hover:bg-gray-50 font-quicksand font-medium border-2 border-[#A2C73F]",
