@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "@/components/Header";
@@ -58,7 +59,7 @@ const competenciesByDimension: Record<string, any[]> = {
     },
     {
       id: "work-life-balance",
-      title: "🔄 Relación Vida-Trabajo", 
+      title: "💼 Relación Vida-Trabajo", 
       description: "Herramientas para armonizar responsabilidades laborales y personales.",
       solutions: solutionsArray.filter(s => s.competencies.includes("work-life-balance"))
     },
@@ -175,49 +176,62 @@ const DimensionPage: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30">
       <Header />
       
-      {/* Hero Section */}
-      <section className="relative h-80 sm:h-96 overflow-hidden">
+      {/* Reduced Hero Section */}
+      <section className="relative h-48 sm:h-56 lg:h-64 overflow-hidden">
         <img 
           src={dimension.image} 
           alt={dimension.title} 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent" />
+        <div className="absolute inset-0 bg-[#0F1A30]/70" />
         
         <div className="absolute inset-0 flex flex-col justify-center px-6">
           <div className="max-w-7xl mx-auto w-full">
-            <Link to="/" className="inline-flex items-center text-white/90 hover:text-white mb-4 transition-colors">
+            <Link to="/" className="inline-flex items-center text-white/90 hover:text-white mb-3 transition-colors">
               <ArrowLeft className="w-4 h-4 mr-1" />
               Volver a dimensiones
             </Link>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-white mb-4 animate-fade-in">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-white mb-3 animate-fade-in font-quicksand">
               {dimension.title}
             </h1>
-            <p className="text-white/90 max-w-2xl animate-fade-in" style={{ animationDelay: "100ms" }}>
+            <p className="text-white/90 max-w-2xl mb-4 animate-fade-in font-quicksand" style={{ animationDelay: "100ms" }}>
               {dimension.description}
             </p>
+            
+            {/* Quick navigation to competencies */}
+            <div className="flex flex-wrap gap-2 mt-4">
+              {competencies.slice(0, 4).map((competency) => (
+                <a
+                  key={competency.id}
+                  href={`#${competency.id}`}
+                  className="px-3 py-1.5 bg-white/20 text-white text-sm rounded-full hover:bg-white/30 transition-colors font-quicksand"
+                >
+                  {competency.title}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </section>
       
-      {/* Filters Section - Sticky */}
-      <div className="sticky top-16 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-200">
+      {/* Filters Section - Now more prominent */}
+      <div className="sticky top-16 z-40 bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <CompetencyFilterBar />
         </div>
       </div>
       
       {/* Competencies and Solutions Section */}
-      <section className="py-12 px-6">
+      <section className="py-8 px-6">
         <div className="max-w-7xl mx-auto">
           {competencies.map((competency, index) => (
-            <div key={competency.id} className="mb-16" id={competency.id}>
-              {/* Competency Header */}
-              <div className="mb-8">
-                <h2 className="text-2xl font-semibold mb-3 font-quicksand text-gray-800 flex items-center">
+            <div key={competency.id} className="mb-12" id={competency.id}>
+              {/* Competency Header - Improved design */}
+              <div className="mb-6 p-6 bg-white rounded-xl shadow-sm border border-gray-100">
+                <h2 className="text-xl font-semibold mb-2 font-quicksand text-gray-800 flex items-center">
                   <span className="mr-3">{competency.title}</span>
                 </h2>
-                <p className="text-muted-foreground text-lg max-w-3xl">
+                <p className="text-muted-foreground max-w-3xl font-quicksand">
                   {competency.description}
                 </p>
               </div>
@@ -234,16 +248,16 @@ const DimensionPage: React.FC = () => {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-12 bg-gray-50/80 rounded-xl border border-gray-100">
+                <div className="text-center py-8 bg-[#F5F8FC] rounded-xl border border-gray-100">
                   <div className="max-w-md mx-auto">
-                    <div className="w-16 h-16 mx-auto mb-4 bg-gray-200 rounded-full flex items-center justify-center">
-                      <span className="text-2xl text-gray-400">🔄</span>
+                    <div className="w-12 h-12 mx-auto mb-3 bg-[#0F1A30]/10 rounded-full flex items-center justify-center">
+                      <span className="text-xl">✨</span>
                     </div>
-                    <p className="text-gray-600 font-quicksand">
-                      Próximamente tendremos soluciones disponibles para esta competencia.
+                    <p className="text-[#0F1A30] font-quicksand font-medium">
+                      Próximamente
                     </p>
-                    <p className="text-sm text-gray-500 mt-2">
-                      Mientras tanto, puedes explorar otras competencias o solicitar una solución personalizada.
+                    <p className="text-sm text-gray-600 mt-1 font-quicksand">
+                      Tendremos soluciones disponibles para esta competencia.
                     </p>
                   </div>
                 </div>
@@ -253,48 +267,28 @@ const DimensionPage: React.FC = () => {
         </div>
       </section>
       
-      {/* Quick Navigation Sidebar for Desktop */}
-      <div className="hidden lg:block fixed right-8 top-1/2 transform -translate-y-1/2 z-30">
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-4 max-w-xs">
-          <h3 className="text-sm font-semibold text-gray-700 mb-3 font-quicksand">
-            Competencias en esta dimensión
-          </h3>
-          <nav className="space-y-2">
-            {competencies.map((competency) => (
-              <a
-                key={competency.id}
-                href={`#${competency.id}`}
-                className="block text-sm text-gray-600 hover:text-guay-purple transition-colors py-1 font-quicksand"
-              >
-                {competency.title.replace(/^[^\s]+\s/, '')} {/* Remove emoji for cleaner nav */}
-              </a>
-            ))}
-          </nav>
-        </div>
-      </div>
-      
       {/* CTA Section */}
-      <section className="py-16 px-6 bg-white">
+      <section className="py-12 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className={`bg-gradient-to-r ${dimension.colorClass} rounded-2xl overflow-hidden shadow-md`}>
-            <div className="p-8 sm:p-12 text-white">
-              <h2 className="text-3xl font-semibold mb-4">
+          <div className={`bg-gradient-to-r ${dimension.colorClass} rounded-2xl overflow-hidden shadow-sm`}>
+            <div className="p-8 sm:p-10 text-white">
+              <h2 className="text-2xl font-semibold mb-3 font-quicksand">
                 ¿Quieres mejorar esta dimensión en tu organización?
               </h2>
-              <p className="text-white/90 mb-6 max-w-2xl">
+              <p className="text-white/90 mb-6 max-w-2xl font-quicksand">
                 Nuestro equipo de expertos te puede ayudar a diseñar un plan personalizado
                 para fortalecer las competencias de {dimension.title} en tu organización.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <Link 
                   to="/request-solution" 
-                  className="inline-block px-6 py-3 bg-white/10 text-white border-2 border-white rounded-lg font-medium hover:bg-white/20 transition-all-200"
+                  className="inline-block px-5 py-2.5 bg-[#F5F8FC] text-[#0F1A30] rounded-lg font-medium hover:bg-white transition-colors font-quicksand"
                 >
                   Solicitar solución personalizada
                 </Link>
                 <Link 
                   to="/appointment" 
-                  className="inline-block px-6 py-3 bg-white text-foreground rounded-lg font-medium hover:bg-opacity-90 transition-all-200"
+                  className="inline-block px-5 py-2.5 bg-white/20 text-white border border-white/30 rounded-lg font-medium hover:bg-white/30 transition-colors font-quicksand"
                 >
                   Agendar una cita
                 </Link>
@@ -305,18 +299,18 @@ const DimensionPage: React.FC = () => {
       </section>
       
       {/* Footer */}
-      <footer className="py-8 px-6 bg-white border-t border-border">
+      <footer className="py-6 px-6 bg-white border-t border-border">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center mb-4 md:mb-0">
             <span className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-guay-600 to-guay-400">
               GUAY
             </span>
-            <span className="ml-2 text-sm text-muted-foreground">
+            <span className="ml-2 text-sm text-muted-foreground font-quicksand">
               Wellness Marketplace
             </span>
           </div>
           
-          <div className="text-sm text-muted-foreground">
+          <div className="text-sm text-muted-foreground font-quicksand">
             © {new Date().getFullYear()} Guay. Todos los derechos reservados.
           </div>
         </div>
