@@ -43,13 +43,7 @@ const CompetencyCard: React.FC<CompetencyCardProps> = ({ competency, index }) =>
           />
           {competency.dimensionTitle && (
             <div className="absolute top-3 left-3">
-              <span 
-                className="text-xs font-medium font-quicksand px-2 py-0.5 bg-white border rounded-sm"
-                style={{ 
-                  color: competency.color,
-                  borderColor: '#d1d5db'
-                }}
-              >
+              <span className="inline-block px-3 py-1.5 bg-guay-purple/10 text-guay-purple rounded-full text-xs font-normal font-quicksand">
                 {competency.dimensionTitle}
               </span>
             </div>

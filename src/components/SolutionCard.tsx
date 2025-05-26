@@ -97,17 +97,6 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
     return solution.competencies.map(id => competencyLabels[id] || id);
   };
 
-  // Get tag color for category labels (institutional guay colors)
-  const getCategoryTagColor = (category: string, index: number) => {
-    const colors = [
-      "text-[#131F36] border-gray-300", // Azul institucional
-      "text-[#A2C73F] border-gray-300", // Verde guay
-      "text-[#E67E22] border-gray-300", // Naranja guay
-      "text-[#8E44AD] border-gray-300", // Morado guay
-    ];
-    return colors[index % colors.length];
-  };
-
   return (
     <Link 
       to={`/solution/${solution.id}`}
@@ -145,15 +134,12 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
           {solution.description}
         </p>
         
-        {/* Category tags - Estilo etiqueta institucional guay */}
-        <div className="flex flex-wrap gap-1.5 mb-4">
+        {/* Category tags - Nuevo estilo pill con magenta institucional */}
+        <div className="flex flex-wrap gap-2 mb-4">
           {getCategoryLabels().map((category, idx) => (
             <span 
               key={idx} 
-              className={cn(
-                "text-xs font-medium font-quicksand px-2 py-0.5 bg-white border rounded-sm",
-                getCategoryTagColor(category, idx)
-              )}
+              className="inline-block px-3 py-1.5 bg-guay-purple/10 text-guay-purple rounded-full text-xs font-normal font-quicksand"
             >
               {category}
             </span>
