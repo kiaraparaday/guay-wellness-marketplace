@@ -3,7 +3,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Clock, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 
 export interface SolutionType {
   id: string;
@@ -135,16 +134,15 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
           {solution.description}
         </p>
         
-        {/* Category tags */}
-        <div className="flex flex-wrap gap-1.5 mb-4">
+        {/* Category tags - redesigned as simple text labels */}
+        <div className="flex flex-wrap gap-2 mb-4">
           {getCategoryLabels().map((category, idx) => (
-            <Badge 
+            <span 
               key={idx} 
-              variant="purple" 
-              className="text-xs"
+              className="text-xs text-guay-purple font-medium"
             >
               {category}
-            </Badge>
+            </span>
           ))}
         </div>
         
