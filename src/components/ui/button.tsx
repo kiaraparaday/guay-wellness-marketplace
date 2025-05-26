@@ -19,9 +19,12 @@ const buttonVariants = cva(
         accent: "bg-guay-green text-white hover:bg-guay-green/90", 
         white: "bg-white text-guay-dark-blue border border-border hover:bg-gray-50",
         light: "bg-white/10 text-white border border-white/30 hover:bg-white/20",
-        // Nuevas variantes guay con azul institucional
+        // Variantes guay con azul institucional
         "guay-primary": "bg-[#355C91] text-white hover:bg-[#355C91]/90 font-quicksand font-medium",
         "guay-secondary": "bg-[#355C91]/10 text-[#355C91] hover:bg-[#355C91]/20 font-quicksand font-medium border border-[#355C91]/20",
+        // Nuevas variantes CTA con verde institucional
+        "guay-cta-primary": "bg-[#A2C73F] text-white hover:bg-[#A2C73F]/90 font-quicksand font-medium",
+        "guay-cta-secondary": "bg-white text-[#A2C73F] hover:bg-gray-50 font-quicksand font-medium border-2 border-[#A2C73F]",
       },
       size: {
         grande: "h-12 px-6 py-3 rounded-full text-base", // Botón grande
@@ -36,7 +39,7 @@ const buttonVariants = cva(
     },
     defaultVariants: {
       variant: "default",
-      size: "mediano", // Cambiamos el tamaño por defecto a mediano
+      size: "mediano",
     },
   }
 )

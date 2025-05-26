@@ -30,18 +30,18 @@ const CallToActionSection: React.FC<CallToActionSectionProps> = ({
               <Button 
                 asChild 
                 size="grande" 
-                variant="white"
-                className="bg-white text-[#355C91] hover:bg-gray-50 font-quicksand"
+                variant="guay-cta-secondary"
+                className="bg-white/10 text-white border-2 border-white hover:bg-white/20 font-quicksand"
               >
-                <Link to="/appointment">Agendar una cita</Link>
+                <Link to="/request-solution">Solicitar una solución</Link>
               </Button>
               <Button 
                 asChild 
                 size="grande" 
-                variant="light"
-                className="bg-white/10 text-white border border-white/30 hover:bg-white/20 font-quicksand"
+                variant="guay-cta-primary"
+                className="bg-[#A2C73F] text-white hover:bg-[#A2C73F]/90 font-quicksand"
               >
-                <Link to="/request-solution">Solicitar una solución</Link>
+                <Link to="/appointment">Agendar una cita</Link>
               </Button>
             </div>
             

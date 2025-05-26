@@ -8,6 +8,7 @@ import { ArrowRight, Star, Quote, Users, Building } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { solutionsData } from "@/data/solutions";
+import { Button } from "@/components/ui/button";
 
 const dimensions: DimensionType[] = [
   {
@@ -255,18 +256,20 @@ const IndexPage: React.FC = () => {
                       encontrar la solución ideal para tus necesidades específicas.
                     </p>
                     <div className="space-y-4 sm:space-y-0 sm:flex sm:gap-4">
-                      <Link 
-                        to="/appointment" 
-                        className="inline-block px-6 py-3 bg-[#355C91] text-white rounded-lg font-medium font-quicksand hover:bg-[#355C91]/90 transition-all-200"
+                      <Button 
+                        asChild 
+                        size="grande" 
+                        variant="guay-cta-secondary"
                       >
-                        Agendar una cita
-                      </Link>
-                      <Link 
-                        to="/request-solution" 
-                        className="inline-block px-6 py-3 bg-[#355C91]/10 text-[#355C91] rounded-lg font-medium font-quicksand border border-[#355C91]/20 hover:bg-[#355C91]/20 transition-all-200"
+                        <Link to="/request-solution">Solicitar una solución</Link>
+                      </Button>
+                      <Button 
+                        asChild 
+                        size="grande" 
+                        variant="guay-cta-primary"
                       >
-                        Solicitar una solución
-                      </Link>
+                        <Link to="/appointment">Agendar una cita</Link>
+                      </Button>
                     </div>
                   </div>
                   <div className="hidden lg:block relative">
