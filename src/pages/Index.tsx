@@ -1,3 +1,4 @@
+
 import React from "react";
 import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
@@ -88,7 +89,7 @@ const IndexPage: React.FC = () => {
             
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight animate-fade-in" style={{ animationDelay: "100ms" }}>
               Soluciones para el bienestar <br className="hidden md:block" />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-guay-600 to-guay-400">
+              <span className="text-guay-blue">
                 de tu organización
               </span>
             </h1>
@@ -98,10 +99,8 @@ const IndexPage: React.FC = () => {
           <div id="soluciones" className="bg-white rounded-2xl p-6 shadow-lg mb-12 border border-gray-blue/10">
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
               <div>
-                <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-gray-dark">
-                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-gray-purple to-gray-blue">
-                    SOLUCIONES
-                  </span>
+                <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-guay-purple">
+                  SOLUCIONES
                 </h2>
                 <p className="text-muted-foreground max-w-xl">
                   Descubre herramientas específicas para mejorar el bienestar en tu organización
@@ -142,16 +141,14 @@ const IndexPage: React.FC = () => {
           <section id="destacadas" className="mb-12">
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
               <div className="relative">
-                <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-gray-dark">
-                  <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-guay-purple to-guay-blue">
-                    SOLUCIONES DESTACADAS
-                  </span>
+                <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-guay-purple">
+                  SOLUCIONES DESTACADAS
                 </h2>
                 
                 <div className="absolute -top-6 -right-14 transform">
                   <div className="relative">
-                    <div className="absolute inset-0 bg-gradient-to-r from-guay-orange to-guay-purple rounded-lg blur-sm"></div>
-                    <Badge className="relative bg-gradient-to-r from-guay-orange to-guay-purple border-0 px-4 py-1.5 text-white font-bold shadow-lg scale-110">
+                    <div className="absolute inset-0 bg-guay-orange rounded-lg blur-sm"></div>
+                    <Badge className="relative bg-guay-orange border-0 px-4 py-1.5 text-white font-bold shadow-lg scale-110">
                       TOP <span className="text-yellow-200 ml-1">★</span>
                     </Badge>
                   </div>
@@ -200,10 +197,8 @@ const IndexPage: React.FC = () => {
               
               <div className="flex flex-col md:flex-row justify-between items-center mb-8 relative z-10">
                 <div>
-                  <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2">
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-guay-blue via-guay-purple to-guay-orange">
-                      Casos de Éxito
-                    </span>
+                  <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-guay-green">
+                    Casos de Éxito
                   </h2>
                   <p className="text-muted-foreground max-w-xl">
                     Experiencias reales de organizaciones que han transformado su bienestar
@@ -307,7 +302,7 @@ const IndexPage: React.FC = () => {
           </div>
           
           <div className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Guay. Todos los derechos reservados.
+            © {new Date().getFullYear()} guay. Todos los derechos reservados.
           </div>
         </div>
       </footer>
