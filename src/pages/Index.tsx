@@ -89,22 +89,23 @@ const IndexPage: React.FC = () => {
             </div>
             
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight animate-fade-in" style={{ animationDelay: "100ms" }}>
-              Explora nuestras soluciones de <br className="hidden md:block" />
+              Soluciones de <br className="hidden md:block" />
               <span className="text-black">
                 bienestar organizacional
               </span>
             </h1>
             
             <p className="text-lg text-muted-foreground mb-6 max-w-2xl animate-fade-in" style={{ animationDelay: "200ms" }}>
-              Selecciona una dimensión del bienestar o explora todo el catálogo de soluciones
+              Selecciona una dimensión del bienestar según las necesidades de tu organización o explora el catálogo completo de soluciones disponibles.
             </p>
             
-            {/* Botón global - Movido arriba y fuera de la sección de dimensiones */}
-            <div className="flex justify-center md:justify-start mt-6 mb-12">
+            {/* Botón global - Separado visualmente y posicionado como opción independiente */}
+            <div className="flex justify-center md:justify-start mt-6 mb-16">
               <Button 
                 asChild 
                 size="grande" 
                 variant="guay-primary"
+                className="shadow-lg"
               >
                 <Link to="/solutions" className="flex items-center group">
                   Ver todas las soluciones
@@ -122,7 +123,7 @@ const IndexPage: React.FC = () => {
                 Dimensiones del bienestar organizacional
               </h2>
               <p className="text-[#6A6A6A] text-sm">
-                Descubre nuestras soluciones agrupadas por dimensión clave del bienestar en las organizaciones.
+                Descubre nuestras soluciones agrupadas por dimensión clave del bienestar, para responder a las distintas necesidades de tu equipo.
               </p>
             </div>
             
