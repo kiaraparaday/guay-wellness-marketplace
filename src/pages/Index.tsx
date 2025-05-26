@@ -84,7 +84,7 @@ const IndexPage: React.FC = () => {
       <section className="pt-8 pb-8 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col items-center text-center md:text-left md:items-start mb-6">
-            <div className="inline-block px-3 py-1 mb-2 bg-primary/10 text-primary rounded-full text-sm font-medium animate-fade-in">
+            <div className="mb-2 text-sm font-medium text-[#91AFC7] animate-fade-in">
               Marketplace de Bienestar Organizacional
             </div>
             
