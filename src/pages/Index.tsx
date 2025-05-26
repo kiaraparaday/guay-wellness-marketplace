@@ -136,27 +136,18 @@ const IndexPage: React.FC = () => {
             </div>
           </div>
           
-          {/* Top Solutions Section */}
+          {/* Top Solutions Section - Removed TOP badge */}
           <section id="destacadas" className="mb-12">
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-              <div className="relative">
+              <div>
                 <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-black">
                   SOLUCIONES DESTACADAS
                 </h2>
                 
-                <div className="absolute -top-6 -right-14 transform">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-guay-orange rounded-lg blur-sm"></div>
-                    <Badge className="relative bg-guay-orange border-0 px-4 py-1.5 text-white font-bold shadow-lg scale-110">
-                      TOP <span className="text-yellow-200 ml-1">★</span>
-                    </Badge>
-                  </div>
-                </div>
+                <p className="text-muted-foreground max-w-xl mt-2">
+                  <span className="font-semibold text-guay-purple">Las más solicitadas</span> por las organizaciones líderes en bienestar
+                </p>
               </div>
-              
-              <p className="text-muted-foreground max-w-xl mt-2">
-                <span className="font-semibold text-guay-purple">Las más solicitadas</span> por las organizaciones líderes en bienestar
-              </p>
               
               <Link 
                 to="/solutions" 
