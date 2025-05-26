@@ -97,25 +97,34 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({ initialFilter
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
-      <div className="flex flex-wrap items-center gap-3">
+    <div className="w-full flex flex-col items-center mb-8 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+      {/* Título y descripción centrados */}
+      <h2 className="text-xl font-semibold mb-1 text-gray-800 font-quicksand">
+        🧩 Filtros disponibles
+      </h2>
+      <p className="text-gray-500 text-base mb-6 font-quicksand">
+        Filtra las soluciones según tus necesidades específicas
+      </p>
+      
+      {/* Filtros centrados */}
+      <div className="flex flex-wrap justify-center gap-4 mb-4">
         {/* Modalidad Filter */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button 
               variant="outline" 
-              className="gap-2 font-quicksand"
+              className="gap-2 font-quicksand bg-[#F5F8FC] text-[#0F1A30] border-gray-200 rounded-full py-2 px-4 hover:bg-gray-100 transition-colors"
             >
               Modalidad 
               {filters.modalities.length > 0 && (
-                <Badge variant="secondary" className="ml-1 px-1.5 py-0.5 text-xs">
+                <Badge variant="secondary" className="ml-1 px-1.5 py-0.5 text-xs bg-[#0F1A30] text-white">
                   {filters.modalities.length}
                 </Badge>
               )}
               <ChevronDown className="w-4 h-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-56">
+          <DropdownMenuContent align="center" className="w-56">
             {modalityOptions.map((option) => (
               <DropdownMenuItem
                 key={option.value}
@@ -125,7 +134,7 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({ initialFilter
                 <div className="flex items-center justify-between w-full">
                   <span>{option.label}</span>
                   {filters.modalities.includes(option.value) && (
-                    <div className="w-2 h-2 bg-guay-purple rounded-full" />
+                    <div className="w-2 h-2 bg-[#0F1A30] rounded-full" />
                   )}
                 </div>
               </DropdownMenuItem>
@@ -138,18 +147,18 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({ initialFilter
           <DropdownMenuTrigger asChild>
             <Button 
               variant="outline" 
-              className="gap-2 font-quicksand"
+              className="gap-2 font-quicksand bg-[#F5F8FC] text-[#0F1A30] border-gray-200 rounded-full py-2 px-4 hover:bg-gray-100 transition-colors"
             >
               Audiencia 
               {filters.audiences.length > 0 && (
-                <Badge variant="secondary" className="ml-1 px-1.5 py-0.5 text-xs">
+                <Badge variant="secondary" className="ml-1 px-1.5 py-0.5 text-xs bg-[#0F1A30] text-white">
                   {filters.audiences.length}
                 </Badge>
               )}
               <ChevronDown className="w-4 h-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-56">
+          <DropdownMenuContent align="center" className="w-56">
             {audienceOptions.map((option) => (
               <DropdownMenuItem
                 key={option.value}
@@ -159,7 +168,7 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({ initialFilter
                 <div className="flex items-center justify-between w-full">
                   <span>{option.label}</span>
                   {filters.audiences.includes(option.value) && (
-                    <div className="w-2 h-2 bg-guay-purple rounded-full" />
+                    <div className="w-2 h-2 bg-[#0F1A30] rounded-full" />
                   )}
                 </div>
               </DropdownMenuItem>
@@ -172,18 +181,18 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({ initialFilter
           <DropdownMenuTrigger asChild>
             <Button 
               variant="outline" 
-              className="gap-2 font-quicksand"
+              className="gap-2 font-quicksand bg-[#F5F8FC] text-[#0F1A30] border-gray-200 rounded-full py-2 px-4 hover:bg-gray-100 transition-colors"
             >
               Duración 
               {filters.durations.length > 0 && (
-                <Badge variant="secondary" className="ml-1 px-1.5 py-0.5 text-xs">
+                <Badge variant="secondary" className="ml-1 px-1.5 py-0.5 text-xs bg-[#0F1A30] text-white">
                   {filters.durations.length}
                 </Badge>
               )}
               <ChevronDown className="w-4 h-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-56">
+          <DropdownMenuContent align="center" className="w-56">
             {durationOptions.map((option) => (
               <DropdownMenuItem
                 key={option.value}
@@ -193,29 +202,29 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({ initialFilter
                 <div className="flex items-center justify-between w-full">
                   <span>{option.label}</span>
                   {filters.durations.includes(option.value) && (
-                    <div className="w-2 h-2 bg-guay-purple rounded-full" />
+                    <div className="w-2 h-2 bg-[#0F1A30] rounded-full" />
                   )}
                 </div>
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
-
-        {/* Clear filters button */}
-        {totalActiveFilters > 0 && (
-          <Button 
-            variant="ghost" 
-            onClick={clearAllFilters}
-            className="text-sm text-muted-foreground hover:text-destructive font-quicksand"
-          >
-            Limpiar filtros
-          </Button>
-        )}
       </div>
+
+      {/* Clear filters button - centrado */}
+      {totalActiveFilters > 0 && (
+        <Button 
+          variant="ghost" 
+          onClick={clearAllFilters}
+          className="text-sm text-gray-500 hover:text-red-500 font-quicksand transition-colors"
+        >
+          Limpiar filtros
+        </Button>
+      )}
 
       {/* Active filters display */}
       {totalActiveFilters > 0 && (
-        <div className="flex flex-wrap gap-2 mt-3 pt-3 border-t border-gray-200">
+        <div className="flex flex-wrap justify-center gap-2 mt-4 pt-4 border-t border-gray-200 w-full">
           {filters.modalities.map((modality) => (
             <Badge 
               key={`modality-${modality}`} 
@@ -225,7 +234,7 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({ initialFilter
               {getFilterLabel('modalities', modality)}
               <button
                 onClick={() => removeFilter('modalities', modality)}
-                className="hover:bg-destructive/20 rounded-full p-0.5"
+                className="hover:bg-red-100 rounded-full p-0.5 transition-colors"
               >
                 <X className="w-3 h-3" />
               </button>
@@ -240,7 +249,7 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({ initialFilter
               {getFilterLabel('audiences', audience)}
               <button
                 onClick={() => removeFilter('audiences', audience)}
-                className="hover:bg-destructive/20 rounded-full p-0.5"
+                className="hover:bg-red-100 rounded-full p-0.5 transition-colors"
               >
                 <X className="w-3 h-3" />
               </button>
@@ -255,7 +264,7 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({ initialFilter
               {getFilterLabel('durations', duration)}
               <button
                 onClick={() => removeFilter('durations', duration)}
-                className="hover:bg-destructive/20 rounded-full p-0.5"
+                className="hover:bg-red-100 rounded-full p-0.5 transition-colors"
               >
                 <X className="w-3 h-3" />
               </button>
