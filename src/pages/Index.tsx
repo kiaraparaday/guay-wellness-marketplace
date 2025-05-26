@@ -1,4 +1,3 @@
-
 import React from "react";
 import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
@@ -94,31 +93,32 @@ const IndexPage: React.FC = () => {
                 de tu organización
               </span>
             </h1>
-          </div>
-          
-          {/* SOLUTIONS SECTION */}
-          <div id="soluciones" className="bg-white rounded-2xl p-6 shadow-lg mb-12 border border-gray-blue/10">
-            <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-              <div>
-                <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-black">
-                  SOLUCIONES
-                </h2>
-                <p className="text-muted-foreground max-w-xl">
-                  Descubre herramientas específicas para mejorar el bienestar en tu organización
-                </p>
-              </div>
-              
+            
+            {/* Botón global - Movido arriba de las dimensiones */}
+            <div className="flex justify-center md:justify-start mt-6 mb-8">
               <Button 
                 asChild 
                 size="grande" 
                 variant="guay-primary"
-                className="hidden md:flex"
               >
                 <Link to="/solutions" className="flex items-center group">
                   Ver todas las soluciones
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
+            </div>
+          </div>
+          
+          {/* DIMENSIONS SECTION */}
+          <div id="soluciones" className="bg-white rounded-2xl p-6 shadow-lg mb-12 border border-gray-blue/10">
+            {/* Subtítulo de agrupación por dimensiones */}
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold mb-2 text-[#6A6A6A] font-quicksand">
+                Dimensiones del bienestar organizacional
+              </h2>
+              <p className="text-[#6A6A6A] text-sm">
+                Descubre nuestras soluciones agrupadas por dimensión clave del bienestar en las organizaciones.
+              </p>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
@@ -129,19 +129,6 @@ const IndexPage: React.FC = () => {
                   index={index}
                 />
               ))}
-            </div>
-            
-            <div className="flex justify-center mt-6 md:hidden">
-              <Button 
-                asChild 
-                size="grande" 
-                variant="guay-primary"
-              >
-                <Link to="/solutions" className="flex items-center group">
-                  Ver todas las soluciones
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
             </div>
           </div>
           
