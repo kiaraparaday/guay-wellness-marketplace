@@ -1,5 +1,4 @@
 
-
 export const injectGoogleCalendarButton = (targetButton: HTMLElement) => {
   // Check if Google Calendar button already exists after this button
   const existingCalendarButton = targetButton.nextElementSibling?.classList.contains('google-calendar-container');
@@ -24,7 +23,7 @@ export const injectGoogleCalendarButton = (targetButton: HTMLElement) => {
         if (window.calendar && window.calendar.schedulingButton) {
           calendar.schedulingButton.load({
             url: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ0CSfvvxue3MDVfGyXgfjnhXcsu6XkxEoXnnPXjb3J54puN0BGDnntVlpwPMihC6RTbeQ0j1gRZ?gv=true',
-            color: '#0F1A30',
+            color: '#039BE5',
             label: 'Programar una cita',
             target: target,
           });
@@ -40,18 +39,54 @@ export const injectGoogleCalendarButton = (targetButton: HTMLElement) => {
 };
 
 export const setupAgendarCitaRedirection = () => {
-  // Handle direct redirection for "Agendar cita" buttons
+  // Replace "Agendar cita" buttons with Google Calendar scheduling widget
   document.addEventListener('click', (event) => {
     const target = event.target as HTMLElement;
     const button = target.closest('button, a') as HTMLElement;
     
     if (button && button.textContent?.trim().toLowerCase().includes('agendar cita')) {
       event.preventDefault();
-      console.log('Redirecting to Google Calendar for appointment booking');
-      window.open(
-        'https://calendar.google.com/calendar/appointments/schedules/AcZssZ0CSfvvxue3MDVfGyXgfjnhXcsu6XkxEoXnnPXjb3J54puN0BGDnntVlpwPMihC6RTbeQ0j1gRZ?gv=true',
-        '_blank'
-      );
+      console.log('Replacing button with Google Calendar scheduling widget');
+      
+      // Hide the original button
+      button.style.display = 'none';
+      
+      // Check if Google Calendar button already exists after this button
+      const existingCalendarButton = button.nextElementSibling?.classList.contains('google-calendar-container');
+      if (existingCalendarButton) {
+        return; // Don't inject if already exists
+      }
+      
+      // Create container for the Google Calendar button
+      const calendarContainer = document.createElement('div');
+      calendarContainer.className = 'google-calendar-container mt-4 flex justify-center';
+      calendarContainer.id = `calendar-agendar-${Date.now()}`; // Unique ID
+      
+      // Inject the Google Calendar HTML
+      calendarContainer.innerHTML = `
+        <!-- Google Calendar Appointment Scheduling begin -->
+        <link href="https://calendar.google.com/calendar/scheduling-button-script.css" rel="stylesheet">
+        <script src="https://calendar.google.com/calendar/scheduling-button-script.js" async></script>
+        <script>
+        (function() {
+          var target = document.getElementById('${calendarContainer.id}');
+          window.addEventListener('load', function() {
+            if (window.calendar && window.calendar.schedulingButton) {
+              calendar.schedulingButton.load({
+                url: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ0CSfvvxue3MDVfGyXgfjnhXcsu6XkxEoXnnPXjb3J54puN0BGDnntVlpwPMihC6RTbeQ0j1gRZ?gv=true',
+                color: '#039BE5',
+                label: 'Programar una cita',
+                target: target,
+              });
+            }
+          });
+        })();
+        </script>
+        <!-- end Google Calendar Appointment Scheduling -->
+      `;
+      
+      // Insert the calendar button after the clicked button
+      button.parentNode?.insertBefore(calendarContainer, button.nextSibling);
     }
   });
 };
@@ -77,7 +112,7 @@ export const setupGlobalButtonHandler = () => {
         return;
       }
       
-      // Skip if it's an "Agendar cita" button (handled by direct redirection)
+      // Skip if it's an "Agendar cita" button (handled by direct replacement)
       if (buttonElement.textContent?.trim().toLowerCase().includes('agendar cita')) {
         return;
       }
@@ -87,4 +122,3 @@ export const setupGlobalButtonHandler = () => {
     }
   });
 };
-
