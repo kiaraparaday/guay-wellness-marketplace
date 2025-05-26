@@ -21,11 +21,7 @@ const GuayLogo: React.FC<GuayLogoProps> = ({
       <img 
         src={logoSrc} 
         alt="GUAY Logo" 
-        className={cn(
-          "h-6 md:h-8",
-          // El logo ya es blanco sobre fondo azul, por lo que no necesitamos invertirlo
-          variant !== 'white' && "hidden", // Solo mostrar la versión blanca
-        )}
+        className="h-6 md:h-8"
       />
       {showText && (
         <span className={cn(

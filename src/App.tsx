@@ -47,7 +47,7 @@ const App = () => {
               <div className="fixed top-1/2 -right-32 transform -translate-y-1/2 w-64 h-64 rounded-full bg-guay-purple opacity-90 z-0"></div>
               
               <Header />
-              <div className="pt-16 px-4 md:px-8 max-w-7xl mx-auto relative z-10">
+              <div className="pt-4 px-4 md:px-8 max-w-7xl mx-auto relative z-10">
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/dimension/:id" element={<Dimension />} />
