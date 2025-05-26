@@ -1,8 +1,8 @@
-
 import React, { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "@/components/Header";
 import SolutionCard from "@/components/SolutionCard";
+import CompetencyFilterBar from "@/components/CompetencyFilterBar";
 import { ArrowLeft } from "lucide-react";
 import { solutionsArray } from "@/data/solutions";
 
@@ -200,20 +200,29 @@ const DimensionPage: React.FC = () => {
         </div>
       </section>
       
+      {/* Filters Section - Sticky */}
+      <div className="sticky top-16 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <CompetencyFilterBar />
+        </div>
+      </div>
+      
       {/* Competencies and Solutions Section */}
-      <section className="py-16 px-6">
+      <section className="py-12 px-6">
         <div className="max-w-7xl mx-auto">
           {competencies.map((competency, index) => (
-            <div key={competency.id} className="mb-12">
-              <div className="mb-6">
-                <h2 className="text-2xl font-semibold mb-2 font-quicksand">
-                  {competency.title}
+            <div key={competency.id} className="mb-16" id={competency.id}>
+              {/* Competency Header */}
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold mb-3 font-quicksand text-gray-800 flex items-center">
+                  <span className="mr-3">{competency.title}</span>
                 </h2>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground text-lg max-w-3xl">
                   {competency.description}
                 </p>
               </div>
               
+              {/* Solutions Grid */}
               {competency.solutions.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {competency.solutions.map((solution: any, solutionIndex: number) => (
@@ -225,16 +234,44 @@ const DimensionPage: React.FC = () => {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-8 bg-secondary/30 rounded-lg">
-                  <p className="text-muted-foreground">
-                    Próximamente tendremos soluciones disponibles para esta competencia.
-                  </p>
+                <div className="text-center py-12 bg-gray-50/80 rounded-xl border border-gray-100">
+                  <div className="max-w-md mx-auto">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-gray-200 rounded-full flex items-center justify-center">
+                      <span className="text-2xl text-gray-400">🔄</span>
+                    </div>
+                    <p className="text-gray-600 font-quicksand">
+                      Próximamente tendremos soluciones disponibles para esta competencia.
+                    </p>
+                    <p className="text-sm text-gray-500 mt-2">
+                      Mientras tanto, puedes explorar otras competencias o solicitar una solución personalizada.
+                    </p>
+                  </div>
                 </div>
               )}
             </div>
           ))}
         </div>
       </section>
+      
+      {/* Quick Navigation Sidebar for Desktop */}
+      <div className="hidden lg:block fixed right-8 top-1/2 transform -translate-y-1/2 z-30">
+        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-4 max-w-xs">
+          <h3 className="text-sm font-semibold text-gray-700 mb-3 font-quicksand">
+            Competencias en esta dimensión
+          </h3>
+          <nav className="space-y-2">
+            {competencies.map((competency) => (
+              <a
+                key={competency.id}
+                href={`#${competency.id}`}
+                className="block text-sm text-gray-600 hover:text-guay-purple transition-colors py-1 font-quicksand"
+              >
+                {competency.title.replace(/^[^\s]+\s/, '')} {/* Remove emoji for cleaner nav */}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </div>
       
       {/* CTA Section */}
       <section className="py-16 px-6 bg-white">
@@ -248,12 +285,20 @@ const DimensionPage: React.FC = () => {
                 Nuestro equipo de expertos te puede ayudar a diseñar un plan personalizado
                 para fortalecer las competencias de {dimension.title} en tu organización.
               </p>
-              <Link 
-                to="/appointment" 
-                className="inline-block px-6 py-3 bg-white text-foreground rounded-lg font-medium hover:bg-opacity-90 transition-all-200"
-              >
-                Agendar una cita
-              </Link>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link 
+                  to="/request-solution" 
+                  className="inline-block px-6 py-3 bg-white/10 text-white border-2 border-white rounded-lg font-medium hover:bg-white/20 transition-all-200"
+                >
+                  Solicitar solución personalizada
+                </Link>
+                <Link 
+                  to="/appointment" 
+                  className="inline-block px-6 py-3 bg-white text-foreground rounded-lg font-medium hover:bg-opacity-90 transition-all-200"
+                >
+                  Agendar una cita
+                </Link>
+              </div>
             </div>
           </div>
         </div>
