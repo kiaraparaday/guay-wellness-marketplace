@@ -1,4 +1,3 @@
-
 import React from "react";
 import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
@@ -83,47 +82,60 @@ const IndexPage: React.FC = () => {
       {/* Hero Section with new structure */}
       <section className="pt-8 pb-8 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col items-center text-center md:text-left md:items-start mb-6">
-            <div className="mb-2 text-sm font-medium text-[#91AFC7] animate-fade-in">
-              Marketplace de Bienestar Organizacional
+          {/* New header layout with CTA separated */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start mb-16">
+            {/* Left side - Main content */}
+            <div className="lg:col-span-2">
+              <div className="mb-2 text-sm font-medium text-[#91AFC7] animate-fade-in">
+                Marketplace de Bienestar Organizacional
+              </div>
+              
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight animate-fade-in" style={{ animationDelay: "100ms" }}>
+                Explora nuestras <br className="hidden md:block" />
+                <span className="text-black">
+                  soluciones organizacionales
+                </span>
+              </h1>
+              
+              <p className="text-lg text-muted-foreground mb-4 max-w-2xl animate-fade-in" style={{ animationDelay: "200ms" }}>
+                Descubre soluciones agrupadas por dimensión clave del bienestar o accede directamente a todo el catálogo.
+              </p>
+              
+              <p className="text-base text-[#6A6A6A] animate-fade-in" style={{ animationDelay: "250ms" }}>
+                👉 ¿Tienes una necesidad puntual? Usa nuestras categorías para encontrar soluciones alineadas a tus retos.
+              </p>
             </div>
             
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight animate-fade-in" style={{ animationDelay: "100ms" }}>
-              Soluciones de <br className="hidden md:block" />
-              <span className="text-black">
-                bienestar organizacional
-              </span>
-            </h1>
-            
-            <p className="text-lg text-muted-foreground mb-6 max-w-2xl animate-fade-in" style={{ animationDelay: "200ms" }}>
-              Selecciona una dimensión del bienestar según las necesidades de tu organización o explora el catálogo completo de soluciones disponibles.
-            </p>
-            
-            {/* Botón global - Separado visualmente y posicionado como opción independiente */}
-            <div className="flex justify-center md:justify-start mt-6 mb-16">
-              <Button 
-                asChild 
-                size="grande" 
-                variant="guay-primary"
-                className="shadow-lg"
-              >
-                <Link to="/solutions" className="flex items-center group">
-                  Ver todas las soluciones
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
+            {/* Right side - Independent CTA */}
+            <div className="lg:col-span-1 flex justify-center lg:justify-end items-start mt-6 lg:mt-12">
+              <div className="text-center lg:text-right">
+                <Button 
+                  asChild 
+                  size="grande" 
+                  variant="guay-primary"
+                  className="shadow-lg bg-[#131F36] hover:bg-[#131F36]/90"
+                >
+                  <Link to="/solutions" className="flex items-center group">
+                    🔍 Explorar todo el catálogo
+                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </Button>
+                <p className="text-xs text-muted-foreground mt-2 max-w-xs">
+                  Acceso directo a todas nuestras soluciones
+                </p>
+              </div>
             </div>
           </div>
           
-          {/* DIMENSIONS SECTION */}
+          {/* DIMENSIONS SECTION - Now clearly separated */}
           <div id="soluciones" className="bg-white rounded-2xl p-6 shadow-lg mb-12 border border-gray-blue/10">
-            {/* Subtítulo de agrupación por dimensiones */}
+            {/* Enhanced subtitle for dimensions grouping */}
             <div className="mb-6">
               <h2 className="text-xl font-semibold mb-2 text-[#6A6A6A] font-quicksand">
-                Dimensiones del bienestar organizacional
+                🧩 Dimensiones del bienestar organizacional
               </h2>
               <p className="text-[#6A6A6A] text-sm">
-                Descubre nuestras soluciones agrupadas por dimensión clave del bienestar, para responder a las distintas necesidades de tu equipo.
+                Soluciones diseñadas para abordar los ejes clave del bienestar según las necesidades de tu equipo o cultura laboral.
               </p>
             </div>
             
@@ -138,7 +150,7 @@ const IndexPage: React.FC = () => {
             </div>
           </div>
           
-          {/* Top Solutions Section - Removed TOP badge */}
+          {/* Top Solutions Section */}
           <section id="destacadas" className="mb-12">
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
               <div>
