@@ -32,42 +32,24 @@ interface SolutionCardProps {
 }
 
 const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
-  // Get appropriate tag color based on solution type
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case "workshop":
-        return "bg-guay-blue/10 text-guay-blue border border-guay-blue/20";
-      case "course":
-        return "bg-guay-purple/10 text-guay-purple border border-guay-purple/20";
-      case "webinar":
-        return "bg-guay-green/10 text-guay-green border border-guay-green/20";
-      case "coaching":
-        return "bg-guay-orange/10 text-guay-orange border border-guay-orange/20";
-      case "assessment":
-        return "bg-orange-100 text-orange-800 border border-orange-200";
-      default:
-        return "bg-gray-100 text-gray-800 border border-gray-200";
-    }
-  };
-
-  // Map solution type to Spanish
+  // Map solution type to Spanish with icons
   const typeToSpanish = (type: string) => {
     const types: Record<string, string> = {
-      workshop: "Taller",
-      course: "Curso",
-      webinar: "Webinar",
-      coaching: "Coaching",
-      assessment: "Evaluación",
+      workshop: "🧠 Taller",
+      course: "🎓 Curso",
+      webinar: "📹 Webinar",
+      coaching: "💼 Coaching",
+      assessment: "📊 Evaluación",
     };
     return types[type] || type;
   };
 
-  // Map modality to Spanish
+  // Map modality to Spanish with icons
   const modalityToSpanish = (modality: string) => {
     const modalities: Record<string, string> = {
-      "virtual": "Virtual",
-      "in-person": "Presencial",
-      "hybrid": "Híbrido",
+      "virtual": "🖥 Virtual",
+      "in-person": "👥 Presencial",
+      "hybrid": "🔀 Híbrido",
     };
     return modalities[modality] || modality;
   };
@@ -115,11 +97,12 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
           alt={solution.title} 
           className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
         />
-        <div className="absolute top-3 left-3 flex gap-2">
-          <span className={cn("px-2 py-1 rounded-md text-xs font-medium", getTypeColor(solution.type))}>
+        {/* Nuevo contenedor de etiquetas con fondo semiopaco institucional */}
+        <div className="absolute top-3 left-3 flex gap-1.5">
+          <span className="px-2.5 py-1 bg-[#0F1A30]/80 text-white rounded-full text-xs font-medium font-quicksand">
             {typeToSpanish(solution.type)}
           </span>
-          <span className="px-2 py-1 bg-guay-dark/70 text-white rounded-md text-xs font-medium">
+          <span className="px-2.5 py-1 bg-[#0F1A30]/80 text-white rounded-full text-xs font-medium font-quicksand">
             {modalityToSpanish(solution.modality)}
           </span>
         </div>
