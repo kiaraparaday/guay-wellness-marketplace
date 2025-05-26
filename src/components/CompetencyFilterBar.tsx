@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -100,7 +99,7 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({ initialFilter
     <div className="w-full flex flex-col items-center mb-8 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
       {/* Título y descripción centrados */}
       <h2 className="text-xl font-semibold mb-1 text-gray-800 font-quicksand">
-        🧩 Filtros disponibles
+        Filtros disponibles
       </h2>
       <p className="text-gray-500 text-base mb-6 font-quicksand">
         Filtra las soluciones según tus necesidades específicas
