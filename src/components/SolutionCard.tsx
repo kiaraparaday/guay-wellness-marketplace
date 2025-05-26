@@ -134,12 +134,12 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
           {solution.description}
         </p>
         
-        {/* Category tags - redesigned as simple text labels */}
+        {/* Category tags - with subtle background to distinguish as labels */}
         <div className="flex flex-wrap gap-2 mb-4">
           {getCategoryLabels().map((category, idx) => (
             <span 
               key={idx} 
-              className="text-xs text-guay-purple font-medium"
+              className="text-xs text-guay-purple font-medium bg-guay-purple/5 px-2 py-1 rounded-full"
             >
               {category}
             </span>
