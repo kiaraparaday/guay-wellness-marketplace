@@ -5,6 +5,7 @@ import SimpleFooter from "@/components/SimpleFooter";
 import FormControls from "@/components/FormControls";
 import CallToActionSection from "@/components/CallToActionSection";
 import { toast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
 
 const ControlDemo: React.FC = () => {
   const handleDemoToast = () => {
@@ -19,12 +20,14 @@ const ControlDemo: React.FC = () => {
       <Header />
       <div className="container mx-auto py-8">
         <h1 className="text-3xl font-bold mb-6">UI Controls Demo</h1>
-        <button 
+        <Button 
           onClick={handleDemoToast}
-          className="mb-6 px-4 py-2 bg-guay-green text-white rounded-md"
+          variant="guay-primary"
+          size="mediano"
+          className="mb-6"
         >
           Test Toast Notification
-        </button>
+        </Button>
         <FormControls />
       </div>
       <CallToActionSection competencyTitle="UI Controls" showControls={true} />

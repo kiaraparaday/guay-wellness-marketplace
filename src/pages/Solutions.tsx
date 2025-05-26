@@ -164,18 +164,22 @@ const SolutionsPage: React.FC = () => {
                 un programa a medida para las necesidades específicas de tu organización.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link 
-                  to="/appointment" 
-                  className="inline-block px-6 py-3 bg-white text-primary rounded-lg font-medium hover:bg-opacity-90 transition-all-200 font-quicksand"
+                <Button 
+                  asChild 
+                  size="grande" 
+                  variant="guay-cta-secondary"
+                  className="bg-white/10 text-white border-2 border-white hover:bg-white/20 font-quicksand"
                 >
-                  Agendar una cita
-                </Link>
-                <Link 
-                  to="/request-solution" 
-                  className="inline-block px-6 py-3 bg-transparent text-white rounded-lg font-medium border border-white/30 hover:bg-white/10 transition-all-200 font-quicksand"
+                  <Link to="/request-solution">Solicitar una solución</Link>
+                </Button>
+                <Button 
+                  asChild 
+                  size="grande" 
+                  variant="guay-cta-primary"
+                  className="bg-[#A2C73F] text-white hover:bg-[#A2C73F]/90 font-quicksand"
                 >
-                  Solicitar una solución
-                </Link>
+                  <Link to="/appointment">Agendar una cita</Link>
+                </Button>
               </div>
             </div>
           </div>

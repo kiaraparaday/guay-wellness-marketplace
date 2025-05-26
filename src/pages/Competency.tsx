@@ -27,7 +27,7 @@ const CompetencyPage: React.FC = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-[40px] font-bold mb-4">Competencia no encontrada</h2>
-          <Button asChild variant="accent" size="mediano">
+          <Button asChild variant="guay-primary" size="grande">
             <Link to="/">Volver al inicio</Link>
           </Button>
         </div>

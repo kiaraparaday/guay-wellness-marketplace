@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import SolutionCard from "@/components/SolutionCard";
@@ -135,7 +134,8 @@ const ResultadosPage = () => {
           </p>
           <Button 
             onClick={() => navigate("/solutions")}
-            className="bg-primary hover:bg-primary/90"
+            variant="guay-primary"
+            size="grande"
           >
             Ver todas las soluciones
           </Button>

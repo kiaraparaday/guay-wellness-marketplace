@@ -84,7 +84,7 @@ const Categories = () => {
           Podemos ayudarte a identificar qué categoría necesita más atención en tu organización.
         </p>
         <div className="flex justify-center">
-          <Button asChild className="bg-guay-purple hover:bg-guay-purple/90">
+          <Button asChild variant="guay-primary" size="grande">
             <Link to="/resultados">Realizar diagnóstico organizacional</Link>
           </Button>
         </div>
@@ -95,9 +95,14 @@ const Categories = () => {
         <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
           ¿No encuentras lo que buscas? Podemos crear un programa a medida para las necesidades específicas de tu organización.
         </p>
-        <Button asChild>
-          <Link to="/request-solution">Solicitar solución personalizada</Link>
-        </Button>
+        <div className="flex justify-center gap-4 flex-col sm:flex-row">
+          <Button asChild variant="guay-cta-secondary" size="grande">
+            <Link to="/request-solution">Solicitar solución personalizada</Link>
+          </Button>
+          <Button asChild variant="guay-cta-primary" size="grande">
+            <Link to="/appointment">Agendar una cita</Link>
+          </Button>
+        </div>
       </div>
     </div>
   );

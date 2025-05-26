@@ -48,7 +48,7 @@ const SolutionsSection: React.FC<SolutionsSectionProps> = ({
             <p className="text-lg mb-4 font-quicksand">No encontramos soluciones con esos filtros. Prueba cambiar alguno de los criterios.</p>
             <Button
               variant="guay-primary"
-              size="mediano"
+              size="grande"
               onClick={() => {
                 const emptyFilters = {
                   solutionTypes: [],
