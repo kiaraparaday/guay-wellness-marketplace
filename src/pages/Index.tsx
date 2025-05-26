@@ -1,4 +1,3 @@
-
 import React from "react";
 import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
@@ -89,7 +88,7 @@ const IndexPage: React.FC = () => {
             
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight animate-fade-in" style={{ animationDelay: "100ms" }}>
               Soluciones para el bienestar <br className="hidden md:block" />
-              <span className="text-guay-blue">
+              <span className="text-black">
                 de tu organización
               </span>
             </h1>
@@ -99,7 +98,7 @@ const IndexPage: React.FC = () => {
           <div id="soluciones" className="bg-white rounded-2xl p-6 shadow-lg mb-12 border border-gray-blue/10">
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
               <div>
-                <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-guay-purple">
+                <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-black">
                   SOLUCIONES
                 </h2>
                 <p className="text-muted-foreground max-w-xl">
@@ -141,7 +140,7 @@ const IndexPage: React.FC = () => {
           <section id="destacadas" className="mb-12">
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
               <div className="relative">
-                <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-guay-purple">
+                <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-black">
                   SOLUCIONES DESTACADAS
                 </h2>
                 
@@ -197,7 +196,7 @@ const IndexPage: React.FC = () => {
               
               <div className="flex flex-col md:flex-row justify-between items-center mb-8 relative z-10">
                 <div>
-                  <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-guay-green">
+                  <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-black">
                     Casos de Éxito
                   </h2>
                   <p className="text-muted-foreground max-w-xl">
