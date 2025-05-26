@@ -96,45 +96,49 @@ const Header: React.FC = () => {
 
   return (
     <>
-      {/* Fixed Header with Logo only */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#15253C] text-white shadow-md">
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+      {/* Fixed Header - Azul marino institucional con logo centrado */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#131F36] text-white shadow-md">
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 h-16">
+          {/* Icono hamburguesa (solo mobile) */}
           <div className="flex items-center">
             <button
               onClick={toggleMobileMenu}
-              className="lg:hidden p-2 mr-2 rounded-full hover:bg-white/10"
+              className="lg:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
               aria-label="Menu"
             >
-              <Menu className="w-5 h-5" />
+              <Menu className="w-6 h-6" />
             </button>
-            
-            <Link to="/" className="flex items-center">
-              <GuayLogo variant="white" className="py-1" />
-            </Link>
+            {/* Espacio vacío en desktop para centrar el logo */}
+            <div className="hidden lg:block w-20"></div>
           </div>
 
-          <div className="flex items-center space-x-2">
+          {/* Logo centrado */}
+          <Link to="/" className="flex items-center absolute left-1/2 transform -translate-x-1/2 lg:relative lg:left-auto lg:transform-none">
+            <GuayLogo variant="white" className="py-1" />
+          </Link>
+
+          {/* Botones a la derecha */}
+          <div className="flex items-center space-x-3">
+            {/* Botón de búsqueda */}
             <button
               onClick={toggleSearch}
-              className={cn(
-                "p-2 rounded-full transition-all-200",
-                isSearchOpen
-                  ? "bg-white text-[#15253C]"
-                  : "hover:bg-white/10"
-              )}
+              className="p-2 rounded-lg hover:bg-white/10 transition-colors"
               aria-label="Search"
             >
               <Search className="w-5 h-5" />
             </button>
             
+            {/* Botón Usuario - Verde institucional */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
-                  className="bg-guay-green hover:bg-guay-green/90 text-white rounded-full flex items-center gap-1.5"
-                  variant="accent"
+                  className="bg-[#A6B94C] hover:bg-[#A6B94C]/90 text-white rounded-lg px-4 py-2 flex items-center gap-2 font-medium"
+                  size="sm"
                 >
                   <User className="w-4 h-4" />
-                  {isLoggedIn ? userName : 'Usuario'}
+                  <span className="hidden md:inline">
+                    {isLoggedIn ? userName : 'Usuario'}
+                  </span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="min-w-[200px] bg-white">
@@ -165,20 +169,20 @@ const Header: React.FC = () => {
         </div>
       </header>
 
-      {/* Navigation Menu Bar - Separated below header */}
-      <nav className="fixed top-[64px] left-0 right-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+      {/* Barra de navegación - Separada debajo del header */}
+      <nav className="fixed top-16 left-0 right-0 z-40 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="hidden lg:flex items-center space-x-1 py-2">
+          <div className="hidden lg:flex items-center justify-center space-x-2 py-3">
             {menuItems.map((item, index) => (
               <Button
                 key={index}
                 onClick={() => handleMenuClick(item.path)}
                 variant="ghost"
                 className={cn(
-                  "px-4 py-2 rounded-full text-sm font-medium transition-all duration-200",
+                  "px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 font-quicksand",
                   location.pathname === item.path
-                    ? "bg-[#15253C] text-white hover:bg-[#15253C]/90"
-                    : "text-[#15253C] hover:bg-gray-100"
+                    ? "bg-[#131F36] text-white hover:bg-[#131F36]/90"
+                    : "text-[#131F36] hover:bg-gray-100"
                 )}
               >
                 {item.label}
@@ -191,7 +195,7 @@ const Header: React.FC = () => {
       {/* Mobile menu */}
       <div
         className={cn(
-          "fixed top-[64px] left-0 right-0 z-30 bg-white shadow-md transition-all duration-300 transform lg:hidden border-b border-gray-200",
+          "fixed top-16 left-0 right-0 z-30 bg-white shadow-lg transition-all duration-300 transform lg:hidden border-b border-gray-200",
           isMobileMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
         )}
       >
@@ -202,10 +206,10 @@ const Header: React.FC = () => {
               onClick={() => handleMenuClick(item.path)}
               variant="ghost"
               className={cn(
-                "w-full justify-start rounded-full px-4 py-2 text-sm font-medium transition-all duration-200",
+                "w-full justify-start rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 font-quicksand",
                 location.pathname === item.path
-                  ? "bg-[#15253C] text-white hover:bg-[#15253C]/90"
-                  : "text-[#15253C] hover:bg-gray-100"
+                  ? "bg-[#131F36] text-white hover:bg-[#131F36]/90"
+                  : "text-[#131F36] hover:bg-gray-100"
               )}
             >
               {item.label}
@@ -217,7 +221,7 @@ const Header: React.FC = () => {
       {/* Search overlay */}
       <div
         className={cn(
-          "fixed top-[64px] left-0 right-0 z-40 bg-white shadow-md transition-all duration-300 transform",
+          "fixed top-16 left-0 right-0 z-40 bg-white shadow-lg transition-all duration-300 transform",
           isSearchOpen ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0 pointer-events-none"
         )}
       >
@@ -241,8 +245,8 @@ const Header: React.FC = () => {
         onSuccess={handleLoginSuccess}
       />
 
-      {/* Spacer for fixed headers */}
-      <div className="h-[112px]"></div>
+      {/* Spacer for fixed headers - Ajustado para ambos headers */}
+      <div className="h-[120px]"></div>
     </>
   );
 };
