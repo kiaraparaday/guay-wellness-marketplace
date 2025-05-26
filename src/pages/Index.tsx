@@ -279,7 +279,13 @@ const IndexPage: React.FC = () => {
                         size="grande" 
                         variant="guay-cta-primary"
                       >
-                        <Link to="/appointment">Agendar una cita</Link>
+                        <a 
+                          href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ0CSfvvxue3MDVfGyXgfjnhXcsu6XkxEoXnnPXjb3J54puN0BGDnntVlpwPMihC6RTbeQ0j1gRZ?gv=true"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Agendar una cita
+                        </a>
                       </Button>
                     </div>
                   </div>
