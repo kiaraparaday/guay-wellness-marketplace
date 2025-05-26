@@ -1,3 +1,4 @@
+
 import React from "react";
 import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
@@ -79,7 +80,7 @@ const IndexPage: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30 font-quicksand">
       <Header />
       
-      {/* Hero Section with Solutions CTA */}
+      {/* Hero Section with new structure */}
       <section className="pt-8 pb-8 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col items-center text-center md:text-left md:items-start mb-6">
@@ -88,14 +89,18 @@ const IndexPage: React.FC = () => {
             </div>
             
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight animate-fade-in" style={{ animationDelay: "100ms" }}>
-              Soluciones para el bienestar <br className="hidden md:block" />
+              Explora nuestras soluciones de <br className="hidden md:block" />
               <span className="text-black">
-                de tu organización
+                bienestar organizacional
               </span>
             </h1>
             
-            {/* Botón global - Movido arriba de las dimensiones */}
-            <div className="flex justify-center md:justify-start mt-6 mb-8">
+            <p className="text-lg text-muted-foreground mb-6 max-w-2xl animate-fade-in" style={{ animationDelay: "200ms" }}>
+              Selecciona una dimensión del bienestar o explora todo el catálogo de soluciones
+            </p>
+            
+            {/* Botón global - Movido arriba y fuera de la sección de dimensiones */}
+            <div className="flex justify-center md:justify-start mt-6 mb-12">
               <Button 
                 asChild 
                 size="grande" 
