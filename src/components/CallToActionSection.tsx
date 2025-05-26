@@ -31,6 +31,7 @@ const CallToActionSection: React.FC<CallToActionSectionProps> = ({
                 asChild 
                 size="grande" 
                 variant="white"
+                className="bg-white text-[#355C91] hover:bg-gray-50 font-quicksand"
               >
                 <Link to="/appointment">Agendar una cita</Link>
               </Button>
@@ -38,6 +39,7 @@ const CallToActionSection: React.FC<CallToActionSectionProps> = ({
                 asChild 
                 size="grande" 
                 variant="light"
+                className="bg-white/10 text-white border border-white/30 hover:bg-white/20 font-quicksand"
               >
                 <Link to="/request-solution">Solicitar una solución</Link>
               </Button>

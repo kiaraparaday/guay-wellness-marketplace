@@ -108,7 +108,7 @@ const IndexPage: React.FC = () => {
               
               <Link 
                 to="/solutions" 
-                className="hidden md:flex items-center mt-4 md:mt-0 px-6 py-3 bg-guay-blue text-white rounded-full font-medium hover:shadow-md hover:bg-guay-blue/90 transition-all-200 group"
+                className="hidden md:flex items-center mt-4 md:mt-0 px-6 py-3 bg-[#355C91] text-white rounded-full font-medium font-quicksand hover:shadow-md hover:bg-[#355C91]/90 transition-all-200 group"
               >
                 Ver todas las soluciones
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -128,7 +128,7 @@ const IndexPage: React.FC = () => {
             <div className="flex justify-center mt-6 md:hidden">
               <Link 
                 to="/solutions" 
-                className="flex items-center px-6 py-3 bg-guay-blue text-white rounded-full font-medium hover:shadow-md hover:bg-guay-blue/90 transition-all-200 group"
+                className="flex items-center px-6 py-3 bg-[#355C91] text-white rounded-full font-medium font-quicksand hover:shadow-md hover:bg-[#355C91]/90 transition-all-200 group"
               >
                 Ver todas las soluciones
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -160,7 +160,7 @@ const IndexPage: React.FC = () => {
               
               <Link 
                 to="/solutions" 
-                className="hidden md:flex items-center mt-4 md:mt-0 px-6 py-3 bg-guay-purple text-white rounded-full font-medium hover:shadow-md hover:bg-guay-purple/90 transition-all-200 group"
+                className="hidden md:flex items-center mt-4 md:mt-0 px-6 py-3 bg-[#355C91] text-white rounded-full font-medium font-quicksand hover:shadow-md hover:bg-[#355C91]/90 transition-all-200 group"
               >
                 Ver todo el catálogo
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -180,7 +180,7 @@ const IndexPage: React.FC = () => {
             <div className="flex justify-center mt-6 md:hidden">
               <Link 
                 to="/solutions" 
-                className="flex items-center px-6 py-3 bg-guay-purple text-white rounded-full font-medium hover:shadow-md hover:bg-guay-purple/90 transition-all-200 group"
+                className="flex items-center px-6 py-3 bg-[#355C91] text-white rounded-full font-medium font-quicksand hover:shadow-md hover:bg-[#355C91]/90 transition-all-200 group"
               >
                 Ver todo el catálogo
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -207,7 +207,7 @@ const IndexPage: React.FC = () => {
                 <div className="mt-4 md:mt-0">
                   <Link 
                     to="/testimonials" 
-                    className="flex items-center px-5 py-2.5 bg-white text-guay-dark rounded-full font-medium border border-guay-blue/20 hover:border-guay-blue/40 hover:shadow-sm transition-all-200 group"
+                    className="flex items-center px-5 py-2.5 bg-[#355C91]/10 text-[#355C91] rounded-full font-medium font-quicksand border border-[#355C91]/20 hover:bg-[#355C91]/20 hover:shadow-sm transition-all-200 group"
                   >
                     Ver más testimonios
                     <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -266,13 +266,13 @@ const IndexPage: React.FC = () => {
                     <div className="space-y-4 sm:space-y-0 sm:flex sm:gap-4">
                       <Link 
                         to="/appointment" 
-                        className="inline-block px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-all-200"
+                        className="inline-block px-6 py-3 bg-[#355C91] text-white rounded-lg font-medium font-quicksand hover:bg-[#355C91]/90 transition-all-200"
                       >
                         Agendar una cita
                       </Link>
                       <Link 
                         to="/request-solution" 
-                        className="inline-block px-6 py-3 bg-white text-foreground rounded-lg font-medium border border-border hover:border-primary/20 transition-all-200"
+                        className="inline-block px-6 py-3 bg-[#355C91]/10 text-[#355C91] rounded-lg font-medium font-quicksand border border-[#355C91]/20 hover:bg-[#355C91]/20 transition-all-200"
                       >
                         Solicitar una solución
                       </Link>
