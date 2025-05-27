@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from "react";
-import { solutionsArray } from "@/data/solutions";
 import { filterEventBus } from "@/services/eventBus";
+import { useSolutions } from "@/hooks/useSolutions";
 
 interface Filters {
   solutionTypes: string[];
@@ -11,8 +10,9 @@ interface Filters {
 }
 
 export const useCompetencySolutions = (competencyId: string | undefined) => {
-  const [solutions, setSolutions] = useState(solutionsArray);
-  const [filteredSolutions, setFilteredSolutions] = useState(solutionsArray);
+  const { solutions: allSolutions, loading, error } = useSolutions();
+  const [solutions, setSolutions] = useState(allSolutions);
+  const [filteredSolutions, setFilteredSolutions] = useState(allSolutions);
   const [filters, setFilters] = useState<Filters>({
     solutionTypes: [],
     modalities: [],
@@ -24,12 +24,15 @@ export const useCompetencySolutions = (competencyId: string | undefined) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     
-    if (competencyId) {
-      const relatedSolutions = solutionsArray.filter(solution => 
+    if (competencyId && allSolutions.length > 0) {
+      const relatedSolutions = allSolutions.filter(solution => 
         solution.competencies.includes(competencyId)
       );
       setSolutions(relatedSolutions);
       setFilteredSolutions(relatedSolutions);
+    } else if (allSolutions.length > 0) {
+      setSolutions(allSolutions);
+      setFilteredSolutions(allSolutions);
     }
     
     const unsubscribe = filterEventBus.subscribe('filtersChanged', (newFilters: Filters) => {
@@ -39,7 +42,7 @@ export const useCompetencySolutions = (competencyId: string | undefined) => {
     return () => {
       unsubscribe();
     };
-  }, [competencyId]);
+  }, [competencyId, allSolutions]);
 
   // Filter solutions based on current filters
   useEffect(() => {
@@ -104,6 +107,8 @@ export const useCompetencySolutions = (competencyId: string | undefined) => {
     filteredSolutions,
     filters,
     setFilters,
+    loading,
+    error,
     totalActiveFilters: 
       filters.solutionTypes.length + 
       filters.modalities.length + 

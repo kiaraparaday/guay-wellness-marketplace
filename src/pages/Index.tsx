@@ -1,4 +1,3 @@
-
 import React from "react";
 import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
@@ -8,8 +7,8 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Star, Quote, Users, Building } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { solutionsData } from "@/data/solutions";
 import { Button } from "@/components/ui/button";
+import { useSolutions } from "@/hooks/useSolutions";
 
 const dimensions: DimensionType[] = [
   {
@@ -42,9 +41,6 @@ const dimensions: DimensionType[] = [
   },
 ];
 
-const topSolutionIds = ["mindfulness-program", "leadership-training", "team-building", "stress-management"];
-const topSolutions = topSolutionIds.map(id => solutionsData[id]);
-
 const testimonials = [
   {
     id: 1,
@@ -76,6 +72,17 @@ const testimonials = [
 ];
 
 const IndexPage: React.FC = () => {
+  const { solutions: allSolutions, loading } = useSolutions();
+  
+  // Get top solutions (fallback to first 4 if Firebase data is not available)
+  const topSolutionIds = ["mindfulness-program", "leadership-training", "team-building", "stress-management"];
+  const topSolutions = topSolutionIds.map(id => 
+    allSolutions.find(solution => solution.id === id)
+  ).filter(Boolean).slice(0, 4);
+
+  // If we don't have the specific solutions, take the first 4 available
+  const displaySolutions = topSolutions.length > 0 ? topSolutions : allSolutions.slice(0, 4);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30 font-quicksand">
       <Header />
@@ -138,7 +145,7 @@ const IndexPage: React.FC = () => {
             </div>
           </div>
           
-          {/* Top Solutions Section - Removed TOP badge */}
+          {/* Top Solutions Section */}
           <section id="destacadas" className="mb-12">
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
               <div>
@@ -164,15 +171,22 @@ const IndexPage: React.FC = () => {
               </Button>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {topSolutions.map((solution, index) => (
-                <SolutionCard 
-                  key={solution.id}
-                  solution={solution}
-                  index={index}
-                />
-              ))}
-            </div>
+            {loading ? (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                <p className="text-lg font-quicksand">Cargando soluciones desde Firebase...</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {displaySolutions.map((solution, index) => (
+                  <SolutionCard 
+                    key={solution.id}
+                    solution={solution}
+                    index={index}
+                  />
+                ))}
+              </div>
+            )}
             
             <div className="flex justify-center mt-6 md:hidden">
               <Button 

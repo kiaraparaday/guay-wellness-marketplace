@@ -4,15 +4,15 @@ import { getFirestore, collection, addDoc, getDocs, query, where, Timestamp, Doc
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from "firebase/auth";
 import { solutionsArray } from "@/data/solutions";
 
-// Firebase configuration
+// Firebase configuration - Updated with new credentials
 const firebaseConfig = {
-  apiKey: "AIzaSyAvvHS5-Aor73Fc02SBG1DpBFg_N-OpClA",
-  authDomain: "marketplace-guay.firebaseapp.com",
-  projectId: "marketplace-guay",
-  storageBucket: "marketplace-guay.firebasestorage.app",
-  messagingSenderId: "759867477173",
-  appId: "1:759867477173:web:45a6d4ff726febdb0342fc",
-  measurementId: "G-VLHHJGXX6P"
+  apiKey: "AIzaSyBD_QWJyzvNG79QbdUPPZDEEnN_D8pcSmM",
+  authDomain: "marketplace-guay-9e47e.firebaseapp.com",
+  projectId: "marketplace-guay-9e47e",
+  storageBucket: "marketplace-guay-9e47e.firebasestorage.app",
+  messagingSenderId: "537300533649",
+  appId: "1:537300533649:web:ba231c8e6909331b2b9a30",
+  measurementId: "G-Y0XK4B6ZH5"
 };
 
 // Initialize Firebase
@@ -220,6 +220,23 @@ export const getAllSolutionsFromFirebase = async () => {
   } catch (error) {
     console.error("Error getting solutions from Firebase:", error);
     return { success: false, error, solutions: [] };
+  }
+};
+
+// Get a specific solution from Firestore by ID
+export const getSolutionFromFirebase = async (solutionId: string) => {
+  try {
+    const solutionRef = doc(db, "solutions", solutionId);
+    const solutionSnap = await getDoc(solutionRef);
+    
+    if (solutionSnap.exists()) {
+      return { success: true, solution: { id: solutionSnap.id, ...solutionSnap.data() } };
+    } else {
+      return { success: false, error: "Solution not found", solution: null };
+    }
+  } catch (error) {
+    console.error("Error getting solution from Firebase:", error);
+    return { success: false, error, solution: null };
   }
 };
 

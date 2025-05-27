@@ -4,6 +4,7 @@ import SolutionCard from "@/components/SolutionCard";
 import { filterEventBus } from "@/services/eventBus";
 import { Button } from "@/components/ui/button";
 import CompetencyFilterBar from "@/components/CompetencyFilterBar";
+import { useSolutions } from "@/hooks/useSolutions";
 
 interface SolutionsSectionProps {
   filteredSolutions: any[];
@@ -19,6 +20,34 @@ const SolutionsSection: React.FC<SolutionsSectionProps> = ({
   filteredSolutions, 
   setFilters 
 }) => {
+  const { loading, error } = useSolutions();
+
+  if (loading) {
+    return (
+      <section className="py-12 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-lg font-quicksand">Cargando soluciones desde Firebase...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="py-12 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center py-12 bg-red-50 rounded-lg">
+            <p className="text-lg text-red-600 font-quicksand mb-4">{error}</p>
+            <p className="text-sm text-red-500">Mostrando datos locales como respaldo</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="py-12 px-6">
       <div className="max-w-7xl mx-auto">
