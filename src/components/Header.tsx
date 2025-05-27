@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, Search, User, LogOut, LogIn } from "lucide-react";
@@ -7,8 +6,8 @@ import SearchBar from "./SearchBar";
 import GuayLogo from "./GuayLogo";
 import { Button } from "@/components/ui/button";
 import { filterEventBus } from "@/services/eventBus";
-import { auth, logoutUser } from "@/services/firebaseService";
-import { onAuthStateChanged } from "firebase/auth";
+import { logoutUser } from "@/services/firebaseService";
+import { useAuth } from "@/contexts/AuthContext";
 import UserRegistrationModal from "./UserRegistrationModal";
 import UserLoginModal from "./UserLoginModal";
 import {
@@ -26,28 +25,11 @@ export { filterEventBus };
 const Header: React.FC = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userName, setUserName] = useState("");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const { currentUser, userData, loading } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  
-  // Listen for authentication state changes
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setIsLoggedIn(true);
-        setUserName(user.displayName || user.email?.split('@')[0] || "Usuario");
-      } else {
-        setIsLoggedIn(false);
-        setUserName("");
-      }
-    });
-    
-    // Clean up subscription
-    return () => unsubscribe();
-  }, []);
   
   const menuItems = [
     { label: "Inicio", path: "/" },
@@ -71,7 +53,7 @@ const Header: React.FC = () => {
     navigate(path);
     setIsMobileMenuOpen(false);
   };
-
+  
   const handleLogin = () => {
     setIsLoginModalOpen(true);
   };
@@ -91,7 +73,21 @@ const Header: React.FC = () => {
   };
 
   const handleLoginSuccess = () => {
-    // Refresh user data or perform any other necessary actions after successful login
+    console.log("Login successful, refreshing user data");
+  };
+
+  // Get display name for user
+  const getUserDisplayName = () => {
+    if (userData?.nombre) {
+      return userData.nombre.split(' ')[0]; // First name only
+    }
+    if (currentUser?.displayName) {
+      return currentUser.displayName.split(' ')[0];
+    }
+    if (currentUser?.email) {
+      return currentUser.email.split('@')[0];
+    }
+    return 'Usuario';
   };
 
   return (
@@ -134,17 +130,21 @@ const Header: React.FC = () => {
                 <Button
                   className="bg-[#A6B94C] hover:bg-[#A6B94C]/90 text-white rounded-lg px-4 py-2 flex items-center gap-2 font-medium"
                   size="sm"
+                  disabled={loading}
                 >
                   <User className="w-4 h-4" />
                   <span className="hidden md:inline">
-                    {isLoggedIn ? userName : 'Usuario'}
+                    {loading ? 'Cargando...' : currentUser ? getUserDisplayName() : 'Usuario'}
                   </span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="min-w-[200px] bg-white">
-                {isLoggedIn ? (
+                {currentUser ? (
                   <>
-                    <DropdownMenuLabel>{userName}</DropdownMenuLabel>
+                    <DropdownMenuLabel>{getUserDisplayName()}</DropdownMenuLabel>
+                    {userData?.empresa && (
+                      <DropdownMenuLabel className="text-sm text-gray-500">{userData.empresa}</DropdownMenuLabel>
+                    )}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
                       <LogOut className="mr-2 h-4 w-4" />

@@ -1,8 +1,17 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { User } from "firebase/auth";
-import { auth, getCurrentUser, getUserData, UserData } from "../services/firebaseService";
+import { auth, getUserData } from "../services/firebaseService";
 import { onAuthStateChanged } from "firebase/auth";
+
+export interface UserData {
+  nombre: string;
+  email: string;
+  empresa?: string;
+  rol: string;
+  fechaRegistro: Date;
+  uid?: string;
+}
 
 interface AuthContextType {
   currentUser: User | null;
@@ -24,16 +33,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("Setting up auth state listener...");
+    
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      console.log("Auth state changed:", user ? "User logged in" : "User logged out");
       setCurrentUser(user);
       
       if (user) {
         try {
-          // Fetch additional user data from Firestore
-          const userDoc = await fetch(`/api/getUserData?uid=${user.uid}`);
-          if (userDoc.ok) {
-            const userData = await userDoc.json();
-            setUserData(userData);
+          console.log("Fetching user data for UID:", user.uid);
+          const userDoc = await getUserData(user.uid);
+          if (userDoc) {
+            console.log("User data loaded:", userDoc.nombre);
+            setUserData(userDoc);
+          } else {
+            console.log("No user data found in Firestore");
           }
         } catch (error) {
           console.error("Error fetching user data:", error);

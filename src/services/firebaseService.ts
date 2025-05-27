@@ -1,4 +1,5 @@
-import { initializeApp } from "firebase/app";
+
+import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, addDoc, getDocs, query, where, Timestamp, DocumentData, setDoc, doc, getDoc } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from "firebase/auth";
@@ -15,8 +16,8 @@ const firebaseConfig = {
   measurementId: "G-Y0XK4B6ZH5"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// Initialize Firebase - Check if app already exists
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
 const auth = getAuth(app);
@@ -184,22 +185,25 @@ export const getAllAppointments = async () => {
 // Sync solutions with Firestore
 export const syncSolutionsWithFirebase = async () => {
   try {
-    // Check if solutions collection exists and has data
+    console.log("Checking solutions in Firebase...");
     const solutionsSnapshot = await getDocs(collection(db, "solutions"));
     
     // If no solutions in Firebase, upload them from local data
     if (solutionsSnapshot.empty) {
-      console.log("No hay soluciones en Firebase, sincronizando datos locales...");
+      console.log("No solutions found in Firebase, uploading local data...");
       
       for (const solution of solutionsArray) {
+        console.log("Uploading solution:", solution.title);
         await addDoc(collection(db, "solutions"), solution);
       }
-      console.log("Soluciones sincronizadas correctamente");
+      console.log("Solutions synced successfully to Firebase");
+    } else {
+      console.log("Solutions already exist in Firebase, count:", solutionsSnapshot.size);
     }
     
     return { success: true };
   } catch (error) {
-    console.error("Error al sincronizar soluciones con Firebase:", error);
+    console.error("Error syncing solutions with Firebase:", error);
     return { success: false, error };
   }
 };
@@ -207,15 +211,19 @@ export const syncSolutionsWithFirebase = async () => {
 // Get all solutions from Firestore
 export const getAllSolutionsFromFirebase = async () => {
   try {
+    console.log("Fetching solutions from Firebase...");
     await syncSolutionsWithFirebase(); // Ensure solutions are synced
     
     const solutionsSnapshot = await getDocs(collection(db, "solutions"));
     
     const solutions: DocumentData[] = [];
     solutionsSnapshot.forEach((doc) => {
-      solutions.push({ id: doc.id, ...doc.data() });
+      const solutionData = { id: doc.id, ...doc.data() };
+      console.log("Solution loaded:", solutionData.title);
+      solutions.push(solutionData);
     });
     
+    console.log("Total solutions fetched from Firebase:", solutions.length);
     return { success: true, solutions };
   } catch (error) {
     console.error("Error getting solutions from Firebase:", error);
