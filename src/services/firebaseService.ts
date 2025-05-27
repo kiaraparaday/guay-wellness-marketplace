@@ -1,8 +1,7 @@
-
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, addDoc, getDocs, query, where, Timestamp, DocumentData, setDoc, doc, getDoc } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, User } from "firebase/auth";
 import { solutionsArray } from "@/data/solutions";
 
 // Firebase configuration - Updated with new credentials
@@ -21,6 +20,9 @@ const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
 const auth = getAuth(app);
+
+// Initialize Google Auth Provider
+const googleProvider = new GoogleAuthProvider();
 
 // Interfaces
 export interface AppointmentData {
@@ -83,6 +85,36 @@ export const loginUser = async (email: string, password: string): Promise<User> 
     return userCredential.user;
   } catch (error) {
     console.error("Error logging in:", error);
+    throw error;
+  }
+};
+
+// New Google Sign-In function
+export const signInWithGoogle = async (): Promise<User> => {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
+    
+    // Check if user exists in Firestore, if not create a basic profile
+    const userDoc = await getUserData(user.uid);
+    if (!userDoc) {
+      const userData: Omit<UserData, 'password'> = {
+        nombre: user.displayName || user.email?.split('@')[0] || 'Usuario',
+        email: user.email!,
+        rol: 'usuario',
+        fechaRegistro: new Date(),
+        uid: user.uid
+      };
+      
+      await setDoc(doc(db, "usuarios", user.uid), {
+        ...userData,
+        fechaRegistro: Timestamp.fromDate(userData.fechaRegistro)
+      });
+    }
+    
+    return user;
+  } catch (error) {
+    console.error("Error signing in with Google:", error);
     throw error;
   }
 };
