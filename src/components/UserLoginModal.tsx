@@ -9,16 +9,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
 import { loginUser, signInWithGoogle } from "@/services/firebaseService";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface UserLoginModalProps {
   isOpen: boolean;
   onClose: () => void;
   onRegisterClick: () => void;
-  onSuccess: () => void;
+  onSuccess?: () => void;
 }
 
-// Form validation schema
 const formSchema = z.object({
   email: z.string().email("Correo electrónico no válido"),
   password: z.string().min(1, "La contraseña es obligatoria"),
@@ -34,7 +33,7 @@ const UserLoginModal: React.FC<UserLoginModalProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  const navigate = useNavigate();
+  const { refreshUserData } = useAuth();
   
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -48,28 +47,32 @@ const UserLoginModal: React.FC<UserLoginModalProps> = ({
     setIsLoading(true);
     
     try {
-      // Login user with Firebase Authentication
+      console.log("Attempting to login user with email:", data.email);
       await loginUser(data.email, data.password);
+      
+      // Refresh user data after successful login
+      await refreshUserData();
       
       toast.success("¡Inicio de sesión exitoso!", {
         description: "Bienvenido/a de nuevo a Guay",
       });
       
-      // Call the success callback
-      onSuccess();
-      
-      // Close the modal
+      onSuccess?.();
       onClose();
       
-      // Navigate to home or dashboard if needed
-      // navigate("/");
+      // Reset form
+      form.reset();
     } catch (error: any) {
       console.error("Error logging in:", error);
       
       let errorMessage = "Error al iniciar sesión. Verifica tus credenciales.";
       
-      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-        errorMessage = "Correo o contraseña incorrectos";
+      if (error.code === 'auth/user-not-found') {
+        errorMessage = "No existe una cuenta con este correo electrónico";
+      } else if (error.code === 'auth/wrong-password') {
+        errorMessage = "Contraseña incorrecta";
+      } else if (error.code === 'auth/invalid-credential') {
+        errorMessage = "Credenciales inválidas";
       } else if (error.code === 'auth/too-many-requests') {
         errorMessage = "Demasiados intentos fallidos. Intenta más tarde.";
       }
@@ -84,16 +87,17 @@ const UserLoginModal: React.FC<UserLoginModalProps> = ({
     setIsGoogleLoading(true);
     
     try {
+      console.log("Attempting Google sign-in...");
       await signInWithGoogle();
+      
+      // Refresh user data after successful login
+      await refreshUserData();
       
       toast.success("¡Inicio de sesión exitoso!", {
         description: "Bienvenido/a a Guay",
       });
       
-      // Call the success callback
-      onSuccess();
-      
-      // Close the modal
+      onSuccess?.();
       onClose();
     } catch (error: any) {
       console.error("Error signing in with Google:", error);
@@ -104,6 +108,8 @@ const UserLoginModal: React.FC<UserLoginModalProps> = ({
         errorMessage = "Inicio de sesión cancelado";
       } else if (error.code === 'auth/popup-blocked') {
         errorMessage = "Popup bloqueado. Permite popups para continuar.";
+      } else if (error.code === 'auth/cancelled-popup-request') {
+        errorMessage = "Solicitud de popup cancelada";
       }
       
       toast.error(errorMessage);
@@ -112,8 +118,13 @@ const UserLoginModal: React.FC<UserLoginModalProps> = ({
     }
   };
 
+  const handleClose = () => {
+    form.reset();
+    onClose();
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
       <DialogContent className="sm:max-w-[400px]">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-center">
@@ -194,7 +205,7 @@ const UserLoginModal: React.FC<UserLoginModalProps> = ({
                 <button 
                   type="button" 
                   onClick={() => {
-                    onClose();
+                    handleClose();
                     onRegisterClick();
                   }}
                   className="text-guay-green hover:underline font-medium"

@@ -64,6 +64,7 @@ const Header: React.FC = () => {
 
   const handleLogout = async () => {
     try {
+      console.log("Logging out user...");
       await logoutUser();
       toast.success("Sesión cerrada correctamente");
     } catch (error) {
@@ -72,8 +73,8 @@ const Header: React.FC = () => {
     }
   };
 
-  const handleLoginSuccess = () => {
-    console.log("Login successful, refreshing user data");
+  const handleAuthSuccess = () => {
+    console.log("Authentication successful, user data will be refreshed automatically");
   };
 
   // Get display name for user
@@ -141,12 +142,13 @@ const Header: React.FC = () => {
               <DropdownMenuContent className="min-w-[200px] bg-white">
                 {currentUser ? (
                   <>
-                    <DropdownMenuLabel>{getUserDisplayName()}</DropdownMenuLabel>
+                    <DropdownMenuLabel className="font-medium">{getUserDisplayName()}</DropdownMenuLabel>
+                    <DropdownMenuLabel className="text-xs text-gray-500 font-normal">{currentUser.email}</DropdownMenuLabel>
                     {userData?.empresa && (
                       <DropdownMenuLabel className="text-sm text-gray-500">{userData.empresa}</DropdownMenuLabel>
                     )}
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+                    <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-600 focus:text-red-600">
                       <LogOut className="mr-2 h-4 w-4" />
                       <span>Cerrar sesión</span>
                     </DropdownMenuItem>
@@ -236,13 +238,17 @@ const Header: React.FC = () => {
           setIsLoginModalOpen(false);
           setIsRegisterModalOpen(true);
         }}
-        onSuccess={handleLoginSuccess}
+        onSuccess={handleAuthSuccess}
       />
       
       <UserRegistrationModal 
         isOpen={isRegisterModalOpen} 
         onClose={() => setIsRegisterModalOpen(false)} 
-        onSuccess={handleLoginSuccess}
+        onSuccess={handleAuthSuccess}
+        onLoginClick={() => {
+          setIsRegisterModalOpen(false);
+          setIsLoginModalOpen(true);
+        }}
       />
 
       {/* Spacer for fixed headers - Ajustado para ambos headers */}
