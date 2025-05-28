@@ -10,7 +10,7 @@ interface Filters {
 }
 
 export const useCompetencySolutions = (competencyId: string | undefined) => {
-  const { solutions: allSolutions, loading, error } = useSolutions();
+  const { solutions: allSolutions, loading, error } = useSolutions(); // Now uses real-time updates
   const [solutions, setSolutions] = useState(allSolutions);
   const [filteredSolutions, setFilteredSolutions] = useState(allSolutions);
   const [filters, setFilters] = useState<Filters>({
@@ -20,7 +20,7 @@ export const useCompetencySolutions = (competencyId: string | undefined) => {
     audiences: [],
   });
   
-  // Set up initial solutions based on competency ID
+  // Set up initial solutions based on competency ID - now responds to real-time updates
   useEffect(() => {
     window.scrollTo(0, 0);
     
@@ -42,7 +42,7 @@ export const useCompetencySolutions = (competencyId: string | undefined) => {
     return () => {
       unsubscribe();
     };
-  }, [competencyId, allSolutions]);
+  }, [competencyId, allSolutions]); // This will re-run when allSolutions updates in real-time
 
   // Filter solutions based on current filters
   useEffect(() => {

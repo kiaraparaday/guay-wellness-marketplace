@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Clock, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -32,6 +32,15 @@ interface SolutionCardProps {
 }
 
 const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
+  const [imageError, setImageError] = useState(false);
+  
+  // Fallback image for broken/invalid images
+  const fallbackImage = "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?auto=format&fit=crop&q=80";
+  
+  // Use fallback if image is invalid or fails to load
+  const imageUrl = imageError || !solution.image || solution.image === "Kiara y reduccion del estres" ? 
+    fallbackImage : solution.image;
+
   // Map solution type to Spanish without icons
   const typeToSpanish = (type: string) => {
     const types: Record<string, string> = {
@@ -79,6 +88,10 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
     return solution.competencies.map(id => competencyLabels[id] || id);
   };
 
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   return (
     <Link 
       to={`/solution/${solution.id}`}
@@ -93,9 +106,10 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
     >
       <div className="relative h-48 overflow-hidden">
         <img 
-          src={solution.image} 
+          src={imageUrl}
           alt={solution.title} 
           className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
+          onError={handleImageError}
         />
         {/* Nuevo contenedor de etiquetas con fondo semiopaco institucional */}
         <div className="absolute top-3 left-3 flex gap-1.5">
