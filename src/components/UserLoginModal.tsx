@@ -104,7 +104,9 @@ const UserLoginModal: React.FC<UserLoginModalProps> = ({
       
       let errorMessage = "Error al iniciar sesión con Google";
       
-      if (error.code === 'auth/popup-closed-by-user') {
+      if (error.code === 'auth/unauthorized-domain') {
+        errorMessage = "Dominio no autorizado. El administrador debe agregar este dominio en Firebase Console → Authentication → Settings → Authorized domains";
+      } else if (error.code === 'auth/popup-closed-by-user') {
         errorMessage = "Inicio de sesión cancelado";
       } else if (error.code === 'auth/popup-blocked') {
         errorMessage = "Popup bloqueado. Permite popups para continuar.";
@@ -112,7 +114,9 @@ const UserLoginModal: React.FC<UserLoginModalProps> = ({
         errorMessage = "Solicitud de popup cancelada";
       }
       
-      toast.error(errorMessage);
+      toast.error(errorMessage, {
+        duration: 6000, // Show longer for unauthorized domain error
+      });
     } finally {
       setIsGoogleLoading(false);
     }

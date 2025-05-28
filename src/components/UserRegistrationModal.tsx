@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
@@ -121,7 +122,9 @@ const UserRegistrationModal: React.FC<UserRegistrationModalProps> = ({
       
       let errorMessage = "Error al registrarse con Google";
       
-      if (error.code === 'auth/popup-closed-by-user') {
+      if (error.code === 'auth/unauthorized-domain') {
+        errorMessage = "Dominio no autorizado. El administrador debe agregar este dominio en Firebase Console → Authentication → Settings → Authorized domains";
+      } else if (error.code === 'auth/popup-closed-by-user') {
         errorMessage = "Registro cancelado";
       } else if (error.code === 'auth/popup-blocked') {
         errorMessage = "Popup bloqueado. Permite popups para continuar.";
@@ -129,7 +132,9 @@ const UserRegistrationModal: React.FC<UserRegistrationModalProps> = ({
         errorMessage = "Ya existe una cuenta con este correo";
       }
       
-      toast.error(errorMessage);
+      toast.error(errorMessage, {
+        duration: 6000, // Show longer for unauthorized domain error
+      });
     } finally {
       setIsGoogleLoading(false);
     }
