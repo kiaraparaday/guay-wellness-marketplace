@@ -2,16 +2,16 @@
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import SolutionCard from "@/components/SolutionCard";
-import { solutionsArray } from "@/data/solutions";
 import { Link } from "react-router-dom";
-import { Download } from "lucide-react";
+import { Download, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { exportSolutionsToCSV, exportAllMarketplaceData } from "@/utils/exportUtils";
 import { toast } from "sonner";
-// Import the filterEventBus from our services
 import { filterEventBus } from "@/services/eventBus";
+import { useSolutions } from "@/hooks/useSolutions";
 
 const SolutionsPage: React.FC = () => {
+  const { solutions: allSolutions, loading, error, refetch } = useSolutions();
   const [filters, setFilters] = useState({
     solutionTypes: [] as string[],
     modalities: [] as string[],
@@ -19,8 +19,7 @@ const SolutionsPage: React.FC = () => {
     audiences: [] as string[],
   });
   
-  const [filteredSolutions, setFilteredSolutions] = useState(solutionsArray);
-  const [isSyncing, setIsSyncing] = useState(false);
+  const [filteredSolutions, setFilteredSolutions] = useState(allSolutions);
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -35,7 +34,7 @@ const SolutionsPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = solutionsArray.filter(solution => {
+    const filtered = allSolutions.filter(solution => {
       const typeMatch = filters.solutionTypes.length === 0 || filters.solutionTypes.includes(solution.type);
       const modalityMatch = filters.modalities.length === 0 || filters.modalities.includes(solution.modality);
       
@@ -43,7 +42,7 @@ const SolutionsPage: React.FC = () => {
     });
     
     setFilteredSolutions(filtered);
-  }, [filters]);
+  }, [filters, allSolutions]);
 
   const totalActiveFilters = 
     filters.solutionTypes.length + 
@@ -71,6 +70,11 @@ const SolutionsPage: React.FC = () => {
     }
   };
 
+  const handleRetryLoad = () => {
+    refetch();
+    toast.info("Reintentando cargar datos desde Firebase...");
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30 font-quicksand">
       <Header />
@@ -81,16 +85,30 @@ const SolutionsPage: React.FC = () => {
             <div className="lg:col-span-3">
               <h1 className="text-3xl sm:text-4xl font-semibold mb-4 animate-fade-in font-quicksand">
                 Catálogo de Soluciones
+                {loading && <span className="text-lg text-muted-foreground ml-2">(Cargando desde Firebase...)</span>}
               </h1>
               <p className="text-muted-foreground mb-6 animate-fade-in" style={{ animationDelay: "100ms" }}>
-                Explora nuestra amplia gama de servicios diseñados para mejorar el bienestar y el rendimiento de tu organización
+                {error ? 
+                  "Error al cargar desde Firebase. Verifica la conexión." :
+                  "Explora nuestra amplia gama de servicios cargados directamente desde Firebase"
+                }
               </p>
+              {error && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                  <p className="text-red-700 mb-2">{error}</p>
+                  <Button onClick={handleRetryLoad} variant="outline" className="flex items-center gap-2">
+                    <RefreshCw className="h-4 w-4" />
+                    Reintentar
+                  </Button>
+                </div>
+              )}
             </div>
             <div className="lg:col-span-2 flex flex-col sm:flex-row gap-3 justify-end items-start">
               <Button 
                 onClick={handleExportSolutions} 
                 variant="outline"
                 className="flex items-center gap-2"
+                disabled={loading || error !== null}
               >
                 <Download className="h-4 w-4" />
                 Exportar Soluciones
@@ -99,6 +117,7 @@ const SolutionsPage: React.FC = () => {
                 onClick={handleExportAllData} 
                 variant="default"
                 className="flex items-center gap-2"
+                disabled={loading || error !== null}
               >
                 <Download className="h-4 w-4" />
                 Exportar Todos los Datos
@@ -112,14 +131,27 @@ const SolutionsPage: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl font-semibold font-quicksand">
-              Soluciones disponibles 
+              Soluciones desde Firebase
               <span className="ml-2 text-lg text-muted-foreground font-normal">
-                ({filteredSolutions.length})
+                ({loading ? "..." : filteredSolutions.length})
               </span>
             </h2>
           </div>
           
-          {filteredSolutions.length > 0 ? (
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-lg font-quicksand">Cargando soluciones desde Firebase...</p>
+            </div>
+          ) : error ? (
+            <div className="text-center py-12 bg-red-50 rounded-lg">
+              <p className="text-lg text-red-600 font-quicksand mb-4">{error}</p>
+              <Button onClick={handleRetryLoad} variant="outline" className="flex items-center gap-2 mx-auto">
+                <RefreshCw className="h-4 w-4" />
+                Reintentar carga
+              </Button>
+            </div>
+          ) : filteredSolutions.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredSolutions.map((solution, index) => (
                 <SolutionCard
@@ -128,6 +160,17 @@ const SolutionsPage: React.FC = () => {
                   index={index}
                 />
               ))}
+            </div>
+          ) : allSolutions.length === 0 ? (
+            <div className="text-center py-12 bg-yellow-50 rounded-lg">
+              <p className="text-lg mb-4 font-quicksand">No hay soluciones en Firebase</p>
+              <p className="text-sm text-muted-foreground mb-4">
+                Asegúrate de haber subido las soluciones a la colección 'solutions' en Firebase
+              </p>
+              <Button onClick={handleRetryLoad} variant="outline" className="flex items-center gap-2 mx-auto">
+                <RefreshCw className="h-4 w-4" />
+                Verificar Firebase
+              </Button>
             </div>
           ) : (
             <div className="text-center py-12 bg-secondary/30 rounded-lg">

@@ -251,15 +251,21 @@ export const getAllSolutionsFromFirebase = async () => {
     const solutions: DocumentData[] = [];
     solutionsSnapshot.forEach((doc) => {
       const solutionData = { id: doc.id, ...doc.data() };
-      console.log("Solution loaded from Firebase:", doc.id);
+      console.log("Solution loaded from Firebase:", doc.id, solutionData.title || "No title");
       solutions.push(solutionData);
     });
     
     console.log("Total solutions fetched from Firebase:", solutions.length);
+    
+    // Log first solution structure for debugging
+    if (solutions.length > 0) {
+      console.log("Sample solution structure:", JSON.stringify(solutions[0], null, 2));
+    }
+    
     return { success: true, solutions };
   } catch (error) {
     console.error("Error getting solutions from Firebase:", error);
-    return { success: false, error, solutions: [] };
+    return { success: false, error: error instanceof Error ? error.message : "Unknown error", solutions: [] };
   }
 };
 

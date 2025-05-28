@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from "react";
 import { getAllSolutionsFromFirebase } from "@/services/firebaseService";
-import { solutionsArray } from "@/data/solutions";
 import { SolutionType } from "@/components/SolutionCard";
 
 export const useSolutions = () => {
@@ -11,23 +10,28 @@ export const useSolutions = () => {
 
   const fetchSolutions = async () => {
     try {
-      console.log("Starting to fetch solutions...");
+      console.log("Fetching solutions from Firebase only...");
       setLoading(true);
       setError(null);
       
       const result = await getAllSolutionsFromFirebase();
       
-      if (result.success && result.solutions.length > 0) {
+      if (result.success) {
         console.log("Solutions loaded from Firebase:", result.solutions.length);
         setSolutions(result.solutions as SolutionType[]);
+        
+        if (result.solutions.length === 0) {
+          setError("No hay soluciones disponibles en Firebase");
+        }
       } else {
-        console.log("Using local solutions as fallback, Firebase returned:", result);
-        setSolutions(solutionsArray);
+        console.error("Error loading from Firebase:", result.error);
+        setError("Error al cargar las soluciones desde Firebase");
+        setSolutions([]);
       }
     } catch (err) {
       console.error("Error fetching solutions:", err);
-      setError("Error al cargar las soluciones");
-      setSolutions(solutionsArray); // Fallback to local data
+      setError("Error de conexión con Firebase");
+      setSolutions([]);
     } finally {
       setLoading(false);
     }

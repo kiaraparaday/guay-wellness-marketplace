@@ -1,10 +1,11 @@
+
 import React from "react";
 import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
 import SolutionCard from "@/components/SolutionCard";
 import GuayLogo from "@/components/GuayLogo";
 import { Link } from "react-router-dom";
-import { ArrowRight, Star, Quote, Users, Building } from "lucide-react";
+import { ArrowRight, Star, Quote, Users, Building, RefreshCw } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -72,16 +73,14 @@ const testimonials = [
 ];
 
 const IndexPage: React.FC = () => {
-  const { solutions: allSolutions, loading } = useSolutions();
+  const { solutions: allSolutions, loading, error, refetch } = useSolutions();
   
-  // Get top solutions (fallback to first 4 if Firebase data is not available)
-  const topSolutionIds = ["mindfulness-program", "leadership-training", "team-building", "stress-management"];
-  const topSolutions = topSolutionIds.map(id => 
-    allSolutions.find(solution => solution.id === id)
-  ).filter(Boolean).slice(0, 4);
+  // Display first 4 solutions from Firebase, no fallbacks
+  const displaySolutions = allSolutions.slice(0, 4);
 
-  // If we don't have the specific solutions, take the first 4 available
-  const displaySolutions = topSolutions.length > 0 ? topSolutions : allSolutions.slice(0, 4);
+  const handleRetryLoad = () => {
+    refetch();
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30 font-quicksand">
@@ -103,10 +102,21 @@ const IndexPage: React.FC = () => {
             </h1>
             
             <p className="text-lg text-muted-foreground mb-6 max-w-2xl animate-fade-in" style={{ animationDelay: "200ms" }}>
-              Selecciona una dimensión del bienestar según las necesidades de tu organización o explora el catálogo completo de soluciones disponibles.
+              Selecciona una dimensión del bienestar según las necesidades de tu organización o explora el catálogo completo de soluciones cargadas desde Firebase.
             </p>
             
-            {/* Botón global - Separado visualmente y posicionado como opción independiente */}
+            {/* Estado de conexión con Firebase */}
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-red-700 text-sm">Error al cargar desde Firebase: {error}</p>
+                <Button onClick={handleRetryLoad} variant="outline" size="sm" className="mt-2 flex items-center gap-2">
+                  <RefreshCw className="h-3 w-3" />
+                  Reintentar
+                </Button>
+              </div>
+            )}
+            
+            {/* Botón global */}
             <div className="flex justify-center md:justify-start mt-6 mb-16">
               <Button 
                 asChild 
@@ -145,16 +155,16 @@ const IndexPage: React.FC = () => {
             </div>
           </div>
           
-          {/* Top Solutions Section */}
+          {/* Top Solutions Section - Solo desde Firebase */}
           <section id="destacadas" className="mb-12">
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
               <div>
                 <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-black">
-                  SOLUCIONES DESTACADAS
+                  SOLUCIONES DESDE FIREBASE
                 </h2>
                 
                 <p className="text-muted-foreground max-w-xl mt-2">
-                  <span className="font-semibold text-guay-purple">Las más solicitadas</span> por las organizaciones líderes en bienestar
+                  <span className="font-semibold text-guay-purple">Cargadas directamente</span> desde nuestra base de datos Firebase
                 </p>
               </div>
               
@@ -176,7 +186,16 @@ const IndexPage: React.FC = () => {
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
                 <p className="text-lg font-quicksand">Cargando soluciones desde Firebase...</p>
               </div>
-            ) : (
+            ) : error ? (
+              <div className="text-center py-12 bg-red-50 rounded-lg">
+                <p className="text-lg text-red-600 font-quicksand mb-4">Error al conectar con Firebase</p>
+                <p className="text-sm text-red-500 mb-4">{error}</p>
+                <Button onClick={handleRetryLoad} variant="outline" className="flex items-center gap-2 mx-auto">
+                  <RefreshCw className="h-4 w-4" />
+                  Reintentar conexión
+                </Button>
+              </div>
+            ) : displaySolutions.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {displaySolutions.map((solution, index) => (
                   <SolutionCard 
@@ -185,6 +204,17 @@ const IndexPage: React.FC = () => {
                     index={index}
                   />
                 ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 bg-yellow-50 rounded-lg">
+                <p className="text-lg font-quicksand mb-4">No hay soluciones en Firebase</p>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Asegúrate de haber subido las soluciones a Firebase
+                </p>
+                <Button onClick={handleRetryLoad} variant="outline" className="flex items-center gap-2 mx-auto">
+                  <RefreshCw className="h-4 w-4" />
+                  Verificar Firebase
+                </Button>
               </div>
             )}
             
