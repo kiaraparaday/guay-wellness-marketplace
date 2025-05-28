@@ -87,8 +87,9 @@ const UserLoginModal: React.FC<UserLoginModalProps> = ({
     setIsGoogleLoading(true);
     
     try {
-      console.log("Attempting Google sign-in...");
-      await signInWithGoogle();
+      console.log("Starting Google sign-in process...");
+      const user = await signInWithGoogle();
+      console.log("Google sign-in successful for:", user.email);
       
       // Refresh user data after successful login
       await refreshUserData();
@@ -105,17 +106,19 @@ const UserLoginModal: React.FC<UserLoginModalProps> = ({
       let errorMessage = "Error al iniciar sesión con Google";
       
       if (error.code === 'auth/unauthorized-domain') {
-        errorMessage = "Dominio no autorizado. El administrador debe agregar este dominio en Firebase Console → Authentication → Settings → Authorized domains";
+        errorMessage = "Dominio no autorizado para Google Sign-In. Contacta al administrador.";
       } else if (error.code === 'auth/popup-closed-by-user') {
         errorMessage = "Inicio de sesión cancelado";
       } else if (error.code === 'auth/popup-blocked') {
         errorMessage = "Popup bloqueado. Permite popups para continuar.";
       } else if (error.code === 'auth/cancelled-popup-request') {
         errorMessage = "Solicitud de popup cancelada";
+      } else if (error.code === 'auth/network-request-failed') {
+        errorMessage = "Error de conexión. Verifica tu internet.";
       }
       
       toast.error(errorMessage, {
-        duration: 6000, // Show longer for unauthorized domain error
+        duration: 5000,
       });
     } finally {
       setIsGoogleLoading(false);

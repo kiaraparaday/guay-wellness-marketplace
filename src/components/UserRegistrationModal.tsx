@@ -105,8 +105,9 @@ const UserRegistrationModal: React.FC<UserRegistrationModalProps> = ({
     setIsGoogleLoading(true);
     
     try {
-      console.log("Attempting Google sign-in for registration...");
-      await signInWithGoogle();
+      console.log("Starting Google registration process...");
+      const user = await signInWithGoogle();
+      console.log("Google registration successful for:", user.email);
       
       // Refresh user data after successful login
       await refreshUserData();
@@ -123,17 +124,19 @@ const UserRegistrationModal: React.FC<UserRegistrationModalProps> = ({
       let errorMessage = "Error al registrarse con Google";
       
       if (error.code === 'auth/unauthorized-domain') {
-        errorMessage = "Dominio no autorizado. El administrador debe agregar este dominio en Firebase Console → Authentication → Settings → Authorized domains";
+        errorMessage = "Dominio no autorizado para Google Sign-In. Contacta al administrador.";
       } else if (error.code === 'auth/popup-closed-by-user') {
         errorMessage = "Registro cancelado";
       } else if (error.code === 'auth/popup-blocked') {
         errorMessage = "Popup bloqueado. Permite popups para continuar.";
       } else if (error.code === 'auth/account-exists-with-different-credential') {
         errorMessage = "Ya existe una cuenta con este correo";
+      } else if (error.code === 'auth/network-request-failed') {
+        errorMessage = "Error de conexión. Verifica tu internet.";
       }
       
       toast.error(errorMessage, {
-        duration: 6000, // Show longer for unauthorized domain error
+        duration: 5000,
       });
     } finally {
       setIsGoogleLoading(false);

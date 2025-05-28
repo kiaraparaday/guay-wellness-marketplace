@@ -21,8 +21,15 @@ const analytics = getAnalytics(app);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Initialize Google Auth Provider
+// Initialize Google Auth Provider with proper configuration
 const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
+  prompt: 'select_account'
+});
+
+// Add required scopes for Google Sign-In
+googleProvider.addScope('email');
+googleProvider.addScope('profile');
 
 // Interfaces
 export interface AppointmentData {
@@ -53,6 +60,8 @@ export const registerUser = async (userData: UserData): Promise<void> => {
   }
   
   try {
+    console.log("Registering user with email:", userData.email);
+    
     // Create the user with email and password
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -61,6 +70,7 @@ export const registerUser = async (userData: UserData): Promise<void> => {
     );
     
     const user = userCredential.user;
+    console.log("User created successfully with UID:", user.uid);
     
     // Remove password from the userData object before saving to Firestore
     const { password, ...userDataForFirestore } = userData;
@@ -73,6 +83,8 @@ export const registerUser = async (userData: UserData): Promise<void> => {
       ...userDataForFirestore,
       fechaRegistro: Timestamp.fromDate(userData.fechaRegistro || new Date())
     });
+    
+    console.log("User data saved to Firestore successfully");
   } catch (error) {
     console.error("Error registering user:", error);
     throw error;
@@ -81,7 +93,9 @@ export const registerUser = async (userData: UserData): Promise<void> => {
 
 export const loginUser = async (email: string, password: string): Promise<User> => {
   try {
+    console.log("Attempting to login with email:", email);
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    console.log("Login successful for user:", userCredential.user.uid);
     return userCredential.user;
   } catch (error) {
     console.error("Error logging in:", error);
@@ -89,19 +103,36 @@ export const loginUser = async (email: string, password: string): Promise<User> 
   }
 };
 
-// New Google Sign-In function
+// Enhanced Google Sign-In function with better error handling
 export const signInWithGoogle = async (): Promise<User> => {
   try {
+    console.log("Attempting Google Sign-In...");
+    console.log("Auth domain:", auth.app.options.authDomain);
+    console.log("Current domain:", window.location.hostname);
+    
+    // Clear any existing auth state
+    console.log("Google provider configured with scopes:", googleProvider.getScopes());
+    
     const result = await signInWithPopup(auth, googleProvider);
+    console.log("Google Sign-In popup successful");
+    
     const user = result.user;
+    console.log("Google user authenticated:", user.uid, user.email);
+    
+    // Get additional user info from Google
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    console.log("Google credential obtained:", !!credential);
     
     // Check if user exists in Firestore, if not create a basic profile
+    console.log("Checking if user exists in Firestore...");
     const userDoc = await getUserData(user.uid);
+    
     if (!userDoc) {
+      console.log("User not found in Firestore, creating new profile...");
       const userData: Omit<UserData, 'password'> = {
         nombre: user.displayName || user.email?.split('@')[0] || 'Usuario',
         email: user.email!,
-        rol: 'usuario',
+        rol: 'colaborador', // Default role
         fechaRegistro: new Date(),
         uid: user.uid
       };
@@ -110,11 +141,20 @@ export const signInWithGoogle = async (): Promise<User> => {
         ...userData,
         fechaRegistro: Timestamp.fromDate(userData.fechaRegistro)
       });
+      
+      console.log("New user profile created in Firestore");
+    } else {
+      console.log("Existing user found in Firestore:", userDoc.nombre);
     }
     
     return user;
-  } catch (error) {
-    console.error("Error signing in with Google:", error);
+  } catch (error: any) {
+    console.error("Detailed Google Sign-In error:", {
+      code: error?.code,
+      message: error?.message,
+      email: error?.customData?.email,
+      credential: error?.credential
+    });
     throw error;
   }
 };
