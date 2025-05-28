@@ -251,7 +251,7 @@ export const getAllSolutionsFromFirebase = async () => {
     const solutions: DocumentData[] = [];
     solutionsSnapshot.forEach((doc) => {
       const solutionData = { id: doc.id, ...doc.data() };
-      console.log("Solution loaded from Firebase:", doc.id, solutionData.title || "No title");
+      console.log("Solution loaded from Firebase:", doc.id);
       solutions.push(solutionData);
     });
     
