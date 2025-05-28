@@ -2,36 +2,37 @@
 import { useState, useEffect } from "react";
 import { getAllSolutionsFromFirebase } from "@/services/firebaseService";
 import { SolutionType } from "@/components/SolutionCard";
+import { solutionsArray } from "@/data/solutions";
 
 export const useSolutions = () => {
   const [solutions, setSolutions] = useState<SolutionType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isUsingFallback, setIsUsingFallback] = useState(false);
 
   const fetchSolutions = async () => {
     try {
-      console.log("Fetching solutions from Firebase only...");
+      console.log("useSolutions: Starting to fetch solutions...");
       setLoading(true);
       setError(null);
+      setIsUsingFallback(false);
       
       const result = await getAllSolutionsFromFirebase();
       
-      if (result.success) {
-        console.log("Solutions loaded from Firebase:", result.solutions.length);
+      if (result.success && result.solutions.length > 0) {
+        console.log("useSolutions: Successfully loaded from Firebase:", result.solutions.length);
         setSolutions(result.solutions as SolutionType[]);
-        
-        if (result.solutions.length === 0) {
-          setError("No hay soluciones disponibles en Firebase");
-        }
       } else {
-        console.error("Error loading from Firebase:", result.error);
-        setError("Error al cargar las soluciones desde Firebase");
-        setSolutions([]);
+        console.log("useSolutions: Firebase failed, using local fallback");
+        setIsUsingFallback(true);
+        setSolutions(solutionsArray);
+        setError(result.error || "Error al cargar desde Firebase, usando datos locales");
       }
     } catch (err) {
-      console.error("Error fetching solutions:", err);
-      setError("Error de conexión con Firebase");
-      setSolutions([]);
+      console.error("useSolutions: Unexpected error:", err);
+      setError("Error de conexión, usando datos locales");
+      setIsUsingFallback(true);
+      setSolutions(solutionsArray);
     } finally {
       setLoading(false);
     }
@@ -45,6 +46,7 @@ export const useSolutions = () => {
     solutions,
     loading,
     error,
+    isUsingFallback,
     refetch: fetchSolutions
   };
 };

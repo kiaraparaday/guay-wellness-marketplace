@@ -1,4 +1,3 @@
-
 import React from "react";
 import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
@@ -73,9 +72,9 @@ const testimonials = [
 ];
 
 const IndexPage: React.FC = () => {
-  const { solutions: allSolutions, loading, error, refetch } = useSolutions();
+  const { solutions: allSolutions, loading, error, isUsingFallback, refetch } = useSolutions();
   
-  // Display first 4 solutions from Firebase, no fallbacks
+  // Display first 4 solutions
   const displaySolutions = allSolutions.slice(0, 4);
 
   const handleRetryLoad = () => {
@@ -102,17 +101,30 @@ const IndexPage: React.FC = () => {
             </h1>
             
             <p className="text-lg text-muted-foreground mb-6 max-w-2xl animate-fade-in" style={{ animationDelay: "200ms" }}>
-              Selecciona una dimensión del bienestar según las necesidades de tu organización o explora el catálogo completo de soluciones cargadas desde Firebase.
+              Selecciona una dimensión del bienestar según las necesidades de tu organización o explora el catálogo completo de soluciones.
             </p>
             
-            {/* Estado de conexión con Firebase */}
+            {/* Estado de conexión mejorado */}
             {error && (
-              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-red-700 text-sm">Error al cargar desde Firebase: {error}</p>
+              <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p className="text-yellow-700 text-sm">
+                  {isUsingFallback ? 
+                    "Mostrando datos locales - Firebase no disponible" : 
+                    `Error de Firebase: ${error}`
+                  }
+                </p>
                 <Button onClick={handleRetryLoad} variant="outline" size="sm" className="mt-2 flex items-center gap-2">
                   <RefreshCw className="h-3 w-3" />
-                  Reintentar
+                  Reintentar Firebase
                 </Button>
+              </div>
+            )}
+            
+            {!error && !loading && (
+              <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                <p className="text-green-700 text-sm">
+                  ✅ Conectado exitosamente a Firebase ({allSolutions.length} soluciones cargadas)
+                </p>
               </div>
             )}
             
@@ -155,16 +167,19 @@ const IndexPage: React.FC = () => {
             </div>
           </div>
           
-          {/* Top Solutions Section - Solo desde Firebase */}
+          {/* Top Solutions Section */}
           <section id="destacadas" className="mb-12">
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
               <div>
                 <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-black">
-                  SOLUCIONES DESDE FIREBASE
+                  {isUsingFallback ? "SOLUCIONES (DATOS LOCALES)" : "SOLUCIONES DESDE FIREBASE"}
                 </h2>
                 
                 <p className="text-muted-foreground max-w-xl mt-2">
-                  <span className="font-semibold text-guay-purple">Cargadas directamente</span> desde nuestra base de datos Firebase
+                  <span className="font-semibold text-guay-purple">
+                    {isUsingFallback ? "Datos de respaldo" : "Cargadas directamente"}
+                  </span> 
+                  {isUsingFallback ? " del código local" : " desde nuestra base de datos Firebase"}
                 </p>
               </div>
               
@@ -184,16 +199,7 @@ const IndexPage: React.FC = () => {
             {loading ? (
               <div className="text-center py-12">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-lg font-quicksand">Cargando soluciones desde Firebase...</p>
-              </div>
-            ) : error ? (
-              <div className="text-center py-12 bg-red-50 rounded-lg">
-                <p className="text-lg text-red-600 font-quicksand mb-4">Error al conectar con Firebase</p>
-                <p className="text-sm text-red-500 mb-4">{error}</p>
-                <Button onClick={handleRetryLoad} variant="outline" className="flex items-center gap-2 mx-auto">
-                  <RefreshCw className="h-4 w-4" />
-                  Reintentar conexión
-                </Button>
+                <p className="text-lg font-quicksand">Conectando con Firebase...</p>
               </div>
             ) : displaySolutions.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -207,13 +213,10 @@ const IndexPage: React.FC = () => {
               </div>
             ) : (
               <div className="text-center py-12 bg-yellow-50 rounded-lg">
-                <p className="text-lg font-quicksand mb-4">No hay soluciones en Firebase</p>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Asegúrate de haber subido las soluciones a Firebase
-                </p>
+                <p className="text-lg font-quicksand mb-4">No hay soluciones disponibles</p>
                 <Button onClick={handleRetryLoad} variant="outline" className="flex items-center gap-2 mx-auto">
                   <RefreshCw className="h-4 w-4" />
-                  Verificar Firebase
+                  Reintentar conexión
                 </Button>
               </div>
             )}

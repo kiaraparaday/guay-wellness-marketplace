@@ -240,13 +240,18 @@ export const syncSolutionsWithFirebase = async () => {
   }
 };
 
-// Get all solutions from Firestore
+// Get all solutions from Firestore with better error handling
 export const getAllSolutionsFromFirebase = async () => {
   try {
-    console.log("Fetching solutions from Firebase...");
-    await syncSolutionsWithFirebase(); // Ensure solutions are synced
+    console.log("Attempting to fetch solutions from Firebase...");
+    console.log("Firebase config project ID:", firebaseConfig.projectId);
     
-    const solutionsSnapshot = await getDocs(collection(db, "solutions"));
+    // Test connection first
+    const testQuery = query(collection(db, "solutions"));
+    console.log("Firestore query created successfully");
+    
+    const solutionsSnapshot = await getDocs(testQuery);
+    console.log("Query executed, snapshot size:", solutionsSnapshot.size);
     
     const solutions: DocumentData[] = [];
     solutionsSnapshot.forEach((doc) => {
@@ -257,15 +262,45 @@ export const getAllSolutionsFromFirebase = async () => {
     
     console.log("Total solutions fetched from Firebase:", solutions.length);
     
-    // Log first solution structure for debugging
-    if (solutions.length > 0) {
-      console.log("Sample solution structure:", JSON.stringify(solutions[0], null, 2));
+    // If no solutions found, try to sync from local data
+    if (solutions.length === 0) {
+      console.log("No solutions found, attempting to sync local data...");
+      const syncResult = await syncSolutionsWithFirebase();
+      if (syncResult.success) {
+        // Retry fetching after sync
+        const retrySnapshot = await getDocs(testQuery);
+        retrySnapshot.forEach((doc) => {
+          const solutionData = { id: doc.id, ...doc.data() };
+          solutions.push(solutionData);
+        });
+        console.log("After sync, total solutions:", solutions.length);
+      }
     }
     
     return { success: true, solutions };
-  } catch (error) {
-    console.error("Error getting solutions from Firebase:", error);
-    return { success: false, error: error instanceof Error ? error.message : "Unknown error", solutions: [] };
+  } catch (error: any) {
+    console.error("Detailed Firebase error:", {
+      code: error?.code,
+      message: error?.message,
+      stack: error?.stack
+    });
+    
+    // Provide more specific error messages
+    let userFriendlyMessage = "Error desconocido al conectar con Firebase";
+    
+    if (error?.code === 'permission-denied') {
+      userFriendlyMessage = "Permisos insuficientes para acceder a Firebase. Verifica las reglas de Firestore.";
+    } else if (error?.code === 'unavailable') {
+      userFriendlyMessage = "Firebase no está disponible. Verifica tu conexión a internet.";
+    } else if (error?.code === 'unauthenticated') {
+      userFriendlyMessage = "Usuario no autenticado. Es necesario iniciar sesión.";
+    }
+    
+    return { 
+      success: false, 
+      error: userFriendlyMessage,
+      solutions: solutionsArray // Fallback to local data
+    };
   }
 };
 
