@@ -53,7 +53,7 @@ const Header: React.FC = () => {
         },
         { 
           label: "Catálogo completo", 
-          path: "/solutions",
+          path: "/catalogo",
           description: "Ve todas las soluciones con filtros"
         }
       ]

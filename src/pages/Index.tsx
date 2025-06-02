@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
@@ -208,6 +207,19 @@ const IndexPage: React.FC = () => {
                 <p className="text-muted-foreground max-w-xl mt-2">
                   Seleccionadas por su alto impacto, relevancia y resultados comprobados en bienestar organizacional.
                 </p>
+              </div>
+              
+              <div className="mt-4 md:mt-0">
+                <Button 
+                  asChild 
+                  size="grande" 
+                  variant="guay-secondary"
+                >
+                  <Link to="/catalogo" className="flex items-center group">
+                    Ver el catálogo completo de soluciones
+                    <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </Button>
               </div>
             </div>
             

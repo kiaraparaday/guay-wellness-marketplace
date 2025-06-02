@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,6 +11,7 @@ import Dimension from "./pages/Dimension";
 import Competency from "./pages/Competency";
 import Solution from "./pages/Solution";
 import Solutions from "./pages/Solutions";
+import CatalogoPage from "./pages/Catalogo";
 import SearchResults from "./pages/SearchResults";
 import ResultadosPage from "./pages/ResultadosPage";
 import Appointment from "./pages/Appointment";
