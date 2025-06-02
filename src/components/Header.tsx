@@ -308,7 +308,7 @@ const Header: React.FC = () => {
             </div>
           ))}
         </div>
-      </nav>
+      </div>
 
       {/* Search overlay */}
       <div
