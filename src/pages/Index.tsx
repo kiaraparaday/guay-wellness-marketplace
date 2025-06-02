@@ -215,7 +215,7 @@ const IndexPage: React.FC = () => {
                   size="grande" 
                   variant="guay-secondary"
                 >
-                  <Link to="/catalogo" className="flex items-center group">
+                  <Link to="/solutions" className="flex items-center group">
                     Ver el catálogo completo de soluciones
                     <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
