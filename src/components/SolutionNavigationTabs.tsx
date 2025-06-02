@@ -1,53 +1,56 @@
 
-import React, { useState } from "react";
-import { cn } from "@/lib/utils";
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 interface SolutionNavigationTabsProps {
-  onTabChange: (tab: 'dimensions' | 'catalog') => void;
   activeTab: 'dimensions' | 'catalog';
+  onTabChange: (tab: 'dimensions' | 'catalog') => void;
 }
 
-const SolutionNavigationTabs: React.FC<SolutionNavigationTabsProps> = ({ 
-  onTabChange, 
-  activeTab 
+const SolutionNavigationTabs: React.FC<SolutionNavigationTabsProps> = ({
+  activeTab,
+  onTabChange,
 }) => {
   return (
-    <div className="sticky top-20 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-100 py-4 mb-8">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-4">
-          <h3 className="text-lg font-medium text-gray-700 font-quicksand mb-2">
-            🔍 ¿Cómo deseas explorar las soluciones?
-          </h3>
-          <p className="text-sm text-gray-500">
-            Elige la forma que mejor se adapte a tus necesidades organizacionales
-          </p>
-        </div>
-        
-        <div className="flex justify-center">
-          <div className="inline-flex bg-gray-100 rounded-full p-1 border border-gray-200">
-            <button
-              onClick={() => onTabChange('dimensions')}
-              className={cn(
-                "px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 font-quicksand",
-                activeTab === 'dimensions'
-                  ? "bg-[#131F36] text-white shadow-sm"
-                  : "text-gray-600 hover:text-[#131F36] hover:bg-white/50"
-              )}
-            >
-              Explorar por dimensión
-            </button>
-            <button
-              onClick={() => onTabChange('catalog')}
-              className={cn(
-                "px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 font-quicksand",
-                activeTab === 'catalog'
-                  ? "bg-[#131F36] text-white shadow-sm"
-                  : "text-gray-600 hover:text-[#131F36] hover:bg-white/50"
-              )}
-            >
-              Ver catálogo completo
-            </button>
+    <div className="mb-8">
+      <div className="text-center mb-6">
+        <div className="flex items-center justify-center gap-2 mb-3">
+          <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+            <span className="text-blue-600 text-sm">🔍</span>
           </div>
+          <h2 className="text-xl font-semibold text-gray-700">
+            ¿Cómo deseas explorar las soluciones?
+          </h2>
+        </div>
+        <p className="text-gray-600 text-sm max-w-2xl mx-auto">
+          Elige la forma que mejor se adapte a tus necesidades organizacionales
+        </p>
+      </div>
+      
+      <div className="flex justify-center">
+        <div className="bg-gray-100 rounded-full p-1 flex">
+          <button
+            onClick={() => onTabChange('dimensions')}
+            className={`px-6 py-3 rounded-full text-sm font-medium transition-all ${
+              activeTab === 'dimensions'
+                ? 'bg-white text-gray-700 shadow-sm'
+                : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            Explorar por dimensión
+          </button>
+          
+          <Button
+            asChild
+            variant="guay-action-primary"
+            size="action-primary"
+            className="px-6 py-3 text-sm"
+          >
+            <Link to="/solutions">
+              Ver catálogo completo
+            </Link>
+          </Button>
         </div>
       </div>
     </div>
