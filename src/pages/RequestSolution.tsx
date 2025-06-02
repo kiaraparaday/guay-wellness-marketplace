@@ -41,8 +41,20 @@ const RequestSolutionPage: React.FC = () => {
     // In a real app, you would send this data to your backend
     console.log("Form data:", formData);
     
+    // Simulate sending email to contacto@guaywellness.com
+    console.log("Sending form data to: contacto@guaywellness.com");
+    
     // Confirm submission
-    toast.success("Su solicitud ha sido recibida. Nos pondremos en contacto pronto.");
+    toast.success("Su solicitud ha sido enviada. Redirigiendo al calendario...");
+    
+    // Redirect to Google Calendar after a short delay
+    setTimeout(() => {
+      window.open(
+        'https://calendar.google.com/calendar/appointments/schedules/AcZssZ0CSfvvxue3MDVfGyXgfjnhXcsu6XkxEoXnnPXjb3J54puN0BGDnntVlpwPMihC6RTbeQ0j1gRZ?gv=true',
+        '_blank',
+        'noopener,noreferrer'
+      );
+    }, 1500);
     
     // Reset form
     setFormData({
@@ -71,10 +83,10 @@ const RequestSolutionPage: React.FC = () => {
           </Link>
           
           <div className="text-center mb-12 animate-fade-in">
-            <h1 className="text-4xl font-semibold mb-4">Solicita una solución personalizada</h1>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              ¿No encuentras exactamente lo que buscas? Cuéntanos tus necesidades específicas y 
-              nuestro equipo diseñará una solución a medida para tu organización.
+            <h1 className="text-4xl font-semibold mb-4 font-quicksand">Cuéntanos sobre tus necesidades</h1>
+            <p className="text-muted-foreground max-w-2xl mx-auto font-quicksand">
+              Completa el formulario para que nuestro equipo pueda diseñar una solución a medida para tu organización.
+              Al enviar, también podrás agendar una cita directamente.
             </p>
           </div>
           
@@ -82,10 +94,10 @@ const RequestSolutionPage: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Personal Information */}
               <div>
-                <h2 className="text-xl font-medium mb-4">Información de contacto</h2>
+                <h2 className="text-xl font-medium mb-4 font-quicksand">Información de contacto</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label htmlFor="name" className="block text-sm font-medium text-foreground">
+                    <label htmlFor="name" className="block text-sm font-medium text-foreground font-quicksand">
                       Nombre completo *
                     </label>
                     <input
@@ -94,13 +106,13 @@ const RequestSolutionPage: React.FC = () => {
                       type="text"
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200"
+                      className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200 font-quicksand"
                       required
                     />
                   </div>
                   
                   <div className="space-y-2">
-                    <label htmlFor="email" className="block text-sm font-medium text-foreground">
+                    <label htmlFor="email" className="block text-sm font-medium text-foreground font-quicksand">
                       Correo electrónico *
                     </label>
                     <input
@@ -109,13 +121,13 @@ const RequestSolutionPage: React.FC = () => {
                       type="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200"
+                      className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200 font-quicksand"
                       required
                     />
                   </div>
                   
                   <div className="space-y-2">
-                    <label htmlFor="company" className="block text-sm font-medium text-foreground">
+                    <label htmlFor="company" className="block text-sm font-medium text-foreground font-quicksand">
                       Empresa
                     </label>
                     <input
@@ -124,12 +136,12 @@ const RequestSolutionPage: React.FC = () => {
                       type="text"
                       value={formData.company}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200"
+                      className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200 font-quicksand"
                     />
                   </div>
                   
                   <div className="space-y-2">
-                    <label htmlFor="position" className="block text-sm font-medium text-foreground">
+                    <label htmlFor="position" className="block text-sm font-medium text-foreground font-quicksand">
                       Cargo
                     </label>
                     <input
@@ -138,7 +150,7 @@ const RequestSolutionPage: React.FC = () => {
                       type="text"
                       value={formData.position}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200"
+                      className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200 font-quicksand"
                     />
                   </div>
                 </div>
@@ -146,11 +158,11 @@ const RequestSolutionPage: React.FC = () => {
               
               {/* Solution Requirements */}
               <div className="pt-4">
-                <h2 className="text-xl font-medium mb-4">Detalles de la solución requerida</h2>
+                <h2 className="text-xl font-medium mb-4 font-quicksand">Detalles de la solución requerida</h2>
                 
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <label htmlFor="solutionType" className="block text-sm font-medium text-foreground">
+                    <label htmlFor="solutionType" className="block text-sm font-medium text-foreground font-quicksand">
                       Tipo de solución que buscas
                     </label>
                     <select
@@ -158,7 +170,7 @@ const RequestSolutionPage: React.FC = () => {
                       name="solutionType"
                       value={formData.solutionType}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200"
+                      className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200 font-quicksand"
                     >
                       <option value="">Selecciona una opción</option>
                       <option value="workshop">Taller</option>
@@ -172,7 +184,7 @@ const RequestSolutionPage: React.FC = () => {
                   </div>
                   
                   <div className="space-y-2">
-                    <label htmlFor="needs" className="block text-sm font-medium text-foreground">
+                    <label htmlFor="needs" className="block text-sm font-medium text-foreground font-quicksand">
                       Describe tus necesidades específicas *
                     </label>
                     <textarea
@@ -181,7 +193,7 @@ const RequestSolutionPage: React.FC = () => {
                       value={formData.needs}
                       onChange={handleChange}
                       rows={4}
-                      className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200"
+                      className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200 font-quicksand"
                       placeholder="Explica qué problema necesitas resolver o qué resultado esperas obtener"
                       required
                     />
@@ -189,7 +201,7 @@ const RequestSolutionPage: React.FC = () => {
                   
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="space-y-2">
-                      <label htmlFor="audienceSize" className="block text-sm font-medium text-foreground">
+                      <label htmlFor="audienceSize" className="block text-sm font-medium text-foreground font-quicksand">
                         Tamaño de la audiencia
                       </label>
                       <select
@@ -197,7 +209,7 @@ const RequestSolutionPage: React.FC = () => {
                         name="audienceSize"
                         value={formData.audienceSize}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200"
+                        className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200 font-quicksand"
                       >
                         <option value="">Selecciona una opción</option>
                         <option value="1-10">1-10 personas</option>
@@ -209,7 +221,7 @@ const RequestSolutionPage: React.FC = () => {
                     </div>
                     
                     <div className="space-y-2">
-                      <label htmlFor="timeframe" className="block text-sm font-medium text-foreground">
+                      <label htmlFor="timeframe" className="block text-sm font-medium text-foreground font-quicksand">
                         Marco temporal
                       </label>
                       <select
@@ -217,7 +229,7 @@ const RequestSolutionPage: React.FC = () => {
                         name="timeframe"
                         value={formData.timeframe}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200"
+                        className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200 font-quicksand"
                       >
                         <option value="">Selecciona una opción</option>
                         <option value="immediate">Inmediato (próximo mes)</option>
@@ -228,7 +240,7 @@ const RequestSolutionPage: React.FC = () => {
                     </div>
                     
                     <div className="space-y-2">
-                      <label htmlFor="budget" className="block text-sm font-medium text-foreground">
+                      <label htmlFor="budget" className="block text-sm font-medium text-foreground font-quicksand">
                         Presupuesto aproximado
                       </label>
                       <select
@@ -236,7 +248,7 @@ const RequestSolutionPage: React.FC = () => {
                         name="budget"
                         value={formData.budget}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200"
+                        className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200 font-quicksand"
                       >
                         <option value="">Selecciona una opción</option>
                         <option value="low">Menos de $1,000</option>
@@ -249,7 +261,7 @@ const RequestSolutionPage: React.FC = () => {
                   </div>
                   
                   <div className="space-y-2">
-                    <label htmlFor="additionalInfo" className="block text-sm font-medium text-foreground">
+                    <label htmlFor="additionalInfo" className="block text-sm font-medium text-foreground font-quicksand">
                       Información adicional
                     </label>
                     <textarea
@@ -258,7 +270,7 @@ const RequestSolutionPage: React.FC = () => {
                       value={formData.additionalInfo}
                       onChange={handleChange}
                       rows={3}
-                      className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200"
+                      className="w-full px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all-200 font-quicksand"
                       placeholder="Cualquier otra información relevante que nos ayude a entender mejor tu solicitud"
                     />
                   </div>
@@ -268,14 +280,14 @@ const RequestSolutionPage: React.FC = () => {
               <div className="pt-4">
                 <button
                   type="submit"
-                  className="w-full sm:w-auto px-8 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-all-200 flex items-center justify-center"
+                  className="w-full sm:w-auto px-8 py-3 bg-[#A2C73F] text-white rounded-lg font-medium hover:bg-[#A2C73F]/90 transition-all-200 flex items-center justify-center font-quicksand text-lg"
                 >
-                  <Send className="w-4 h-4 mr-2" />
-                  Enviar solicitud
+                  <Send className="w-5 h-5 mr-2" />
+                  📩 Enviar solicitud y agendar cita
                 </button>
                 
-                <p className="mt-4 text-xs text-muted-foreground">
-                  Nos pondremos en contacto contigo en un plazo máximo de 48 horas para discutir tu solicitud y las posibles soluciones.
+                <p className="mt-4 text-xs text-muted-foreground font-quicksand">
+                  Al enviar este formulario, recibirás confirmación por email y serás redirigido al calendario para agendar tu cita.
                 </p>
               </div>
             </form>
@@ -287,15 +299,15 @@ const RequestSolutionPage: React.FC = () => {
       <footer className="py-8 px-6 bg-white border-t border-border mt-8">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center mb-4 md:mb-0">
-            <span className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-guay-600 to-guay-400">
+            <span className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-guay-600 to-guay-400 font-quicksand">
               GUAY
             </span>
-            <span className="ml-2 text-sm text-muted-foreground">
+            <span className="ml-2 text-sm text-muted-foreground font-quicksand">
               Wellness Marketplace
             </span>
           </div>
           
-          <div className="text-sm text-muted-foreground">
+          <div className="text-sm text-muted-foreground font-quicksand">
             © {new Date().getFullYear()} Guay. Todos los derechos reservados.
           </div>
         </div>

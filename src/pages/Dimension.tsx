@@ -1,9 +1,10 @@
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "@/components/Header";
 import SolutionCard from "@/components/SolutionCard";
 import CompetencyFilterBar from "@/components/CompetencyFilterBar";
+import ContactModal from "@/components/ContactModal";
 import { ArrowLeft } from "lucide-react";
 import { solutionsArray } from "@/data/solutions";
 
@@ -414,6 +415,7 @@ const DimensionPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const dimension = id ? dimensions[id as keyof typeof dimensions] : null;
   const competencies = id ? competenciesByDimension[id] : [];
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -511,7 +513,7 @@ const DimensionPage: React.FC = () => {
         </div>
       </section>
       
-      {/* CTA Section */}
+      {/* CTA Section - Updated with new unified contact button */}
       <section className="py-12 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className={`bg-gradient-to-r ${dimension.colorClass} rounded-2xl overflow-hidden shadow-sm`}>
@@ -524,23 +526,23 @@ const DimensionPage: React.FC = () => {
                 para fortalecer las competencias de {dimension.title} en tu organización.
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
-                <Link 
-                  to="/request-solution" 
-                  className="inline-block px-5 py-2.5 bg-[#F5F8FC] text-[#0F1A30] rounded-lg font-medium hover:bg-white transition-colors font-quicksand"
+                <button 
+                  onClick={() => setIsContactModalOpen(true)}
+                  className="inline-block px-6 py-3 bg-[#F5F8FC] text-[#0F1A30] rounded-lg font-medium hover:bg-white transition-colors font-quicksand text-lg"
                 >
-                  Solicitar solución personalizada
-                </Link>
-                <Link 
-                  to="/appointment" 
-                  className="inline-block px-5 py-2.5 bg-white/20 text-white border border-white/30 rounded-lg font-medium hover:bg-white/30 transition-colors font-quicksand"
-                >
-                  Agendar una cita
-                </Link>
+                  Contáctanos
+                </button>
               </div>
             </div>
           </div>
         </div>
       </section>
+      
+      {/* Contact Modal */}
+      <ContactModal 
+        isOpen={isContactModalOpen} 
+        onClose={() => setIsContactModalOpen(false)} 
+      />
       
       {/* Footer */}
       <footer className="py-6 px-6 bg-white border-t border-border">
