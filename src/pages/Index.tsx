@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
@@ -144,9 +143,8 @@ const IndexPage: React.FC = () => {
             <div className="flex justify-center md:justify-start mt-6 mb-16">
               <Button 
                 asChild 
-                size="grande" 
-                variant="guay-primary"
-                className="shadow-lg"
+                variant="guay-action-primary"
+                size="action-primary"
               >
                 <Link to="/solutions" className="flex items-center group">
                   Ver todas las soluciones
@@ -213,9 +211,8 @@ const IndexPage: React.FC = () => {
               <div className="mt-4 md:mt-0">
                 <Button 
                   asChild 
-                  size="grande" 
-                  variant="guay-primary"
-                  className="shadow-lg"
+                  variant="guay-action-primary"
+                  size="action-primary"
                 >
                   <Link to="/solutions" className="flex items-center group">
                     Ver el catálogo completo de soluciones
@@ -270,9 +267,8 @@ const IndexPage: React.FC = () => {
                 <div className="mt-4 md:mt-0">
                   <Button 
                     asChild 
-                    size="grande" 
-                    variant="guay-primary"
-                    className="shadow-lg"
+                    variant="guay-action-primary"
+                    size="action-primary"
                   >
                     <Link to="/testimonials" className="flex items-center group">
                       Ver más testimonios

@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -24,6 +25,8 @@ const buttonVariants = cva(
         // Nuevas variantes CTA con verde institucional
         "guay-cta-primary": "bg-[#A2C73F] text-white hover:bg-[#A2C73F]/90 font-quicksand font-medium",
         "guay-cta-secondary": "bg-white text-[#A2C73F] hover:bg-gray-50 font-quicksand font-medium border-2 border-[#A2C73F]",
+        // Nueva variante para botones de acción principal unificados
+        "guay-action-primary": "bg-[#131F36] text-white hover:bg-[#131F36]/90 font-quicksand font-medium shadow-lg rounded-full",
       },
       size: {
         grande: "h-12 px-6 py-3 rounded-full text-base", // Botón grande
@@ -34,6 +37,8 @@ const buttonVariants = cva(
         lg: "h-11 rounded-md px-8", // Mantener compatibilidad
         icon: "h-10 w-10 rounded-full", // Botón de icono
         "icon-sm": "h-8 w-8 rounded-full", // Botón de icono pequeño
+        // Nuevo tamaño específico para botones de acción principal
+        "action-primary": "h-12 px-8 py-3 rounded-full text-base", // Botón de acción principal unificado
       },
     },
     defaultVariants: {
