@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
@@ -139,7 +140,7 @@ const IndexPage: React.FC = () => {
               </div>
             )}
             
-            {/* Botón global */}
+            {/* Botón global unificado */}
             <div className="flex justify-center md:justify-start mt-6 mb-16">
               <Button 
                 asChild 
@@ -213,11 +214,12 @@ const IndexPage: React.FC = () => {
                 <Button 
                   asChild 
                   size="grande" 
-                  variant="guay-secondary"
+                  variant="guay-primary"
+                  className="shadow-lg"
                 >
                   <Link to="/solutions" className="flex items-center group">
                     Ver el catálogo completo de soluciones
-                    <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </Button>
               </div>
@@ -269,11 +271,12 @@ const IndexPage: React.FC = () => {
                   <Button 
                     asChild 
                     size="grande" 
-                    variant="guay-secondary"
+                    variant="guay-primary"
+                    className="shadow-lg"
                   >
                     <Link to="/testimonials" className="flex items-center group">
                       Ver más testimonios
-                      <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </Link>
                   </Button>
                 </div>
