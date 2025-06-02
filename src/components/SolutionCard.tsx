@@ -15,6 +15,7 @@ export interface SolutionType {
   image: string;
   competencies: string[]; // ids of related competencies
   categories?: string[]; // New field for category tags
+  tags?: string[]; // Add tags property for filtering
   detailedDescription?: string;
   benefits?: string[];
   includes?: string[];
