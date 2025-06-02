@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select";
 
 const CatalogoPage: React.FC = () => {
-  const { solutions: allSolutions, loading, error, refetch } = useSolutions();
+  const { solutions: allSolutions, loading, error, refetch, isUsingFallback } = useSolutions();
   const [filteredSolutions, setFilteredSolutions] = useState(allSolutions);
   const [filters, setFilters] = useState({
     type: "",
@@ -30,10 +30,13 @@ const CatalogoPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    console.log("Catalogo: allSolutions updated, count:", allSolutions.length);
+    console.log("Catalogo: Solutions list:", allSolutions.map(s => ({ id: s.id, title: s.title })));
     setFilteredSolutions(allSolutions);
   }, [allSolutions]);
 
   useEffect(() => {
+    console.log("Catalogo: Applying filters:", filters);
     const filtered = allSolutions.filter(solution => {
       const typeMatch = !filters.type || solution.type === filters.type;
       const modalityMatch = !filters.modality || solution.modality === filters.modality;
@@ -114,6 +117,7 @@ const CatalogoPage: React.FC = () => {
       return typeMatch && modalityMatch && audienceMatch && durationMatch && benefitMatch;
     });
     
+    console.log("Catalogo: Filtered solutions count:", filtered.length);
     setFilteredSolutions(filtered);
   }, [filters, allSolutions]);
 
@@ -130,6 +134,7 @@ const CatalogoPage: React.FC = () => {
   const activeFiltersCount = Object.values(filters).filter(Boolean).length;
 
   const handleRetryLoad = () => {
+    console.log("Catalogo: Manual retry requested");
     refetch();
   };
 
@@ -145,8 +150,13 @@ const CatalogoPage: React.FC = () => {
               Catálogo completo de soluciones
             </h1>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto animate-fade-in" style={{ animationDelay: "100ms" }}>
-              Explora todas nuestras soluciones activas, filtradas por lo que tu organización necesita.
+              Explora todas nuestras soluciones {isUsingFallback ? "(datos locales)" : "(desde Firebase)"}.
             </p>
+            {isUsingFallback && (
+              <p className="text-sm text-yellow-600 mt-2">
+                Mostrando {allSolutions.length} soluciones desde datos locales
+              </p>
+            )}
           </div>
           
           {/* Filters Section */}
@@ -243,13 +253,23 @@ const CatalogoPage: React.FC = () => {
             )}
           </div>
 
+          {/* Debug info in development */}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="mb-4 p-4 bg-blue-50 rounded-lg text-sm">
+              <p><strong>Debug:</strong> Total solutions: {allSolutions.length}</p>
+              <p><strong>Filtered:</strong> {filteredSolutions.length}</p>
+              <p><strong>Source:</strong> {isUsingFallback ? "Local data" : "Firebase"}</p>
+              {error && <p><strong>Error:</strong> {error}</p>}
+            </div>
+          )}
+
           {/* Results Section */}
           <div className="mb-8">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-semibold font-quicksand">
-                Soluciones encontradas
+                Todas las soluciones disponibles
                 <span className="ml-2 text-lg text-muted-foreground font-normal">
-                  ({loading ? "..." : filteredSolutions.length})
+                  ({loading ? "Cargando..." : `${filteredSolutions.length} de ${allSolutions.length}`})
                 </span>
               </h2>
             </div>
@@ -257,9 +277,9 @@ const CatalogoPage: React.FC = () => {
             {loading ? (
               <div className="text-center py-12">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-lg font-quicksand">Cargando soluciones desde Firebase...</p>
+                <p className="text-lg font-quicksand">Cargando todas las soluciones desde Firebase...</p>
               </div>
-            ) : error ? (
+            ) : error && allSolutions.length === 0 ? (
               <div className="text-center py-12 bg-red-50 rounded-lg">
                 <p className="text-lg text-red-600 font-quicksand mb-4">{error}</p>
                 <Button onClick={handleRetryLoad} variant="outline" className="flex items-center gap-2 mx-auto">
@@ -291,6 +311,9 @@ const CatalogoPage: React.FC = () => {
             ) : (
               <div className="text-center py-12 bg-secondary/30 rounded-lg">
                 <p className="text-lg mb-4 font-quicksand">No se encontraron soluciones con los filtros aplicados.</p>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Se encontraron {allSolutions.length} soluciones en total, pero ninguna coincide con los filtros seleccionados.
+                </p>
                 <Button onClick={clearFilters} variant="guay-primary" size="grande">
                   Limpiar filtros
                 </Button>
