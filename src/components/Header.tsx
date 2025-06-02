@@ -60,7 +60,7 @@ const Header: React.FC = () => {
     },
     { label: "Testimonios", path: "/testimonials" },
     { label: "Agenda una cita", path: "/appointment" },
-    { label: "Sobre guay", path: "/nosotras" },
+    { label: "Sobre guay", path: "/quienes-somos" },
   ];
 
   const toggleSearch = () => {

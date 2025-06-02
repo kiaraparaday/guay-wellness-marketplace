@@ -24,6 +24,7 @@ import SimpleFooter from "./components/SimpleFooter";
 import ControlDemo from "./pages/ControlDemo";
 import Categories from "./pages/Categories";
 import AboutUs from "./pages/AboutUs";
+import QuienesSomos from "./pages/QuienesSomos";
 import { AuthProvider } from "./contexts/AuthContext";
 
 // Initialize Firebase in App.tsx for global availability
@@ -73,6 +74,7 @@ const App = () => {
                   <Route path="/controls" element={<ControlDemo />} />
                   <Route path="/categorias" element={<Categories />} />
                   <Route path="/nosotras" element={<AboutUs />} />
+                  <Route path="/quienes-somos" element={<QuienesSomos />} />
                   <Route path="/agenda" element={<Appointment />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
