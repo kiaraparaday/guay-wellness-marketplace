@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, Search, User, LogOut, LogIn } from "lucide-react";
+import { Menu, Search, User, LogOut, LogIn, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import SearchBar from "./SearchBar";
 import GuayLogo from "./GuayLogo";
@@ -10,6 +11,13 @@ import { logoutUser } from "@/services/firebaseService";
 import { useAuth } from "@/contexts/AuthContext";
 import UserRegistrationModal from "./UserRegistrationModal";
 import UserLoginModal from "./UserLoginModal";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,7 +41,23 @@ const Header: React.FC = () => {
   
   const menuItems = [
     { label: "Inicio", path: "/" },
-    { label: "Soluciones", path: "/solutions" },
+    { 
+      label: "Soluciones", 
+      path: "/solutions",
+      isDropdown: true,
+      subItems: [
+        { 
+          label: "Por dimensión", 
+          path: "/#dimensiones",
+          description: "Explora por tipo de necesidad de tu organización"
+        },
+        { 
+          label: "Catálogo completo", 
+          path: "/solutions",
+          description: "Ve todas las soluciones con filtros"
+        }
+      ]
+    },
     { label: "Testimonios", path: "/testimonials" },
     { label: "Agenda una cita", path: "/appointment" },
     { label: "Sobre guay", path: "/nosotras" },
@@ -50,7 +74,22 @@ const Header: React.FC = () => {
   };
 
   const handleMenuClick = (path: string) => {
-    navigate(path);
+    if (path.includes('#')) {
+      // Handle anchor links
+      const [route, anchor] = path.split('#');
+      if (route === '/') {
+        // If we're going to home page with anchor
+        navigate('/');
+        setTimeout(() => {
+          const element = document.getElementById(anchor);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 100);
+      }
+    } else {
+      navigate(path);
+    }
     setIsMobileMenuOpen(false);
   };
   
@@ -175,21 +214,55 @@ const Header: React.FC = () => {
       <nav className="fixed top-16 left-0 right-0 z-40 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4">
           <div className="hidden lg:flex items-center justify-center space-x-2 py-3">
-            {menuItems.map((item, index) => (
-              <Button
-                key={index}
-                onClick={() => handleMenuClick(item.path)}
-                variant="ghost"
-                className={cn(
-                  "px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 font-quicksand",
-                  location.pathname === item.path
-                    ? "bg-[#131F36] text-white hover:bg-[#131F36]/90"
-                    : "text-[#131F36] hover:bg-gray-100"
-                )}
-              >
-                {item.label}
-              </Button>
-            ))}
+            <NavigationMenu>
+              <NavigationMenuList className="space-x-2">
+                {menuItems.map((item, index) => (
+                  <NavigationMenuItem key={index}>
+                    {item.isDropdown ? (
+                      <>
+                        <NavigationMenuTrigger
+                          className={cn(
+                            "px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 font-quicksand bg-transparent border-0",
+                            (location.pathname === "/solutions" || location.pathname.startsWith("/solutions"))
+                              ? "bg-[#131F36] text-white hover:bg-[#131F36]/90"
+                              : "text-[#131F36] hover:bg-gray-100"
+                          )}
+                        >
+                          {item.label}
+                        </NavigationMenuTrigger>
+                        <NavigationMenuContent className="bg-white border border-gray-200 shadow-lg rounded-lg p-2 min-w-[300px]">
+                          <div className="space-y-1">
+                            {item.subItems?.map((subItem, subIndex) => (
+                              <button
+                                key={subIndex}
+                                onClick={() => handleMenuClick(subItem.path)}
+                                className="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors"
+                              >
+                                <div className="font-medium text-[#131F36] mb-1">{subItem.label}</div>
+                                <div className="text-sm text-gray-600">{subItem.description}</div>
+                              </button>
+                            ))}
+                          </div>
+                        </NavigationMenuContent>
+                      </>
+                    ) : (
+                      <Button
+                        onClick={() => handleMenuClick(item.path)}
+                        variant="ghost"
+                        className={cn(
+                          "px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 font-quicksand",
+                          location.pathname === item.path
+                            ? "bg-[#131F36] text-white hover:bg-[#131F36]/90"
+                            : "text-[#131F36] hover:bg-gray-100"
+                        )}
+                      >
+                        {item.label}
+                      </Button>
+                    )}
+                  </NavigationMenuItem>
+                ))}
+              </NavigationMenuList>
+            </NavigationMenu>
           </div>
         </div>
       </nav>
@@ -203,22 +276,39 @@ const Header: React.FC = () => {
       >
         <div className="p-4 space-y-2">
           {menuItems.map((item, index) => (
-            <Button
-              key={index}
-              onClick={() => handleMenuClick(item.path)}
-              variant="ghost"
-              className={cn(
-                "w-full justify-start rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 font-quicksand",
-                location.pathname === item.path
-                  ? "bg-[#131F36] text-white hover:bg-[#131F36]/90"
-                  : "text-[#131F36] hover:bg-gray-100"
+            <div key={index}>
+              {item.isDropdown ? (
+                <div className="space-y-1">
+                  <div className="font-medium text-[#131F36] px-4 py-2 text-sm">{item.label}</div>
+                  {item.subItems?.map((subItem, subIndex) => (
+                    <Button
+                      key={subIndex}
+                      onClick={() => handleMenuClick(subItem.path)}
+                      variant="ghost"
+                      className="w-full justify-start rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 font-quicksand text-[#131F36] hover:bg-gray-100"
+                    >
+                      {subItem.label}
+                    </Button>
+                  ))}
+                </div>
+              ) : (
+                <Button
+                  onClick={() => handleMenuClick(item.path)}
+                  variant="ghost"
+                  className={cn(
+                    "w-full justify-start rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 font-quicksand",
+                    location.pathname === item.path
+                      ? "bg-[#131F36] text-white hover:bg-[#131F36]/90"
+                      : "text-[#131F36] hover:bg-gray-100"
+                  )}
+                >
+                  {item.label}
+                </Button>
               )}
-            >
-              {item.label}
-            </Button>
+            </div>
           ))}
         </div>
-      </div>
+      </nav>
 
       {/* Search overlay */}
       <div

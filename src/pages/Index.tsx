@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
@@ -163,7 +164,7 @@ const IndexPage: React.FC = () => {
           
           {/* DIMENSIONS SECTION - Show when dimensions tab is active */}
           {activeTab === 'dimensions' && (
-            <div id="soluciones" className="bg-white rounded-2xl p-6 shadow-lg mb-12 border border-gray-blue/10">
+            <div id="dimensiones" className="bg-white rounded-2xl p-6 shadow-lg mb-12 border border-gray-blue/10">
               {/* Subtítulo de agrupación por dimensiones */}
               <div className="mb-6">
                 <h2 className="text-xl font-semibold mb-2 text-[#6A6A6A] font-quicksand">
