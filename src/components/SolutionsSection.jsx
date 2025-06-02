@@ -82,7 +82,8 @@ const SolutionsSection = ({
                   durations: [],
                   audiences: [],
                   competencies: [],
-                  benefits: []
+                  benefits: [],
+                  categories: []
                 };
                 setFilters(emptyFilters);
                 filterEventBus.publish('filtersChanged', emptyFilters);

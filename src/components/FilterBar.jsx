@@ -89,6 +89,7 @@ const FilterBar = ({
   const [audiences, setAudiences] = useState(initialFilters.audiences || []);
   const [competencies, setCompetencies] = useState(initialFilters.competencies || []);
   const [benefits, setBenefits] = useState(initialFilters.benefits || []);
+  const [categories, setCategories] = useState(initialFilters.categories || []);
 
   useEffect(() => {
     // Reset filters when initialFilters change
@@ -98,6 +99,7 @@ const FilterBar = ({
     setAudiences(initialFilters.audiences || []);
     setCompetencies(initialFilters.competencies || []);
     setBenefits(initialFilters.benefits || []);
+    setCategories(initialFilters.categories || []);
   }, [initialFilters]);
 
   const handleApplyFilters = () => {
@@ -109,6 +111,7 @@ const FilterBar = ({
         audiences,
         competencies,
         benefits,
+        categories,
       });
     }
     // Use the filterEventBus to publish the filters
@@ -119,6 +122,7 @@ const FilterBar = ({
       audiences,
       competencies,
       benefits,
+      categories,
     });
     onClose();
   };
@@ -130,6 +134,7 @@ const FilterBar = ({
     setAudiences([]);
     setCompetencies([]);
     setBenefits([]);
+    setCategories([]);
   };
 
   const totalSelectedFilters = 
@@ -138,7 +143,8 @@ const FilterBar = ({
     durations.length + 
     audiences.length +
     competencies.length +
-    benefits.length;
+    benefits.length +
+    categories.length;
 
   return (
     <div className={cn(
@@ -172,7 +178,7 @@ const FilterBar = ({
           />
 
           <FilterGroup
-            title="Competencia"
+            title="Categoría"
             options={[
               { id: "mental-workload", label: "Gestión de Cargas Mentales" },
               { id: "work-autonomy", label: "Autonomía Laboral" },
@@ -191,8 +197,8 @@ const FilterBar = ({
               { id: "accessibility", label: "Accesibilidad" },
               { id: "belonging", label: "Sentido de Pertenencia" },
             ]}
-            selectedOptions={competencies}
-            onChange={setCompetencies}
+            selectedOptions={categories}
+            onChange={setCategories}
             collapse={true}
           />
 

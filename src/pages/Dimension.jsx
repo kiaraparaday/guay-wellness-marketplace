@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "@/components/Header";
@@ -62,6 +61,7 @@ const DimensionPage = () => {
     audiences: [],
     competencies: [],
     benefits: [],
+    categories: [],
   });
   const [filteredSolutions, setFilteredSolutions] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -84,8 +84,10 @@ const DimensionPage = () => {
         const modalityMatch = filters.modalities.length === 0 || filters.modalities.includes(solution.modality);
         const competencyMatch = filters.competencies.length === 0 || 
           filters.competencies.some(comp => solution.competencies.includes(comp));
+        const categoryMatch = filters.categories.length === 0 || 
+          filters.categories.some(category => solution.competencies.includes(category));
         
-        return typeMatch && modalityMatch && competencyMatch;
+        return typeMatch && modalityMatch && competencyMatch && categoryMatch;
       });
       
       setFilteredSolutions(filtered);
@@ -189,6 +191,7 @@ const DimensionPage = () => {
                   audiences: [],
                   competencies: [],
                   benefits: [],
+                  categories: [],
                 })}
                 className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-quicksand"
               >

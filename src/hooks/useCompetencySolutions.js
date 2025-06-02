@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { filterEventBus } from "@/services/eventBus";
 import { useSolutions } from "@/hooks/useSolutions";
@@ -14,6 +13,7 @@ export const useCompetencySolutions = (competencyId) => {
     audiences: [],
     competencies: [],
     benefits: [],
+    categories: [],
   });
   
   // Set up initial solutions based on competency ID - now responds to real-time updates
@@ -54,6 +54,10 @@ export const useCompetencySolutions = (competencyId) => {
       // Competency filter - check if solution has any of the selected competencies
       const competencyMatch = filters.competencies.length === 0 || 
         filters.competencies.some(comp => solution.competencies.includes(comp));
+      
+      // Category filter - check if solution has any of the selected categories
+      const categoryMatch = filters.categories.length === 0 || 
+        filters.categories.some(category => solution.competencies.includes(category));
       
       // Map duration strings to categories
       let durationCategory = "";
@@ -125,7 +129,7 @@ export const useCompetencySolutions = (competencyId) => {
           }
         });
       
-      return typeMatch && modalityMatch && competencyMatch && durationMatch && audienceMatch && benefitsMatch;
+      return typeMatch && modalityMatch && competencyMatch && categoryMatch && durationMatch && audienceMatch && benefitsMatch;
     });
     
     setFilteredSolutions(filtered);
@@ -144,6 +148,7 @@ export const useCompetencySolutions = (competencyId) => {
       filters.durations.length + 
       filters.audiences.length +
       filters.competencies.length +
-      filters.benefits.length
+      filters.benefits.length +
+      filters.categories.length
   };
 };
