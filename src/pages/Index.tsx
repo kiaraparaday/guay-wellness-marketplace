@@ -104,7 +104,7 @@ const IndexPage: React.FC = () => {
               Selecciona una dimensión del bienestar según las necesidades de tu organización o explora el catálogo completo de soluciones.
             </p>
             
-            {/* Estado de conexión mejorado */}
+            {/* Solo mostrar errores si ocurren */}
             {error && (
               <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                 <p className="text-yellow-700 text-sm">
@@ -117,14 +117,6 @@ const IndexPage: React.FC = () => {
                   <RefreshCw className="h-3 w-3" />
                   Reintentar Firebase
                 </Button>
-              </div>
-            )}
-            
-            {!error && !loading && (
-              <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-                <p className="text-green-700 text-sm">
-                  ✅ Conectado exitosamente a Firebase ({allSolutions.length} soluciones cargadas)
-                </p>
               </div>
             )}
             
