@@ -172,28 +172,13 @@ const IndexPage: React.FC = () => {
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
               <div>
                 <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-black">
-                  {isUsingFallback ? "SOLUCIONES (DATOS LOCALES)" : "SOLUCIONES DESDE FIREBASE"}
+                  SOLUCIONES DESTACADAS
                 </h2>
                 
                 <p className="text-muted-foreground max-w-xl mt-2">
-                  <span className="font-semibold text-guay-purple">
-                    {isUsingFallback ? "Datos de respaldo" : "Cargadas directamente"}
-                  </span> 
-                  {isUsingFallback ? " del código local" : " desde nuestra base de datos Firebase"}
+                  Seleccionadas por su alto impacto, relevancia y resultados comprobados en bienestar organizacional.
                 </p>
               </div>
-              
-              <Button 
-                asChild 
-                size="grande" 
-                variant="guay-primary"
-                className="hidden md:flex"
-              >
-                <Link to="/solutions" className="flex items-center group">
-                  Ver todo el catálogo
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
             </div>
             
             {loading ? (
@@ -220,19 +205,6 @@ const IndexPage: React.FC = () => {
                 </Button>
               </div>
             )}
-            
-            <div className="flex justify-center mt-6 md:hidden">
-              <Button 
-                asChild 
-                size="grande" 
-                variant="guay-primary"
-              >
-                <Link to="/solutions" className="flex items-center group">
-                  Ver todo el catálogo
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
-            </div>
           </section>
 
           {/* Testimonials Section */}
