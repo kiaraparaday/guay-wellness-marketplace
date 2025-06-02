@@ -12,6 +12,15 @@ const SolutionNavigationTabs: React.FC<SolutionNavigationTabsProps> = ({
   activeTab,
   onTabChange,
 }) => {
+  const handleDimensionsClick = () => {
+    onTabChange('dimensions');
+    // Scroll to the dimensions section
+    const dimensionsElement = document.getElementById('dimensiones');
+    if (dimensionsElement) {
+      dimensionsElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="mb-8">
       <div className="text-center mb-6">
@@ -31,7 +40,7 @@ const SolutionNavigationTabs: React.FC<SolutionNavigationTabsProps> = ({
       <div className="flex justify-center">
         <div className="bg-gray-100 rounded-full p-1 flex">
           <button
-            onClick={() => onTabChange('dimensions')}
+            onClick={handleDimensionsClick}
             className={`px-6 py-3 rounded-full text-sm font-medium transition-all ${
               activeTab === 'dimensions'
                 ? 'bg-white text-gray-700 shadow-sm'
