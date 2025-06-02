@@ -14,6 +14,7 @@ interface SolutionsSectionProps {
     modalities: string[];
     durations: string[];
     audiences: string[];
+    benefits: string[];
   }>>;
 }
 
@@ -63,7 +64,7 @@ const SolutionsSection: React.FC<SolutionsSectionProps> = ({
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <h2 className="text-2xl font-semibold font-quicksand">
-            Soluciones desde Firebase
+            Soluciones destacadas
             <span className="ml-2 text-lg text-muted-foreground font-normal">
               ({filteredSolutions.length})
             </span>
@@ -84,7 +85,7 @@ const SolutionsSection: React.FC<SolutionsSectionProps> = ({
           </div>
         ) : (
           <div className="text-center py-12 bg-secondary/30 rounded-lg">
-            <p className="text-lg mb-4 font-quicksand">No encontramos soluciones con esos filtros en Firebase.</p>
+            <p className="text-lg mb-4 font-quicksand">No encontramos soluciones con estos filtros. Intenta ajustar tu búsqueda.</p>
             <Button
               variant="guay-primary"
               size="grande"
@@ -93,7 +94,8 @@ const SolutionsSection: React.FC<SolutionsSectionProps> = ({
                   solutionTypes: [],
                   modalities: [],
                   durations: [],
-                  audiences: []
+                  audiences: [],
+                  benefits: []
                 };
                 setFilters(emptyFilters);
                 filterEventBus.publish('filtersChanged', emptyFilters);

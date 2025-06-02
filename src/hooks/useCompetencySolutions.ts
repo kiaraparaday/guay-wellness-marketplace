@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { filterEventBus } from "@/services/eventBus";
 import { useSolutions } from "@/hooks/useSolutions";
@@ -7,10 +8,11 @@ interface Filters {
   modalities: string[];
   durations: string[];
   audiences: string[];
+  benefits: string[];
 }
 
 export const useCompetencySolutions = (competencyId: string | undefined) => {
-  const { solutions: allSolutions, loading, error } = useSolutions(); // Now uses real-time updates
+  const { solutions: allSolutions, loading, error } = useSolutions();
   const [solutions, setSolutions] = useState(allSolutions);
   const [filteredSolutions, setFilteredSolutions] = useState(allSolutions);
   const [filters, setFilters] = useState<Filters>({
@@ -18,6 +20,7 @@ export const useCompetencySolutions = (competencyId: string | undefined) => {
     modalities: [],
     durations: [],
     audiences: [],
+    benefits: [],
   });
   
   // Set up initial solutions based on competency ID - now responds to real-time updates
@@ -42,7 +45,7 @@ export const useCompetencySolutions = (competencyId: string | undefined) => {
     return () => {
       unsubscribe();
     };
-  }, [competencyId, allSolutions]); // This will re-run when allSolutions updates in real-time
+  }, [competencyId, allSolutions]);
 
   // Filter solutions based on current filters
   useEffect(() => {
@@ -95,8 +98,37 @@ export const useCompetencySolutions = (competencyId: string | undefined) => {
       
       const audienceMatch = filters.audiences.length === 0 || 
         filters.audiences.includes(audienceCategory);
+
+      // Benefits filter - check if solution tags include any of the selected benefits
+      const benefitsMatch = filters.benefits.length === 0 || 
+        filters.benefits.some(benefit => {
+          const solutionTags = solution.tags?.join(" ").toLowerCase() || "";
+          const solutionTitle = solution.title?.toLowerCase() || "";
+          const solutionDescription = solution.description?.toLowerCase() || "";
+          
+          switch (benefit) {
+            case "stress":
+              return solutionTags.includes("estrés") || solutionTitle.includes("estrés") || solutionDescription.includes("estrés");
+            case "emotional-wellbeing":
+              return solutionTags.includes("bienestar") || solutionTitle.includes("bienestar") || solutionDescription.includes("bienestar");
+            case "mental-load":
+              return solutionTags.includes("carga mental") || solutionTitle.includes("carga mental") || solutionDescription.includes("carga mental");
+            case "productivity":
+              return solutionTags.includes("productividad") || solutionTitle.includes("productividad") || solutionDescription.includes("productividad");
+            case "leadership":
+              return solutionTags.includes("liderazgo") || solutionTitle.includes("liderazgo") || solutionDescription.includes("liderazgo");
+            case "teamwork":
+              return solutionTags.includes("equipo") || solutionTitle.includes("equipo") || solutionDescription.includes("equipo");
+            case "work-life-balance":
+              return solutionTags.includes("equilibrio") || solutionTitle.includes("equilibrio") || solutionDescription.includes("equilibrio");
+            case "inclusion":
+              return solutionTags.includes("inclusión") || solutionTitle.includes("inclusión") || solutionDescription.includes("inclusión");
+            default:
+              return false;
+          }
+        });
       
-      return typeMatch && modalityMatch && durationMatch && audienceMatch;
+      return typeMatch && modalityMatch && durationMatch && audienceMatch && benefitsMatch;
     });
     
     setFilteredSolutions(filtered);
@@ -113,6 +145,7 @@ export const useCompetencySolutions = (competencyId: string | undefined) => {
       filters.solutionTypes.length + 
       filters.modalities.length + 
       filters.durations.length + 
-      filters.audiences.length
+      filters.audiences.length +
+      filters.benefits.length
   };
 };

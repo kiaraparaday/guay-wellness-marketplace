@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -16,6 +17,7 @@ interface Filters {
   modalities: string[];
   durations: string[];
   audiences: string[];
+  benefits: string[];
 }
 
 interface CompetencyFilterBarProps {
@@ -28,7 +30,15 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({ initialFilter
     modalities: [],
     durations: [],
     audiences: [],
+    benefits: [],
   });
+
+  const solutionTypeOptions = [
+    { value: "workshop", label: "Taller" },
+    { value: "course", label: "Curso" },
+    { value: "webinar", label: "Webinar" },
+    { value: "other", label: "Otro" },
+  ];
 
   const modalityOptions = [
     { value: "virtual", label: "Virtual" },
@@ -47,6 +57,17 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({ initialFilter
     { value: "medium", label: "2-6h" },
     { value: "day", label: "1 día" },
     { value: "week", label: "+1 semana" },
+  ];
+
+  const benefitOptions = [
+    { value: "stress", label: "Estrés" },
+    { value: "emotional-wellbeing", label: "Bienestar emocional" },
+    { value: "mental-load", label: "Carga mental" },
+    { value: "productivity", label: "Productividad" },
+    { value: "leadership", label: "Liderazgo" },
+    { value: "teamwork", label: "Trabajo en equipo" },
+    { value: "work-life-balance", label: "Equilibrio vida-trabajo" },
+    { value: "inclusion", label: "Inclusión" },
   ];
 
   const handleFilterChange = (filterType: keyof Filters, value: string) => {
@@ -68,7 +89,8 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({ initialFilter
       solutionTypes: [],
       modalities: [],
       durations: [],
-      audiences: []
+      audiences: [],
+      benefits: []
     };
     setFilters(emptyFilters);
     filterEventBus.publish('filtersChanged', emptyFilters);
@@ -79,16 +101,19 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({ initialFilter
   };
 
   const totalActiveFilters = 
+    filters.solutionTypes.length +
     filters.modalities.length + 
     filters.durations.length + 
-    filters.audiences.length;
+    filters.audiences.length +
+    filters.benefits.length;
 
   const getFilterLabel = (filterType: keyof Filters, value: string) => {
     const options = {
+      solutionTypes: solutionTypeOptions,
       modalities: modalityOptions,
       audiences: audienceOptions,
       durations: durationOptions,
-      solutionTypes: []
+      benefits: benefitOptions
     };
     
     const option = options[filterType].find(opt => opt.value === value);
@@ -102,11 +127,45 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({ initialFilter
         Filtros disponibles
       </h2>
       <p className="text-gray-500 text-base mb-6 font-quicksand">
-        Filtra las soluciones según tus necesidades específicas
+        Filtra las soluciones según tus necesidades específicas o el beneficio que deseas lograr.
       </p>
       
-      {/* Filtros centrados */}
+      {/* Filtros centrados - Primera fila */}
       <div className="flex flex-wrap justify-center gap-4 mb-4">
+        {/* Tipo de solución Filter */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button 
+              variant="outline" 
+              className="gap-2 font-quicksand bg-[#F5F8FC] text-[#0F1A30] border-gray-200 rounded-full py-2 px-4 hover:bg-gray-100 transition-colors"
+            >
+              Tipo de solución 
+              {filters.solutionTypes.length > 0 && (
+                <Badge variant="secondary" className="ml-1 px-1.5 py-0.5 text-xs bg-[#0F1A30] text-white">
+                  {filters.solutionTypes.length}
+                </Badge>
+              )}
+              <ChevronDown className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="center" className="w-56">
+            {solutionTypeOptions.map((option) => (
+              <DropdownMenuItem
+                key={option.value}
+                onClick={() => handleFilterChange('solutionTypes', option.value)}
+                className="cursor-pointer"
+              >
+                <div className="flex items-center justify-between w-full">
+                  <span>{option.label}</span>
+                  {filters.solutionTypes.includes(option.value) && (
+                    <div className="w-2 h-2 bg-[#0F1A30] rounded-full" />
+                  )}
+                </div>
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         {/* Modalidad Filter */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -208,6 +267,40 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({ initialFilter
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
+
+        {/* ¿Qué deseas mejorar? Filter */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button 
+              variant="outline" 
+              className="gap-2 font-quicksand bg-[#F5F8FC] text-[#0F1A30] border-gray-200 rounded-full py-2 px-4 hover:bg-gray-100 transition-colors"
+            >
+              ¿Qué deseas mejorar? 
+              {filters.benefits.length > 0 && (
+                <Badge variant="secondary" className="ml-1 px-1.5 py-0.5 text-xs bg-[#0F1A30] text-white">
+                  {filters.benefits.length}
+                </Badge>
+              )}
+              <ChevronDown className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="center" className="w-56">
+            {benefitOptions.map((option) => (
+              <DropdownMenuItem
+                key={option.value}
+                onClick={() => handleFilterChange('benefits', option.value)}
+                className="cursor-pointer"
+              >
+                <div className="flex items-center justify-between w-full">
+                  <span>{option.label}</span>
+                  {filters.benefits.includes(option.value) && (
+                    <div className="w-2 h-2 bg-[#0F1A30] rounded-full" />
+                  )}
+                </div>
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {/* Clear filters button - centrado */}
@@ -224,6 +317,21 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({ initialFilter
       {/* Active filters display */}
       {totalActiveFilters > 0 && (
         <div className="flex flex-wrap justify-center gap-2 mt-4 pt-4 border-t border-gray-200 w-full">
+          {filters.solutionTypes.map((type) => (
+            <Badge 
+              key={`type-${type}`} 
+              variant="secondary" 
+              className="gap-1 font-quicksand bg-[#FCECF3] text-[#D14B8F] border border-[#D14B8F]/20"
+            >
+              {getFilterLabel('solutionTypes', type)}
+              <button
+                onClick={() => removeFilter('solutionTypes', type)}
+                className="hover:bg-red-100 rounded-full p-0.5 transition-colors"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </Badge>
+          ))}
           {filters.modalities.map((modality) => (
             <Badge 
               key={`modality-${modality}`} 
@@ -263,6 +371,21 @@ const CompetencyFilterBar: React.FC<CompetencyFilterBarProps> = ({ initialFilter
               {getFilterLabel('durations', duration)}
               <button
                 onClick={() => removeFilter('durations', duration)}
+                className="hover:bg-red-100 rounded-full p-0.5 transition-colors"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </Badge>
+          ))}
+          {filters.benefits.map((benefit) => (
+            <Badge 
+              key={`benefit-${benefit}`} 
+              variant="secondary" 
+              className="gap-1 font-quicksand bg-[#FCECF3] text-[#D14B8F] border border-[#D14B8F]/20"
+            >
+              {getFilterLabel('benefits', benefit)}
+              <button
+                onClick={() => removeFilter('benefits', benefit)}
                 className="hover:bg-red-100 rounded-full p-0.5 transition-colors"
               >
                 <X className="w-3 h-3" />
