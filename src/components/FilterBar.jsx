@@ -87,9 +87,7 @@ const FilterBar = ({
   const [modalities, setModalities] = useState(initialFilters.modalities || []);
   const [durations, setDurations] = useState(initialFilters.durations || []);
   const [audiences, setAudiences] = useState(initialFilters.audiences || []);
-  const [competencies, setCompetencies] = useState(initialFilters.competencies || []);
   const [benefits, setBenefits] = useState(initialFilters.benefits || []);
-  const [categories, setCategories] = useState(initialFilters.categories || []);
 
   useEffect(() => {
     // Reset filters when initialFilters change
@@ -97,9 +95,7 @@ const FilterBar = ({
     setModalities(initialFilters.modalities || []);
     setDurations(initialFilters.durations || []);
     setAudiences(initialFilters.audiences || []);
-    setCompetencies(initialFilters.competencies || []);
     setBenefits(initialFilters.benefits || []);
-    setCategories(initialFilters.categories || []);
   }, [initialFilters]);
 
   const handleApplyFilters = () => {
@@ -109,9 +105,7 @@ const FilterBar = ({
         modalities,
         durations,
         audiences,
-        competencies,
         benefits,
-        categories,
       });
     }
     // Use the filterEventBus to publish the filters
@@ -120,9 +114,7 @@ const FilterBar = ({
       modalities,
       durations,
       audiences,
-      competencies,
       benefits,
-      categories,
     });
     onClose();
   };
@@ -132,9 +124,7 @@ const FilterBar = ({
     setModalities([]);
     setDurations([]);
     setAudiences([]);
-    setCompetencies([]);
     setBenefits([]);
-    setCategories([]);
   };
 
   const totalSelectedFilters = 
@@ -142,9 +132,7 @@ const FilterBar = ({
     modalities.length + 
     durations.length + 
     audiences.length +
-    competencies.length +
-    benefits.length +
-    categories.length;
+    benefits.length;
 
   return (
     <div className={cn(
@@ -152,7 +140,7 @@ const FilterBar = ({
       isSticky && "shadow-sm"
     )}>
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 lg:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6">
           <FilterGroup
             title="Tipo de solución"
             options={[
@@ -175,31 +163,6 @@ const FilterBar = ({
             ]}
             selectedOptions={modalities}
             onChange={setModalities}
-          />
-
-          <FilterGroup
-            title="Categoría"
-            options={[
-              { id: "mental-workload", label: "Gestión de Cargas Mentales" },
-              { id: "work-autonomy", label: "Autonomía Laboral" },
-              { id: "work-life-balance", label: "Relación Vida-Trabajo" },
-              { id: "stress-management", label: "Manejo del Estrés" },
-              { id: "communication", label: "Comunicación" },
-              { id: "motivation", label: "Motivación" },
-              { id: "equity", label: "Equidad" },
-              { id: "integration", label: "Integración" },
-              { id: "capability-development", label: "Desarrollo de Capacidades" },
-              { id: "coordination-integration", label: "Coordinación e Integración" },
-              { id: "organizational-learning", label: "Aprendizaje Organizacional" },
-              { id: "values", label: "Valores Organizacionales" },
-              { id: "diversity", label: "Diversidad" },
-              { id: "equity-inclusion", label: "Equidad e Inclusión" },
-              { id: "accessibility", label: "Accesibilidad" },
-              { id: "belonging", label: "Sentido de Pertenencia" },
-            ]}
-            selectedOptions={categories}
-            onChange={setCategories}
-            collapse={true}
           />
 
           <FilterGroup

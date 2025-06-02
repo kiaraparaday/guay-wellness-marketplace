@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "@/components/Header";
@@ -59,9 +60,7 @@ const DimensionPage = () => {
     modalities: [],
     durations: [],
     audiences: [],
-    competencies: [],
     benefits: [],
-    categories: [],
   });
   const [filteredSolutions, setFilteredSolutions] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -82,12 +81,78 @@ const DimensionPage = () => {
       const filtered = dimensionSolutions.filter(solution => {
         const typeMatch = filters.solutionTypes.length === 0 || filters.solutionTypes.includes(solution.type);
         const modalityMatch = filters.modalities.length === 0 || filters.modalities.includes(solution.modality);
-        const competencyMatch = filters.competencies.length === 0 || 
-          filters.competencies.some(comp => solution.competencies.includes(comp));
-        const categoryMatch = filters.categories.length === 0 || 
-          filters.categories.some(category => solution.competencies.includes(category));
         
-        return typeMatch && modalityMatch && competencyMatch && categoryMatch;
+        // Map duration strings to categories
+        let durationCategory = "";
+        const durationString = solution.duration?.toLowerCase() || "";
+        
+        if (durationString.includes("hora")) {
+          const hours = parseInt(durationString);
+          if (hours < 2) durationCategory = "short";
+          else if (hours >= 2 && hours <= 6) durationCategory = "medium";
+        } else if (durationString.includes("día") || durationString.includes("dia")) {
+          durationCategory = "day";
+        } else if (durationString.includes("semana")) {
+          if (durationString.includes("4") || durationString.includes("5") || 
+              durationString.includes("6") || durationString.includes("7") || 
+              durationString.includes("8")) {
+            durationCategory = "program";
+          } else {
+            durationCategory = "week";
+          }
+        }
+        
+        const durationMatch = filters.durations.length === 0 || 
+          filters.durations.includes(durationCategory);
+        
+        // Map audience strings to categories
+        let audienceCategory = "";
+        const audienceString = solution.audience?.toLowerCase() || "";
+        
+        if (audienceString.includes("todos") || audienceString.includes("colaboradores")) {
+          audienceCategory = "all";
+        } else if (audienceString.includes("equipo")) {
+          audienceCategory = "teams";
+        } else if (audienceString.includes("líder") || audienceString.includes("lider") || 
+                  audienceString.includes("directiv") || audienceString.includes("ejecutiv")) {
+          audienceCategory = "leaders";
+        } else if (audienceString.includes("operativ")) {
+          audienceCategory = "operational";
+        }
+        
+        const audienceMatch = filters.audiences.length === 0 || 
+          filters.audiences.includes(audienceCategory);
+
+        // Benefits filter
+        const benefitsMatch = filters.benefits.length === 0 || 
+          filters.benefits.some(benefit => {
+            const solutionTags = solution.tags?.join(" ").toLowerCase() || "";
+            const solutionTitle = solution.title?.toLowerCase() || "";
+            const solutionDescription = solution.description?.toLowerCase() || "";
+            
+            switch (benefit) {
+              case "stress":
+                return solutionTags.includes("estrés") || solutionTitle.includes("estrés") || solutionDescription.includes("estrés");
+              case "emotional-wellbeing":
+                return solutionTags.includes("bienestar") || solutionTitle.includes("bienestar") || solutionDescription.includes("bienestar");
+              case "mental-load":
+                return solutionTags.includes("carga mental") || solutionTitle.includes("carga mental") || solutionDescription.includes("carga mental");
+              case "productivity":
+                return solutionTags.includes("productividad") || solutionTitle.includes("productividad") || solutionDescription.includes("productividad");
+              case "leadership":
+                return solutionTags.includes("liderazgo") || solutionTitle.includes("liderazgo") || solutionDescription.includes("liderazgo");
+              case "teamwork":
+                return solutionTags.includes("equipo") || solutionTitle.includes("equipo") || solutionDescription.includes("equipo");
+              case "work-life-balance":
+                return solutionTags.includes("equilibrio") || solutionTitle.includes("equilibrio") || solutionDescription.includes("equilibrio");
+              case "inclusion":
+                return solutionTags.includes("inclusión") || solutionTitle.includes("inclusión") || solutionDescription.includes("inclusión");
+              default:
+                return false;
+            }
+          });
+        
+        return typeMatch && modalityMatch && durationMatch && audienceMatch && benefitsMatch;
       });
       
       setFilteredSolutions(filtered);
@@ -189,9 +254,7 @@ const DimensionPage = () => {
                   modalities: [],
                   durations: [],
                   audiences: [],
-                  competencies: [],
                   benefits: [],
-                  categories: [],
                 })}
                 className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-quicksand"
               >
