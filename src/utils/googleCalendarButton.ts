@@ -1,5 +1,6 @@
+
 export const setupAgendarCitaRedirection = () => {
-  // Direct redirection for "Agendar cita" buttons
+  // Direct redirection for "Agendar cita" buttons with updated URL
   document.addEventListener('click', (event) => {
     const target = event.target as HTMLElement;
     const button = target.closest('button, a') as HTMLElement;
@@ -8,7 +9,7 @@ export const setupAgendarCitaRedirection = () => {
       event.preventDefault();
       console.log('Redirecting to Google Calendar...');
       
-      // Direct redirect to Google Calendar
+      // Updated Google Calendar URL as specified
       window.open(
         'https://calendar.google.com/calendar/appointments/schedules/AcZssZ0CSfvvxue3MDVfGyXgfjnhXcsu6XkxEoXnnPXjb3J54puN0BGDnntVlpwPMihC6RTbeQ0j1gRZ?gv=true',
         '_blank',

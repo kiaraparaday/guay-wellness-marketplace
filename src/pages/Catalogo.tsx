@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import SolutionCard from "@/components/SolutionCard";
@@ -31,7 +30,6 @@ const CatalogoPage: React.FC = () => {
 
   useEffect(() => {
     console.log("Catalogo: allSolutions updated, count:", allSolutions.length);
-    console.log("Catalogo: Solutions list:", allSolutions.map(s => ({ id: s.id, title: s.title })));
     setFilteredSolutions(allSolutions);
   }, [allSolutions]);
 
@@ -150,13 +148,11 @@ const CatalogoPage: React.FC = () => {
               Catálogo completo de soluciones
             </h1>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto animate-fade-in" style={{ animationDelay: "100ms" }}>
-              Explora todas nuestras soluciones {isUsingFallback ? "(datos locales)" : "(desde Firebase)"}.
+              Explora todas nuestras soluciones de bienestar organizacional.
             </p>
-            {isUsingFallback && (
-              <p className="text-sm text-yellow-600 mt-2">
-                Mostrando {allSolutions.length} soluciones desde datos locales
-              </p>
-            )}
+            <p className="text-sm text-guay-purple mt-2">
+              Mostrando {allSolutions.length} soluciones disponibles
+            </p>
           </div>
           
           {/* Filters Section */}
@@ -269,25 +265,12 @@ const CatalogoPage: React.FC = () => {
               <h2 className="text-2xl font-semibold font-quicksand">
                 Todas las soluciones disponibles
                 <span className="ml-2 text-lg text-muted-foreground font-normal">
-                  ({loading ? "Cargando..." : `${filteredSolutions.length} de ${allSolutions.length}`})
+                  ({filteredSolutions.length} de {allSolutions.length})
                 </span>
               </h2>
             </div>
             
-            {loading ? (
-              <div className="text-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-lg font-quicksand">Cargando todas las soluciones desde Firebase...</p>
-              </div>
-            ) : error && allSolutions.length === 0 ? (
-              <div className="text-center py-12 bg-red-50 rounded-lg">
-                <p className="text-lg text-red-600 font-quicksand mb-4">{error}</p>
-                <Button onClick={handleRetryLoad} variant="outline" className="flex items-center gap-2 mx-auto">
-                  <RefreshCw className="h-4 w-4" />
-                  Reintentar carga
-                </Button>
-              </div>
-            ) : filteredSolutions.length > 0 ? (
+            {filteredSolutions.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredSolutions.map((solution, index) => (
                   <SolutionCard
@@ -300,12 +283,9 @@ const CatalogoPage: React.FC = () => {
             ) : allSolutions.length === 0 ? (
               <div className="text-center py-12 bg-yellow-50 rounded-lg">
                 <p className="text-lg mb-4 font-quicksand">No hay soluciones disponibles</p>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Asegúrate de haber subido las soluciones a la colección 'solutions' en Firebase
-                </p>
                 <Button onClick={handleRetryLoad} variant="outline" className="flex items-center gap-2 mx-auto">
                   <RefreshCw className="h-4 w-4" />
-                  Verificar Firebase
+                  Recargar
                 </Button>
               </div>
             ) : (
