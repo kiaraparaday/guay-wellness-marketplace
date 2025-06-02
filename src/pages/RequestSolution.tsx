@@ -283,7 +283,7 @@ const RequestSolutionPage: React.FC = () => {
                   className="w-full sm:w-auto px-8 py-3 bg-[#A2C73F] text-white rounded-lg font-medium hover:bg-[#A2C73F]/90 transition-all-200 flex items-center justify-center font-quicksand text-lg"
                 >
                   <Send className="w-5 h-5 mr-2" />
-                  📩 Enviar solicitud y agendar cita
+                  📤 Enviar y agendar cita
                 </button>
                 
                 <p className="mt-4 text-xs text-muted-foreground font-quicksand">

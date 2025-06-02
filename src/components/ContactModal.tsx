@@ -30,7 +30,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-center text-xl font-semibold font-quicksand mb-4">
-            💬 ¿Deseas compartirnos más información sobre lo que estás buscando?
+            💬 ¿Te gustaría compartirnos más información sobre lo que necesitas?
           </DialogTitle>
         </DialogHeader>
         
@@ -47,7 +47,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                 </div>
                 <div className="flex-1">
                   <h3 className="font-medium font-quicksand text-gray-900 group-hover:text-[#A2C73F] transition-colors">
-                    Sí, quiero compartir más información
+                    ✅ Sí, quiero compartir más información
                   </h3>
                   <p className="text-sm text-gray-600 font-quicksand">
                     Cuéntanos sobre tus necesidades específicas
@@ -67,7 +67,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
               </div>
               <div className="flex-1">
                 <h3 className="font-medium font-quicksand text-gray-900 group-hover:text-[#131F36] transition-colors">
-                  No, ir directo a agendar cita
+                  ❌ No, solo quiero agendar una cita
                 </h3>
                 <p className="text-sm text-gray-600 font-quicksand">
                   Programa una reunión directamente

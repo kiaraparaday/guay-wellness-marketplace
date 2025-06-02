@@ -5,6 +5,7 @@ import SolutionCard from "@/components/SolutionCard";
 import GuayLogo from "@/components/GuayLogo";
 import SolutionNavigationTabs from "@/components/SolutionNavigationTabs";
 import SolutionsSection from "@/components/SolutionsSection";
+import ContactModal from "@/components/ContactModal";
 import { Link } from "react-router-dom";
 import { ArrowRight, Star, Quote, Users, Building, RefreshCw } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -76,6 +77,7 @@ const testimonials = [
 const IndexPage: React.FC = () => {
   const { solutions: allSolutions, loading, error, isUsingFallback, refetch } = useSolutions();
   const [activeTab, setActiveTab] = useState<'dimensions' | 'catalog'>('dimensions');
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [filters, setFilters] = useState({
     solutionTypes: [] as string[],
     modalities: [] as string[],
@@ -313,39 +315,26 @@ const IndexPage: React.FC = () => {
             </div>
           </section>
       
-          {/* CTA Section */}
+          {/* CTA Section - Updated with new flow */}
           <section id="contacto" className="py-20 px-6 bg-gradient-to-b from-white to-primary/5">
             <div className="max-w-7xl mx-auto">
               <div className="bg-white rounded-2xl shadow-subtle overflow-hidden">
                 <div className="grid grid-cols-1 lg:grid-cols-2">
                   <div className="p-8 md:p-12 flex flex-col justify-center">
                     <h2 className="text-3xl font-semibold mb-4">
-                      ¿No encuentras lo que buscas?
+                      ¿No encuentras lo que estás buscando?
                     </h2>
                     <p className="text-muted-foreground mb-6">
-                      Nuestro equipo de expertos en bienestar organizacional puede ayudarte a 
-                      encontrar la solución ideal para tus necesidades específicas.
+                      Nuestro equipo de expertos puede ayudarte a diseñar una solución personalizada según tus necesidades organizacionales.
                     </p>
-                    <div className="space-y-4 sm:space-y-0 sm:flex sm:gap-4">
+                    <div className="flex justify-center sm:justify-start">
                       <Button 
-                        asChild 
-                        size="grande" 
-                        variant="guay-cta-secondary"
-                      >
-                        <Link to="/request-solution">Solicitar una solución</Link>
-                      </Button>
-                      <Button 
-                        asChild 
+                        onClick={() => setIsContactModalOpen(true)}
                         size="grande" 
                         variant="guay-cta-primary"
+                        className="font-quicksand"
                       >
-                        <a 
-                          href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ0CSfvvxue3MDVfGyXgfjnhXcsu6XkxEoXnnPXjb3J54puN0BGDnntVlpwPMihC6RTbeQ0j1gRZ?gv=true"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Agendar una cita
-                        </a>
+                        Contáctanos
                       </Button>
                     </div>
                   </div>
@@ -361,21 +350,27 @@ const IndexPage: React.FC = () => {
               </div>
             </div>
           </section>
+      
+          {/* Footer */}
+          <footer className="py-8 px-6 bg-white border-t border-border">
+            <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
+              <div className="flex items-center mb-4 md:mb-0">
+                <GuayLogo showText={true} className="h-6" />
+              </div>
+              
+              <div className="text-sm text-muted-foreground">
+                © {new Date().getFullYear()} guay. Todos los derechos reservados.
+              </div>
+            </div>
+          </footer>
         </div>
       </section>
       
-      {/* Footer */}
-      <footer className="py-8 px-6 bg-white border-t border-border">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
-          <div className="flex items-center mb-4 md:mb-0">
-            <GuayLogo showText={true} className="h-6" />
-          </div>
-          
-          <div className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} guay. Todos los derechos reservados.
-          </div>
-        </div>
-      </footer>
+      {/* Contact Modal */}
+      <ContactModal 
+        isOpen={isContactModalOpen}
+        onClose={() => setIsContactModalOpen(false)}
+      />
     </div>
   );
 };
