@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "@/components/Header";
 import DimensionCard, { DimensionType } from "@/components/DimensionCard";
 import SolutionCard from "@/components/SolutionCard";
 import GuayLogo from "@/components/GuayLogo";
+import SolutionNavigationTabs from "@/components/SolutionNavigationTabs";
+import SolutionsSection from "@/components/SolutionsSection";
 import { Link } from "react-router-dom";
 import { ArrowRight, Star, Quote, Users, Building, RefreshCw } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -73,12 +75,29 @@ const testimonials = [
 
 const IndexPage: React.FC = () => {
   const { solutions: allSolutions, loading, error, isUsingFallback, refetch } = useSolutions();
+  const [activeTab, setActiveTab] = useState<'dimensions' | 'catalog'>('dimensions');
+  const [filters, setFilters] = useState({
+    solutionTypes: [] as string[],
+    modalities: [] as string[],
+    durations: [] as string[],
+    audiences: [] as string[],
+    benefits: [] as string[],
+  });
   
   // Display first 4 solutions
   const displaySolutions = allSolutions.slice(0, 4);
 
   const handleRetryLoad = () => {
     refetch();
+  };
+
+  const handleTabChange = (tab: 'dimensions' | 'catalog') => {
+    setActiveTab(tab);
+    // Scroll to the solutions section
+    const solutionsElement = document.getElementById('soluciones');
+    if (solutionsElement) {
+      solutionsElement.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -136,28 +155,46 @@ const IndexPage: React.FC = () => {
             </div>
           </div>
           
-          {/* DIMENSIONS SECTION */}
-          <div id="soluciones" className="bg-white rounded-2xl p-6 shadow-lg mb-12 border border-gray-blue/10">
-            {/* Subtítulo de agrupación por dimensiones */}
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold mb-2 text-[#6A6A6A] font-quicksand">
-                Dimensiones del bienestar organizacional
-              </h2>
-              <p className="text-[#6A6A6A] text-sm">
-                Descubre nuestras soluciones agrupadas por dimensión clave del bienestar, para responder a las distintas necesidades de tu equipo.
-              </p>
+          {/* SOLUTION NAVIGATION TABS */}
+          <SolutionNavigationTabs 
+            activeTab={activeTab}
+            onTabChange={handleTabChange}
+          />
+          
+          {/* DIMENSIONS SECTION - Show when dimensions tab is active */}
+          {activeTab === 'dimensions' && (
+            <div id="soluciones" className="bg-white rounded-2xl p-6 shadow-lg mb-12 border border-gray-blue/10">
+              {/* Subtítulo de agrupación por dimensiones */}
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold mb-2 text-[#6A6A6A] font-quicksand">
+                  Dimensiones del bienestar organizacional
+                </h2>
+                <p className="text-[#6A6A6A] text-sm">
+                  Descubre nuestras soluciones agrupadas por dimensión clave del bienestar, para responder a las distintas necesidades de tu equipo.
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                {dimensions.map((dimension, index) => (
+                  <DimensionCard 
+                    key={dimension.id}
+                    dimension={dimension}
+                    index={index}
+                  />
+                ))}
+              </div>
             </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-              {dimensions.map((dimension, index) => (
-                <DimensionCard 
-                  key={dimension.id}
-                  dimension={dimension}
-                  index={index}
-                />
-              ))}
+          )}
+
+          {/* CATALOG SECTION - Show when catalog tab is active */}
+          {activeTab === 'catalog' && (
+            <div id="soluciones">
+              <SolutionsSection 
+                filteredSolutions={allSolutions}
+                setFilters={setFilters}
+              />
             </div>
-          </div>
+          )}
           
           {/* Top Solutions Section */}
           <section id="destacadas" className="mb-12">
