@@ -10,7 +10,6 @@ import CompetencyFilterBar from "@/components/CompetencyFilterBar";
 import CallToActionSection from "@/components/CallToActionSection";
 import SimpleFooter from "@/components/SimpleFooter";
 import DimensionHero from "@/components/dimension/DimensionHero";
-import CompetenciesSection from "@/components/dimension/CompetenciesSection";
 import SolutionsSection from "@/components/dimension/SolutionsSection";
 import { Button } from "@/components/ui/button";
 
@@ -70,8 +69,6 @@ const DimensionPage = () => {
       <Header />
       
       <DimensionHero dimension={dimension} />
-
-      <CompetenciesSection dimension={dimension} />
 
       {/* Filters Section - Positioned right after the dimension title */}
       <div className="bg-white border-b border-border sticky top-16 z-40">

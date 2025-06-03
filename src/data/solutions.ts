@@ -1,4 +1,3 @@
-
 import { SolutionType } from "@/components/SolutionCard";
 
 export const solutionsData: Record<string, SolutionType> = {
@@ -203,6 +202,102 @@ export const solutionsData: Record<string, SolutionType> = {
     ],
     competencies: ["mental-workload", "communication"],
     categories: ["Trabajo en Equipo", "Productividad", "Herramientas Digitales"]
+  },
+
+  "work-autonomy-workshop": {
+    id: "work-autonomy-workshop",
+    title: "Taller de Autonomía y Autogestión Laboral",
+    type: "workshop",
+    modality: "hybrid",
+    duration: "6 horas",
+    audience: "Todos los colaboradores",
+    description: "Desarrolla habilidades para gestionar tu trabajo de manera autónoma, tomar decisiones efectivas y organizar tu tiempo de forma productiva.",
+    detailedDescription: `
+      <p>Este taller está diseñado para potenciar la autonomía laboral de los colaboradores, desarrollando competencias para la autogestión efectiva y la toma de decisiones independiente en el entorno de trabajo.</p>
+      
+      <ul>
+        <li>Fundamentos de la autonomía laboral y sus beneficios</li>
+        <li>Técnicas de planificación y organización personal</li>
+        <li>Desarrollo de criterios para la toma de decisiones</li>
+        <li>Gestión proactiva de recursos y tiempo</li>
+        <li>Comunicación efectiva con supervisores y equipos</li>
+        <li>Evaluación y mejora continua del desempeño</li>
+      </ul>
+    `,
+    benefits: [
+      "Mayor satisfacción y compromiso laboral",
+      "Incremento de la productividad personal",
+      "Desarrollo de competencias de liderazgo",
+      "Reducción de la dependencia y microgestión",
+      "Mejora de la confianza y autoestima profesional"
+    ],
+    includes: [
+      "Manual de autogestión laboral",
+      "Herramientas de planificación personal",
+      "Sesión de coaching individual",
+      "Evaluación de competencias pre y post taller",
+      "Certificado de participación"
+    ],
+    facilitator: {
+      name: "Ana García",
+      position: "Consultora en Desarrollo Organizacional",
+      image: "https://images.unsplash.com/photo-1494790108755-2616b332e234?auto=format&fit=crop&q=80"
+    },
+    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80"
+    ],
+    competencies: ["work-autonomy"],
+    categories: ["Autonomía", "Autogestión", "Productividad"]
+  },
+
+  "work-life-balance-program": {
+    id: "work-life-balance-program",
+    title: "Programa de Equilibrio Vida-Trabajo",
+    type: "course",
+    modality: "virtual",
+    duration: "4 semanas",
+    audience: "Todos los colaboradores",
+    description: "Estrategias prácticas para lograr un equilibrio saludable entre las responsabilidades laborales y la vida personal.",
+    detailedDescription: `
+      <p>Un programa integral que aborda los desafíos modernos del equilibrio entre vida laboral y personal, proporcionando herramientas concretas para gestionar ambas esferas de manera armoniosa.</p>
+      
+      <ul>
+        <li>Identificación de factores que afectan el equilibrio vida-trabajo</li>
+        <li>Establecimiento de límites saludables entre trabajo y vida personal</li>
+        <li>Técnicas de desconexión digital y mental</li>
+        <li>Gestión eficaz del tiempo y prioridades</li>
+        <li>Estrategias para el cuidado personal y bienestar</li>
+        <li>Comunicación asertiva sobre necesidades personales</li>
+      </ul>
+    `,
+    benefits: [
+      "Reducción del estrés y mejora del bienestar general",
+      "Mayor satisfacción tanto laboral como personal",
+      "Incremento de la productividad y concentración",
+      "Mejora de las relaciones familiares y sociales",
+      "Prevención del burnout y agotamiento"
+    ],
+    includes: [
+      "4 módulos semanales con contenido interactivo",
+      "Evaluación personalizada de equilibrio vida-trabajo",
+      "Plantillas de planificación y organización",
+      "Sesión grupal de seguimiento",
+      "Recursos para el bienestar personal"
+    ],
+    facilitator: {
+      name: "Dr. Roberto Silva",
+      position: "Especialista en Bienestar Laboral",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80"
+    },
+    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&q=80"
+    ],
+    competencies: ["work-life-balance"],
+    categories: ["Equilibrio", "Bienestar", "Vida Personal"]
   },
 
   "mindfulness-program": {
