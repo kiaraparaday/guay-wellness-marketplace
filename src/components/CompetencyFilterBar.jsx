@@ -30,12 +30,17 @@ const CompetencyFilterBar = ({
       categories,
     };
     
-    console.log('Publishing filters in real-time:', currentFilters);
+    console.log('CompetencyFilterBar: Publishing filters in real-time:', currentFilters);
     filterEventBus.publish('filtersChanged', currentFilters);
-  }, [solutionTypes, modalities, durations, audiences, benefits, categories]);
+    
+    // Also call the onApplyFilters callback if provided
+    if (onApplyFilters) {
+      onApplyFilters(currentFilters);
+    }
+  }, [solutionTypes, modalities, durations, audiences, benefits, categories, onApplyFilters]);
 
   const clearAllFilters = () => {
-    console.log('Clearing all filters');
+    console.log('CompetencyFilterBar: Clearing all filters');
     setSolutionTypes([]);
     setModalities([]);
     setDurations([]);
@@ -69,7 +74,10 @@ const CompetencyFilterBar = ({
       chips.push({
         id: `solutionType-${type}`,
         label,
-        onRemove: () => setSolutionTypes(prev => prev.filter(t => t !== type))
+        onRemove: () => {
+          console.log('Removing solution type:', type);
+          setSolutionTypes(prev => prev.filter(t => t !== type));
+        }
       });
     });
 
@@ -84,7 +92,10 @@ const CompetencyFilterBar = ({
       chips.push({
         id: `modality-${modality}`,
         label,
-        onRemove: () => setModalities(prev => prev.filter(m => m !== modality))
+        onRemove: () => {
+          console.log('Removing modality:', modality);
+          setModalities(prev => prev.filter(m => m !== modality));
+        }
       });
     });
 
@@ -100,7 +111,10 @@ const CompetencyFilterBar = ({
       chips.push({
         id: `duration-${duration}`,
         label,
-        onRemove: () => setDurations(prev => prev.filter(d => d !== duration))
+        onRemove: () => {
+          console.log('Removing duration:', duration);
+          setDurations(prev => prev.filter(d => d !== duration));
+        }
       });
     });
 
@@ -116,7 +130,10 @@ const CompetencyFilterBar = ({
       chips.push({
         id: `audience-${audience}`,
         label,
-        onRemove: () => setAudiences(prev => prev.filter(a => a !== audience))
+        onRemove: () => {
+          console.log('Removing audience:', audience);
+          setAudiences(prev => prev.filter(a => a !== audience));
+        }
       });
     });
 
@@ -136,7 +153,10 @@ const CompetencyFilterBar = ({
       chips.push({
         id: `benefit-${benefit}`,
         label,
-        onRemove: () => setBenefits(prev => prev.filter(b => b !== benefit))
+        onRemove: () => {
+          console.log('Removing benefit:', benefit);
+          setBenefits(prev => prev.filter(b => b !== benefit));
+        }
       });
     });
 
@@ -152,7 +172,10 @@ const CompetencyFilterBar = ({
       chips.push({
         id: `category-${category}`,
         label,
-        onRemove: () => setCategories(prev => prev.filter(c => c !== category))
+        onRemove: () => {
+          console.log('Removing category:', category);
+          setCategories(prev => prev.filter(c => c !== category));
+        }
       });
     });
 
@@ -169,9 +192,15 @@ const CompetencyFilterBar = ({
       <div className="max-w-7xl mx-auto">
         <TopicsFiltersSection
           categories={categories}
-          setCategories={setCategories}
+          setCategories={(newCategories) => {
+            console.log('Setting categories:', newCategories);
+            setCategories(newCategories);
+          }}
           benefits={benefits}
-          setBenefits={setBenefits}
+          setBenefits={(newBenefits) => {
+            console.log('Setting benefits:', newBenefits);
+            setBenefits(newBenefits);
+          }}
         />
 
         {/* Línea divisoria sutil */}
@@ -179,13 +208,25 @@ const CompetencyFilterBar = ({
 
         <CharacteristicsFiltersSection
           solutionTypes={solutionTypes}
-          setSolutionTypes={setSolutionTypes}
+          setSolutionTypes={(newTypes) => {
+            console.log('Setting solution types:', newTypes);
+            setSolutionTypes(newTypes);
+          }}
           modalities={modalities}
-          setModalities={setModalities}
+          setModalities={(newModalities) => {
+            console.log('Setting modalities:', newModalities);
+            setModalities(newModalities);
+          }}
           durations={durations}
-          setDurations={setDurations}
+          setDurations={(newDurations) => {
+            console.log('Setting durations:', newDurations);
+            setDurations(newDurations);
+          }}
           audiences={audiences}
-          setAudiences={setAudiences}
+          setAudiences={(newAudiences) => {
+            console.log('Setting audiences:', newAudiences);
+            setAudiences(newAudiences);
+          }}
         />
 
         {/* Active filters chips */}

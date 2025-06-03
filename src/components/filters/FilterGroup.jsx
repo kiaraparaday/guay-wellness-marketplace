@@ -17,7 +17,7 @@ const FilterGroup = ({
     const newSelected = selectedOptions.includes(id)
       ? selectedOptions.filter((item) => item !== id)
       : [...selectedOptions, id];
-    console.log(`Filter ${title} changed:`, newSelected);
+    console.log(`FilterGroup ${title} changed:`, newSelected);
     onChange(newSelected);
   };
 
@@ -42,7 +42,10 @@ const FilterGroup = ({
               {options.map((option) => (
                 <button
                   key={option.id}
-                  onClick={() => toggleOption(option.id)}
+                  onClick={() => {
+                    console.log(`FilterGroup ${title}: Toggling option`, option.id);
+                    toggleOption(option.id);
+                  }}
                   className={cn(
                     "px-3 py-1.5 rounded-full text-sm font-medium transition duration-200 font-poppins",
                     selectedOptions.includes(option.id)
@@ -63,7 +66,10 @@ const FilterGroup = ({
             {options.map((option) => (
               <button
                 key={option.id}
-                onClick={() => toggleOption(option.id)}
+                onClick={() => {
+                  console.log(`FilterGroup ${title}: Toggling option`, option.id);
+                  toggleOption(option.id);
+                }}
                 className={cn(
                   "px-3 py-1.5 rounded-full text-sm font-medium transition duration-200 font-poppins",
                   selectedOptions.includes(option.id)

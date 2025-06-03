@@ -116,6 +116,7 @@ const DimensionPage = () => {
     categories: [],
   });
   
+  const [allDimensionSolutions, setAllDimensionSolutions] = useState([]);
   const [filteredSolutions, setFilteredSolutions] = useState([]);
 
   // Set up solutions for this dimension
@@ -123,17 +124,27 @@ const DimensionPage = () => {
     window.scrollTo(0, 0);
     
     if (dimension && allSolutions.length > 0) {
+      console.log('Setting up solutions for dimension:', dimension.title);
+      console.log('All solutions:', allSolutions.length);
+      
       // Get competencies for this dimension
       const dimensionCompetencies = dimension.competencies || [];
       const competencyIds = dimensionCompetencies.map(comp => comp.id);
+      console.log('Dimension competency IDs:', competencyIds);
       
       // Filter solutions that belong to any competency in this dimension
-      const relatedSolutions = allSolutions.filter(solution => 
-        solution.competencies && solution.competencies.some(compId => 
+      const relatedSolutions = allSolutions.filter(solution => {
+        const hasCompetency = solution.competencies && solution.competencies.some(compId => 
           competencyIds.includes(compId)
-        )
-      );
+        );
+        if (hasCompetency) {
+          console.log('Solution matches dimension:', solution.title, solution.competencies);
+        }
+        return hasCompetency;
+      });
       
+      console.log('Related solutions found:', relatedSolutions.length);
+      setAllDimensionSolutions(relatedSolutions);
       setFilteredSolutions(relatedSolutions);
     }
     
@@ -150,28 +161,26 @@ const DimensionPage = () => {
 
   // Apply filters when they change
   useEffect(() => {
-    if (!dimension || allSolutions.length === 0) return;
-
-    // Get competencies for this dimension
-    const dimensionCompetencies = dimension.competencies || [];
-    const competencyIds = dimensionCompetencies.map(comp => comp.id);
+    console.log('Applying filters:', filters);
+    console.log('All dimension solutions:', allDimensionSolutions.length);
     
-    // First filter by dimension
-    let solutions = allSolutions.filter(solution => 
-      solution.competencies && solution.competencies.some(compId => 
-        competencyIds.includes(compId)
-      )
-    );
+    if (allDimensionSolutions.length === 0) {
+      setFilteredSolutions([]);
+      return;
+    }
 
-    // Then apply user filters
-    const filtered = solutions.filter(solution => {
+    const filtered = allDimensionSolutions.filter(solution => {
+      console.log('Filtering solution:', solution.title);
+      
       // Type filter
       const typeMatch = filters.solutionTypes.length === 0 || 
         filters.solutionTypes.includes(solution.type);
+      console.log('Type match:', typeMatch, 'solution type:', solution.type, 'filters:', filters.solutionTypes);
       
       // Modality filter
       const modalityMatch = filters.modalities.length === 0 || 
         filters.modalities.includes(solution.modality);
+      console.log('Modality match:', modalityMatch, 'solution modality:', solution.modality, 'filters:', filters.modalities);
       
       // Duration filter
       let durationCategory = "";
@@ -192,6 +201,7 @@ const DimensionPage = () => {
       
       const durationMatch = filters.durations.length === 0 || 
         filters.durations.includes(durationCategory);
+      console.log('Duration match:', durationMatch, 'solution duration:', solution.duration, 'category:', durationCategory, 'filters:', filters.durations);
       
       // Audience filter
       let audienceCategory = "";
@@ -214,6 +224,7 @@ const DimensionPage = () => {
       
       const audienceMatch = filters.audiences.length === 0 || 
         filters.audiences.includes(audienceCategory);
+      console.log('Audience match:', audienceMatch, 'solution audience:', solution.audience, 'category:', audienceCategory, 'filters:', filters.audiences);
 
       // Benefits filter
       const benefitsMatch = filters.benefits.length === 0 || 
@@ -243,6 +254,7 @@ const DimensionPage = () => {
               return false;
           }
         });
+      console.log('Benefits match:', benefitsMatch, 'solution tags:', solution.tags, 'filters:', filters.benefits);
 
       // Categories filter
       const categoriesMatch = filters.categories.length === 0 || 
@@ -250,13 +262,17 @@ const DimensionPage = () => {
           if (!solution.competencies) return false;
           return solution.competencies.includes(category);
         });
+      console.log('Categories match:', categoriesMatch, 'solution competencies:', solution.competencies, 'filters:', filters.categories);
       
-      return typeMatch && modalityMatch && durationMatch && audienceMatch && benefitsMatch && categoriesMatch;
+      const finalMatch = typeMatch && modalityMatch && durationMatch && audienceMatch && benefitsMatch && categoriesMatch;
+      console.log('Final match for', solution.title, ':', finalMatch);
+      
+      return finalMatch;
     });
     
-    console.log('Dimension filtered solutions:', filtered.length);
+    console.log('Filtered solutions count:', filtered.length);
     setFilteredSolutions(filtered);
-  }, [filters, dimension, allSolutions]);
+  }, [filters, allDimensionSolutions]);
 
   const totalActiveFilters = 
     filters.solutionTypes.length + 
@@ -342,7 +358,14 @@ const DimensionPage = () => {
 
       {/* Filters Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <CompetencyFilterBar initialFilters={filters} />
+        <CompetencyFilterBar 
+          initialFilters={filters}
+          onApplyFilters={(newFilters) => {
+            console.log('Applying filters from filter bar:', newFilters);
+            setFilters(newFilters);
+            filterEventBus.publish('filtersChanged', newFilters);
+          }}
+        />
       </div>
 
       {/* Solutions Section */}
