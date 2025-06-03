@@ -73,22 +73,26 @@ const DimensionPage = () => {
 
       <CompetenciesSection dimension={dimension} />
 
-      {/* Filters Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <CompetencyFilterBar 
-          initialFilters={filters}
-          onApplyFilters={(newFilters) => {
-            console.log('Applying filters from filter bar:', newFilters);
-            setFilters(newFilters);
-            filterEventBus.publish('filtersChanged', newFilters);
-          }}
-        />
+      {/* Filters Section - Positioned right after the dimension title */}
+      <div className="bg-white border-b border-border sticky top-16 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <CompetencyFilterBar 
+            initialFilters={filters}
+            onApplyFilters={(newFilters) => {
+              console.log('Applying filters from filter bar:', newFilters);
+              setFilters(newFilters);
+              filterEventBus.publish('filtersChanged', newFilters);
+            }}
+            isSticky={true}
+          />
+        </div>
       </div>
 
       <SolutionsSection 
         filteredSolutions={filteredSolutions}
         totalActiveFilters={totalActiveFilters}
         setFilters={setFilters}
+        dimension={dimension}
       />
 
       <CallToActionSection competencyTitle={dimension.title} />

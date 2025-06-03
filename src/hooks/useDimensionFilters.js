@@ -39,6 +39,19 @@ export const useDimensionFilters = (allDimensionSolutions) => {
     const filtered = allDimensionSolutions.filter(solution => {
       console.log('Filtering solution:', solution.title);
       
+      // Categories filter - if categories are selected, only show solutions from those categories
+      const categoriesMatch = filters.categories.length === 0 || 
+        filters.categories.some(category => {
+          if (!solution.competencies) return false;
+          return solution.competencies.includes(category);
+        });
+      console.log('Categories match:', categoriesMatch, 'solution competencies:', solution.competencies, 'filters:', filters.categories);
+      
+      // If categories filter is active and this solution doesn't match, exclude it
+      if (filters.categories.length > 0 && !categoriesMatch) {
+        return false;
+      }
+      
       // Type filter
       const typeMatch = filters.solutionTypes.length === 0 || 
         filters.solutionTypes.includes(solution.type);
@@ -122,14 +135,6 @@ export const useDimensionFilters = (allDimensionSolutions) => {
           }
         });
       console.log('Benefits match:', benefitsMatch, 'solution tags:', solution.tags, 'filters:', filters.benefits);
-
-      // Categories filter
-      const categoriesMatch = filters.categories.length === 0 || 
-        filters.categories.some(category => {
-          if (!solution.competencies) return false;
-          return solution.competencies.includes(category);
-        });
-      console.log('Categories match:', categoriesMatch, 'solution competencies:', solution.competencies, 'filters:', filters.categories);
       
       const finalMatch = typeMatch && modalityMatch && durationMatch && audienceMatch && benefitsMatch && categoriesMatch;
       console.log('Final match for', solution.title, ':', finalMatch);
