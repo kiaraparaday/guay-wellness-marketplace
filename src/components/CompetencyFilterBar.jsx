@@ -52,6 +52,115 @@ const CompetencyFilterBar = ({
     benefits.length +
     categories.length;
 
+  // Generate chips for active filters
+  const getActiveFilterChips = () => {
+    const chips = [];
+    
+    // Solution types chips
+    solutionTypes.forEach(type => {
+      const label = {
+        "workshop": "Taller",
+        "course": "Curso", 
+        "webinar": "Webinar",
+        "coaching": "Coaching",
+        "assessment": "Evaluación"
+      }[type] || type;
+      
+      chips.push({
+        id: `solutionType-${type}`,
+        label,
+        onRemove: () => setSolutionTypes(prev => prev.filter(t => t !== type))
+      });
+    });
+
+    // Modalities chips
+    modalities.forEach(modality => {
+      const label = {
+        "in-person": "Presencial",
+        "virtual": "Virtual",
+        "hybrid": "Híbrido"
+      }[modality] || modality;
+      
+      chips.push({
+        id: `modality-${modality}`,
+        label,
+        onRemove: () => setModalities(prev => prev.filter(m => m !== modality))
+      });
+    });
+
+    // Durations chips
+    durations.forEach(duration => {
+      const label = {
+        "short": "Menos de 2 horas",
+        "medium": "2-6 horas",
+        "long": "Más de 6 horas",
+        "multi-session": "Varias sesiones"
+      }[duration] || duration;
+      
+      chips.push({
+        id: `duration-${duration}`,
+        label,
+        onRemove: () => setDurations(prev => prev.filter(d => d !== duration))
+      });
+    });
+
+    // Audiences chips
+    audiences.forEach(audience => {
+      const label = {
+        "leaders": "Líderes",
+        "employees": "Colaboradores",
+        "executives": "Ejecutivos",
+        "hr": "Recursos Humanos"
+      }[audience] || audience;
+      
+      chips.push({
+        id: `audience-${audience}`,
+        label,
+        onRemove: () => setAudiences(prev => prev.filter(a => a !== audience))
+      });
+    });
+
+    // Benefits chips
+    benefits.forEach(benefit => {
+      const label = {
+        "stress": "Reducir estrés",
+        "emotional-wellbeing": "Bienestar emocional",
+        "mental-load": "Carga mental",
+        "productivity": "Productividad",
+        "leadership": "Liderazgo",
+        "teamwork": "Trabajo en equipo",
+        "work-life-balance": "Equilibrio vida-trabajo",
+        "inclusion": "Inclusión"
+      }[benefit] || benefit;
+      
+      chips.push({
+        id: `benefit-${benefit}`,
+        label,
+        onRemove: () => setBenefits(prev => prev.filter(b => b !== benefit))
+      });
+    });
+
+    // Categories chips
+    categories.forEach(category => {
+      const label = {
+        "mental-workload": "Gestión de Cargas Mentales",
+        "work-autonomy": "Autonomía Laboral",
+        "work-life-balance": "Relación Vida-Trabajo",
+        "stress-management": "Manejo del Estrés"
+      }[category] || category;
+      
+      chips.push({
+        id: `category-${category}`,
+        label,
+        onRemove: () => setCategories(prev => prev.filter(c => c !== category))
+      });
+    });
+
+    return chips;
+  };
+
+  const activeChips = getActiveFilterChips();
+
   return (
     <div className={cn(
       "w-full py-4 px-6 font-poppins bg-white",
@@ -78,6 +187,30 @@ const CompetencyFilterBar = ({
           audiences={audiences}
           setAudiences={setAudiences}
         />
+
+        {/* Active filters chips */}
+        {activeChips.length > 0 && (
+          <div className="mb-4">
+            <div className="flex flex-wrap gap-2">
+              {activeChips.map((chip) => (
+                <span
+                  key={chip.id}
+                  className="inline-flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium font-poppins"
+                >
+                  {chip.label}
+                  <button
+                    onClick={chip.onRemove}
+                    className="ml-1 hover:bg-primary/20 rounded-full p-0.5 transition-colors"
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
 
         <FilterControls
           totalSelectedFilters={totalSelectedFilters}

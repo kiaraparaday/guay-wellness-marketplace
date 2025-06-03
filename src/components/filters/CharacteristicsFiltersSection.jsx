@@ -30,6 +30,7 @@ const CharacteristicsFiltersSection = ({
           ]}
           selectedOptions={solutionTypes}
           onChange={setSolutionTypes}
+          collapse={true}
         />
 
         <FilterGroup
@@ -41,6 +42,7 @@ const CharacteristicsFiltersSection = ({
           ]}
           selectedOptions={modalities}
           onChange={setModalities}
+          collapse={true}
         />
 
         <FilterGroup

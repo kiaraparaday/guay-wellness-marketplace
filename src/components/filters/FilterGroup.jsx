@@ -21,12 +21,16 @@ const FilterGroup = ({
     onChange(newSelected);
   };
 
+  const displayTitle = selectedOptions.length > 0 
+    ? `${title} (${selectedOptions.length})`
+    : title;
+
   return (
     <div className="mb-4">
       {collapse ? (
         <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-          <CollapsibleTrigger className="flex w-full items-center justify-between py-2 font-poppins text-sm font-medium">
-            <span>{title}</span>
+          <CollapsibleTrigger className="flex w-full items-center justify-between py-2 px-3 font-poppins text-sm font-medium bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+            <span>{displayTitle}</span>
             {isOpen ? (
               <ChevronUp className="h-4 w-4 text-muted-foreground" />
             ) : (
@@ -54,7 +58,7 @@ const FilterGroup = ({
         </Collapsible>
       ) : (
         <>
-          <h3 className="font-poppins font-medium mb-2 text-sm">{title}</h3>
+          <h3 className="font-poppins font-medium mb-2 text-sm">{displayTitle}</h3>
           <div className="flex flex-wrap gap-2">
             {options.map((option) => (
               <button

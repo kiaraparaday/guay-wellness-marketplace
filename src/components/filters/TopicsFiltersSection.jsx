@@ -25,6 +25,7 @@ const TopicsFiltersSection = ({
           ]}
           selectedOptions={categories}
           onChange={setCategories}
+          collapse={true}
         />
 
         <FilterGroup
@@ -41,6 +42,7 @@ const TopicsFiltersSection = ({
           ]}
           selectedOptions={benefits}
           onChange={setBenefits}
+          collapse={true}
         />
       </div>
     </div>
