@@ -16,6 +16,7 @@ const SolutionsPage = () => {
     modalities: [],
     durations: [],
     audiences: [],
+    categories: [],
   });
   
   const [filteredSolutions, setFilteredSolutions] = useState(allSolutions);
@@ -37,7 +38,13 @@ const SolutionsPage = () => {
       const typeMatch = filters.solutionTypes.length === 0 || filters.solutionTypes.includes(solution.type);
       const modalityMatch = filters.modalities.length === 0 || filters.modalities.includes(solution.modality);
       
-      return typeMatch && modalityMatch;
+      // Categories filter - check if solution competencies include any of the selected categories
+      const categoriesMatch = filters.categories.length === 0 || 
+        filters.categories.some(category => 
+          solution.competencies.includes(category)
+        );
+      
+      return typeMatch && modalityMatch && categoriesMatch;
     });
     
     setFilteredSolutions(filtered);
@@ -47,7 +54,8 @@ const SolutionsPage = () => {
     filters.solutionTypes.length + 
     filters.modalities.length + 
     filters.durations.length + 
-    filters.audiences.length;
+    filters.audiences.length +
+    filters.categories.length;
     
   const handleExportSolutions = async () => {
     try {
@@ -141,7 +149,8 @@ const SolutionsPage = () => {
                     solutionTypes: [],
                     modalities: [],
                     durations: [],
-                    audiences: []
+                    audiences: [],
+                    categories: []
                   };
                   setFilters(emptyFilters);
                   filterEventBus.publish('filtersChanged', emptyFilters);
