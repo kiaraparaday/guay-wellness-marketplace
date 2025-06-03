@@ -16,24 +16,21 @@ export const useCompetencySolutions = (competencyId) => {
     categories: [],
   });
   
-  // Set up initial solutions based on competency ID
+  // Set up initial solutions based on competency ID and subscribe to filter changes
   useEffect(() => {
     window.scrollTo(0, 0);
     
+    // Set initial solutions
     if (competencyId && allSolutions.length > 0) {
       const relatedSolutions = allSolutions.filter(solution => 
         solution.competencies && solution.competencies.includes(competencyId)
       );
       setSolutions(relatedSolutions);
-      setFilteredSolutions(relatedSolutions);
     } else if (allSolutions.length > 0) {
       setSolutions(allSolutions);
-      setFilteredSolutions(allSolutions);
     }
-  }, [competencyId, allSolutions]);
 
-  // Subscribe to filter changes
-  useEffect(() => {
+    // Subscribe to filter changes
     const unsubscribe = filterEventBus.subscribe('filtersChanged', (newFilters) => {
       console.log('Filters received in useCompetencySolutions:', newFilters);
       setFilters(newFilters);
@@ -42,7 +39,7 @@ export const useCompetencySolutions = (competencyId) => {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [competencyId, allSolutions]);
 
   // Apply filters whenever filters or solutions change
   useEffect(() => {
