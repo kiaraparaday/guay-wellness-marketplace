@@ -50,36 +50,36 @@ const App = () => {
             <div className="min-h-screen bg-[#f0f2f8] relative overflow-hidden">
               {/* Decorative circles for the main layout based on the reference image */}
               {/* Top left green circle */}
-              <div className="fixed -top-32 -left-32 w-64 h-64 rounded-full bg-guay-green opacity-90 z-0"></div>
-              {/* Small mustard circle - repositioned to not be inside the green circle */}
-              <div className="fixed top-48 left-12 w-8 h-8 rounded-full bg-guay-orange opacity-90 z-0"></div>
+              <div className="fixed -top-32 -left-32 w-64 h-64 bg-guay-green/20 rounded-full opacity-30 pointer-events-none"></div>
               
-              {/* Right side magenta circle */}
-              <div className="fixed top-1/2 -right-32 transform -translate-y-1/2 w-64 h-64 rounded-full bg-guay-purple opacity-90 z-0"></div>
+              {/* Top right blue circle */}
+              <div className="fixed -top-24 -right-24 w-48 h-48 bg-guay-blue/20 rounded-full opacity-40 pointer-events-none"></div>
               
-              <Header />
-              <div className="pt-8 px-4 md:px-8 max-w-7xl mx-auto relative z-10">
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/dimension/:id" element={<Dimension />} />
-                  <Route path="/competency/:id" element={<Competency />} />
-                  <Route path="/solution/:id" element={<Solution />} />
-                  <Route path="/solutions" element={<Solutions />} />
-                  <Route path="/search" element={<SearchResults />} />
-                  <Route path="/resultados" element={<ResultadosPage />} />
-                  <Route path="/appointment" element={<Appointment />} />
-                  <Route path="/my-appointments" element={<MyAppointments />} />
-                  <Route path="/request-solution" element={<RequestSolution />} />
-                  <Route path="/testimonials" element={<Testimonials />} />
-                  <Route path="/controls" element={<ControlDemo />} />
-                  <Route path="/categorias" element={<Categories />} />
-                  <Route path="/nosotras" element={<AboutUs />} />
-                  <Route path="/quienes-somos" element={<QuienesSomos />} />
-                  <Route path="/agenda" element={<Appointment />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </div>
-              <SimpleFooter />
+              {/* Bottom left purple circle */}
+              <div className="fixed -bottom-40 -left-40 w-80 h-80 bg-guay-purple/15 rounded-full opacity-25 pointer-events-none"></div>
+              
+              {/* Bottom right orange circle */}
+              <div className="fixed -bottom-32 -right-32 w-56 h-56 bg-guay-orange/20 rounded-full opacity-35 pointer-events-none"></div>
+              
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/dimension/:id" element={<Dimension />} />
+                <Route path="/competency/:id" element={<Competency />} />
+                <Route path="/solution/:id" element={<Solution />} />
+                <Route path="/solutions" element={<Solutions />} />
+                <Route path="/catalogo" element={<CatalogoPage />} />
+                <Route path="/search-results" element={<SearchResults />} />
+                <Route path="/resultados" element={<ResultadosPage />} />
+                <Route path="/appointment" element={<Appointment />} />
+                <Route path="/my-appointments" element={<MyAppointments />} />
+                <Route path="/request-solution" element={<RequestSolution />} />
+                <Route path="/testimonials" element={<Testimonials />} />
+                <Route path="/controls" element={<ControlDemo />} />
+                <Route path="/categories" element={<Categories />} />
+                <Route path="/about" element={<AboutUs />} />
+                <Route path="/quienes-somos" element={<QuienesSomos />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
             </div>
           </TooltipProvider>
         </AuthProvider>
