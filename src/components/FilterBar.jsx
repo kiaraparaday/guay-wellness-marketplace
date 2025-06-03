@@ -18,6 +18,7 @@ const FilterGroup = ({
     const newSelected = selectedOptions.includes(id)
       ? selectedOptions.filter((item) => item !== id)
       : [...selectedOptions, id];
+    console.log(`Filter ${title} changed:`, newSelected);
     onChange(newSelected);
   };
 
@@ -87,6 +88,7 @@ const FilterBar = ({
   const [modalities, setModalities] = useState(initialFilters.modalities || []);
   const [durations, setDurations] = useState(initialFilters.durations || []);
   const [audiences, setAudiences] = useState(initialFilters.audiences || []);
+  const [benefits, setBenefits] = useState(initialFilters.benefits || []);
   const [categories, setCategories] = useState(initialFilters.categories || []);
 
   useEffect(() => {
@@ -95,36 +97,63 @@ const FilterBar = ({
     setModalities(initialFilters.modalities || []);
     setDurations(initialFilters.durations || []);
     setAudiences(initialFilters.audiences || []);
+    setBenefits(initialFilters.benefits || []);
     setCategories(initialFilters.categories || []);
   }, [initialFilters]);
 
-  const handleApplyFilters = () => {
-    if (onApplyFilters) {
-      onApplyFilters({
-        solutionTypes,
-        modalities,
-        durations,
-        audiences,
-        categories,
-      });
-    }
-    // Use the filterEventBus to publish the filters
-    filterEventBus.publish('filtersChanged', {
+  // Apply filters in real-time whenever any filter changes
+  useEffect(() => {
+    const currentFilters = {
       solutionTypes,
       modalities,
       durations,
       audiences,
+      benefits,
       categories,
-    });
+    };
+    
+    console.log('Publishing filters:', currentFilters);
+    filterEventBus.publish('filtersChanged', currentFilters);
+  }, [solutionTypes, modalities, durations, audiences, benefits, categories]);
+
+  const handleApplyFilters = () => {
+    const finalFilters = {
+      solutionTypes,
+      modalities,
+      durations,
+      audiences,
+      benefits,
+      categories,
+    };
+    
+    if (onApplyFilters) {
+      onApplyFilters(finalFilters);
+    }
+    
+    console.log('Applying final filters:', finalFilters);
+    filterEventBus.publish('filtersChanged', finalFilters);
     onClose();
   };
 
   const clearAllFilters = () => {
+    console.log('Clearing all filters');
     setSolutionTypes([]);
     setModalities([]);
     setDurations([]);
     setAudiences([]);
+    setBenefits([]);
     setCategories([]);
+    
+    // Immediately publish empty filters
+    const emptyFilters = {
+      solutionTypes: [],
+      modalities: [],
+      durations: [],
+      audiences: [],
+      benefits: [],
+      categories: [],
+    };
+    filterEventBus.publish('filtersChanged', emptyFilters);
   };
 
   const totalSelectedFilters = 
@@ -132,6 +161,7 @@ const FilterBar = ({
     modalities.length + 
     durations.length + 
     audiences.length +
+    benefits.length +
     categories.length;
 
   return (
@@ -140,7 +170,7 @@ const FilterBar = ({
       isSticky && "shadow-sm"
     )}>
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 lg:gap-6">
           <FilterGroup
             title="Tipo de solución"
             options={[
@@ -169,8 +199,8 @@ const FilterBar = ({
             title="Duración"
             options={[
               { id: "short", label: "Menos de 2 horas" },
-              { id: "medium", label: "2-4 horas" },
-              { id: "long", label: "Más de 4 horas" },
+              { id: "medium", label: "2-6 horas" },
+              { id: "long", label: "Más de 6 horas" },
               { id: "multi-session", label: "Varias sesiones" },
             ]}
             selectedOptions={durations}
@@ -185,10 +215,26 @@ const FilterBar = ({
               { id: "employees", label: "Colaboradores" },
               { id: "executives", label: "Ejecutivos" },
               { id: "hr", label: "Recursos Humanos" },
-              { id: "all", label: "Toda la organización" },
             ]}
             selectedOptions={audiences}
             onChange={setAudiences}
+            collapse={true}
+          />
+
+          <FilterGroup
+            title="¿Qué deseas mejorar?"
+            options={[
+              { id: "stress", label: "Reducir estrés" },
+              { id: "emotional-wellbeing", label: "Bienestar emocional" },
+              { id: "mental-load", label: "Carga mental" },
+              { id: "productivity", label: "Productividad" },
+              { id: "leadership", label: "Liderazgo" },
+              { id: "teamwork", label: "Trabajo en equipo" },
+              { id: "work-life-balance", label: "Equilibrio vida-trabajo" },
+              { id: "inclusion", label: "Inclusión" },
+            ]}
+            selectedOptions={benefits}
+            onChange={setBenefits}
             collapse={true}
           />
 

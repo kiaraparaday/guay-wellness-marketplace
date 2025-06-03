@@ -16,6 +16,7 @@ const SolutionsPage = () => {
     modalities: [],
     durations: [],
     audiences: [],
+    benefits: [],
     categories: [],
   });
   
@@ -25,6 +26,7 @@ const SolutionsPage = () => {
     window.scrollTo(0, 0);
     
     const unsubscribe = filterEventBus.subscribe('filtersChanged', (newFilters) => {
+      console.log('Solutions page received filters:', newFilters);
       setFilters(newFilters);
     });
     
@@ -34,19 +36,104 @@ const SolutionsPage = () => {
   }, []);
 
   useEffect(() => {
+    setFilteredSolutions(allSolutions);
+  }, [allSolutions]);
+
+  useEffect(() => {
+    console.log('Filtering solutions with:', filters);
+    console.log('Total solutions:', allSolutions.length);
+    
     const filtered = allSolutions.filter(solution => {
-      const typeMatch = filters.solutionTypes.length === 0 || filters.solutionTypes.includes(solution.type);
-      const modalityMatch = filters.modalities.length === 0 || filters.modalities.includes(solution.modality);
+      // Type filter
+      const typeMatch = filters.solutionTypes.length === 0 || 
+        filters.solutionTypes.includes(solution.type);
+      
+      // Modality filter
+      const modalityMatch = filters.modalities.length === 0 || 
+        filters.modalities.includes(solution.modality);
+      
+      // Map duration strings to categories
+      let durationCategory = "";
+      const durationString = solution.duration?.toLowerCase() || "";
+      
+      if (durationString.includes("hora")) {
+        const hours = parseInt(durationString);
+        if (hours < 2) durationCategory = "short";
+        else if (hours >= 2 && hours <= 6) durationCategory = "medium";
+        else durationCategory = "long";
+      } else if (durationString.includes("día") || durationString.includes("dia")) {
+        durationCategory = "long";
+      } else if (durationString.includes("semana")) {
+        durationCategory = "multi-session";
+      } else if (durationString.includes("sesion") || durationString.includes("módulo")) {
+        durationCategory = "multi-session";
+      }
+      
+      const durationMatch = filters.durations.length === 0 || 
+        filters.durations.includes(durationCategory);
+      
+      // Map audience strings to categories
+      let audienceCategory = "";
+      const audienceString = solution.audience?.toLowerCase() || "";
+      
+      if (audienceString.includes("todos") || audienceString.includes("colaboradores")) {
+        audienceCategory = "employees";
+      } else if (audienceString.includes("equipo")) {
+        audienceCategory = "employees";
+      } else if (audienceString.includes("líder") || audienceString.includes("lider") || 
+                audienceString.includes("directiv") || audienceString.includes("ejecutiv")) {
+        audienceCategory = "leaders";
+      } else if (audienceString.includes("recursos humanos") || audienceString.includes("rrhh")) {
+        audienceCategory = "hr";
+      } else if (audienceString.includes("ejecutiv")) {
+        audienceCategory = "executives";
+      } else {
+        audienceCategory = "employees"; // Default fallback
+      }
+      
+      const audienceMatch = filters.audiences.length === 0 || 
+        filters.audiences.includes(audienceCategory);
+
+      // Benefits filter
+      const benefitsMatch = filters.benefits.length === 0 || 
+        filters.benefits.some(benefit => {
+          const solutionTags = solution.tags?.join(" ").toLowerCase() || "";
+          const solutionTitle = solution.title?.toLowerCase() || "";
+          const solutionDescription = solution.description?.toLowerCase() || "";
+          
+          switch (benefit) {
+            case "stress":
+              return solutionTags.includes("estrés") || solutionTitle.includes("estrés") || solutionDescription.includes("estrés");
+            case "emotional-wellbeing":
+              return solutionTags.includes("bienestar") || solutionTitle.includes("bienestar") || solutionDescription.includes("bienestar");
+            case "mental-load":
+              return solutionTags.includes("carga mental") || solutionTitle.includes("carga mental") || solutionDescription.includes("carga mental");
+            case "productivity":
+              return solutionTags.includes("productividad") || solutionTitle.includes("productividad") || solutionDescription.includes("productividad");
+            case "leadership":
+              return solutionTags.includes("liderazgo") || solutionTitle.includes("liderazgo") || solutionDescription.includes("liderazgo");
+            case "teamwork":
+              return solutionTags.includes("equipo") || solutionTitle.includes("equipo") || solutionDescription.includes("equipo");
+            case "work-life-balance":
+              return solutionTags.includes("equilibrio") || solutionTitle.includes("equilibrio") || solutionDescription.includes("equilibrio");
+            case "inclusion":
+              return solutionTags.includes("inclusión") || solutionTitle.includes("inclusión") || solutionDescription.includes("inclusión");
+            default:
+              return false;
+          }
+        });
       
       // Categories filter - check if solution competencies include any of the selected categories
       const categoriesMatch = filters.categories.length === 0 || 
-        filters.categories.some(category => 
-          solution.competencies.includes(category)
-        );
+        filters.categories.some(category => {
+          if (!solution.competencies) return false;
+          return solution.competencies.includes(category);
+        });
       
-      return typeMatch && modalityMatch && categoriesMatch;
+      return typeMatch && modalityMatch && durationMatch && audienceMatch && benefitsMatch && categoriesMatch;
     });
     
+    console.log('Filtered solutions count:', filtered.length);
     setFilteredSolutions(filtered);
   }, [filters, allSolutions]);
 
@@ -55,6 +142,7 @@ const SolutionsPage = () => {
     filters.modalities.length + 
     filters.durations.length + 
     filters.audiences.length +
+    filters.benefits.length +
     filters.categories.length;
     
   const handleExportSolutions = async () => {
@@ -127,6 +215,11 @@ const SolutionsPage = () => {
               <span className="ml-2 text-lg text-muted-foreground font-normal">
                 ({filteredSolutions.length})
               </span>
+              {totalActiveFilters > 0 && (
+                <span className="ml-2 text-sm bg-primary/10 text-primary px-2 py-1 rounded-full">
+                  {totalActiveFilters} filtro{totalActiveFilters > 1 ? 's' : ''} activo{totalActiveFilters > 1 ? 's' : ''}
+                </span>
+              )}
             </h2>
           </div>
           
@@ -150,6 +243,7 @@ const SolutionsPage = () => {
                     modalities: [],
                     durations: [],
                     audiences: [],
+                    benefits: [],
                     categories: []
                   };
                   setFilters(emptyFilters);

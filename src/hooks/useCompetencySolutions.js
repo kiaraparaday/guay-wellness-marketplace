@@ -22,7 +22,7 @@ export const useCompetencySolutions = (competencyId) => {
     
     if (competencyId && allSolutions.length > 0) {
       const relatedSolutions = allSolutions.filter(solution => 
-        solution.competencies.includes(competencyId)
+        solution.competencies && solution.competencies.includes(competencyId)
       );
       setSolutions(relatedSolutions);
       setFilteredSolutions(relatedSolutions);
@@ -32,6 +32,7 @@ export const useCompetencySolutions = (competencyId) => {
     }
     
     const unsubscribe = filterEventBus.subscribe('filtersChanged', (newFilters) => {
+      console.log('Filters changed:', newFilters);
       setFilters(newFilters);
     });
     
@@ -42,6 +43,9 @@ export const useCompetencySolutions = (competencyId) => {
 
   // Filter solutions based on current filters
   useEffect(() => {
+    console.log('Applying filters:', filters);
+    console.log('Total solutions to filter:', solutions.length);
+    
     const filtered = solutions.filter(solution => {
       // Type filter
       const typeMatch = filters.solutionTypes.length === 0 || 
@@ -59,16 +63,13 @@ export const useCompetencySolutions = (competencyId) => {
         const hours = parseInt(durationString);
         if (hours < 2) durationCategory = "short";
         else if (hours >= 2 && hours <= 6) durationCategory = "medium";
+        else durationCategory = "long";
       } else if (durationString.includes("día") || durationString.includes("dia")) {
-        durationCategory = "day";
+        durationCategory = "long";
       } else if (durationString.includes("semana")) {
-        if (durationString.includes("4") || durationString.includes("5") || 
-            durationString.includes("6") || durationString.includes("7") || 
-            durationString.includes("8")) {
-          durationCategory = "program";
-        } else {
-          durationCategory = "week";
-        }
+        durationCategory = "multi-session";
+      } else if (durationString.includes("sesion") || durationString.includes("módulo")) {
+        durationCategory = "multi-session";
       }
       
       const durationMatch = filters.durations.length === 0 || 
@@ -79,14 +80,18 @@ export const useCompetencySolutions = (competencyId) => {
       const audienceString = solution.audience?.toLowerCase() || "";
       
       if (audienceString.includes("todos") || audienceString.includes("colaboradores")) {
-        audienceCategory = "all";
+        audienceCategory = "employees";
       } else if (audienceString.includes("equipo")) {
-        audienceCategory = "teams";
+        audienceCategory = "employees";
       } else if (audienceString.includes("líder") || audienceString.includes("lider") || 
                 audienceString.includes("directiv") || audienceString.includes("ejecutiv")) {
         audienceCategory = "leaders";
-      } else if (audienceString.includes("operativ")) {
-        audienceCategory = "operational";
+      } else if (audienceString.includes("recursos humanos") || audienceString.includes("rrhh")) {
+        audienceCategory = "hr";
+      } else if (audienceString.includes("ejecutiv")) {
+        audienceCategory = "executives";
+      } else {
+        audienceCategory = "employees"; // Default fallback
       }
       
       const audienceMatch = filters.audiences.length === 0 || 
@@ -123,13 +128,24 @@ export const useCompetencySolutions = (competencyId) => {
 
       // Categories filter - check if solution competencies include any of the selected categories
       const categoriesMatch = filters.categories.length === 0 || 
-        filters.categories.some(category => 
-          solution.competencies.includes(category)
-        );
+        filters.categories.some(category => {
+          if (!solution.competencies) return false;
+          return solution.competencies.includes(category);
+        });
       
-      return typeMatch && modalityMatch && durationMatch && audienceMatch && benefitsMatch && categoriesMatch;
+      const matches = typeMatch && modalityMatch && durationMatch && audienceMatch && benefitsMatch && categoriesMatch;
+      
+      if (filters.solutionTypes.length > 0 || filters.modalities.length > 0 || filters.durations.length > 0 || 
+          filters.audiences.length > 0 || filters.benefits.length > 0 || filters.categories.length > 0) {
+        console.log('Solution:', solution.title, {
+          typeMatch, modalityMatch, durationMatch, audienceMatch, benefitsMatch, categoriesMatch, matches
+        });
+      }
+      
+      return matches;
     });
     
+    console.log('Filtered solutions count:', filtered.length);
     setFilteredSolutions(filtered);
   }, [filters, solutions]);
 
