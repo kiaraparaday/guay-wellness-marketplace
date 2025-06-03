@@ -5,8 +5,8 @@ import { useSolutions } from "@/hooks/useSolutions";
 
 export const useCompetencySolutions = (competencyId) => {
   const { solutions: allSolutions, loading, error } = useSolutions();
-  const [solutions, setSolutions] = useState(allSolutions);
-  const [filteredSolutions, setFilteredSolutions] = useState(allSolutions);
+  const [solutions, setSolutions] = useState([]);
+  const [filteredSolutions, setFilteredSolutions] = useState([]);
   const [filters, setFilters] = useState({
     solutionTypes: [],
     modalities: [],
@@ -16,7 +16,7 @@ export const useCompetencySolutions = (competencyId) => {
     categories: [],
   });
   
-  // Set up initial solutions based on competency ID - now responds to real-time updates
+  // Set up initial solutions based on competency ID
   useEffect(() => {
     window.scrollTo(0, 0);
     
@@ -30,21 +30,29 @@ export const useCompetencySolutions = (competencyId) => {
       setSolutions(allSolutions);
       setFilteredSolutions(allSolutions);
     }
-    
+  }, [competencyId, allSolutions]);
+
+  // Subscribe to filter changes
+  useEffect(() => {
     const unsubscribe = filterEventBus.subscribe('filtersChanged', (newFilters) => {
-      console.log('Filters changed:', newFilters);
+      console.log('Filters received in useCompetencySolutions:', newFilters);
       setFilters(newFilters);
     });
     
     return () => {
       unsubscribe();
     };
-  }, [competencyId, allSolutions]);
+  }, []);
 
-  // Filter solutions based on current filters
+  // Apply filters whenever filters or solutions change
   useEffect(() => {
     console.log('Applying filters:', filters);
     console.log('Total solutions to filter:', solutions.length);
+    
+    if (solutions.length === 0) {
+      setFilteredSolutions([]);
+      return;
+    }
     
     const filtered = solutions.filter(solution => {
       // Type filter
@@ -55,7 +63,7 @@ export const useCompetencySolutions = (competencyId) => {
       const modalityMatch = filters.modalities.length === 0 || 
         filters.modalities.includes(solution.modality);
       
-      // Map duration strings to categories
+      // Duration filter - map duration strings to categories
       let durationCategory = "";
       const durationString = solution.duration?.toLowerCase() || "";
       
@@ -75,7 +83,7 @@ export const useCompetencySolutions = (competencyId) => {
       const durationMatch = filters.durations.length === 0 || 
         filters.durations.includes(durationCategory);
       
-      // Map audience strings to categories
+      // Audience filter - map audience strings to categories
       let audienceCategory = "";
       const audienceString = solution.audience?.toLowerCase() || "";
       
@@ -88,8 +96,6 @@ export const useCompetencySolutions = (competencyId) => {
         audienceCategory = "leaders";
       } else if (audienceString.includes("recursos humanos") || audienceString.includes("rrhh")) {
         audienceCategory = "hr";
-      } else if (audienceString.includes("ejecutiv")) {
-        audienceCategory = "executives";
       } else {
         audienceCategory = "employees"; // Default fallback
       }
@@ -97,7 +103,7 @@ export const useCompetencySolutions = (competencyId) => {
       const audienceMatch = filters.audiences.length === 0 || 
         filters.audiences.includes(audienceCategory);
 
-      // Benefits filter - check if solution tags include any of the selected benefits
+      // Benefits filter
       const benefitsMatch = filters.benefits.length === 0 || 
         filters.benefits.some(benefit => {
           const solutionTags = solution.tags?.join(" ").toLowerCase() || "";
@@ -126,23 +132,20 @@ export const useCompetencySolutions = (competencyId) => {
           }
         });
 
-      // Categories filter - check if solution competencies include any of the selected categories
+      // Categories filter
       const categoriesMatch = filters.categories.length === 0 || 
         filters.categories.some(category => {
           if (!solution.competencies) return false;
           return solution.competencies.includes(category);
         });
       
-      const matches = typeMatch && modalityMatch && durationMatch && audienceMatch && benefitsMatch && categoriesMatch;
+      const allMatches = typeMatch && modalityMatch && durationMatch && audienceMatch && benefitsMatch && categoriesMatch;
       
-      if (filters.solutionTypes.length > 0 || filters.modalities.length > 0 || filters.durations.length > 0 || 
-          filters.audiences.length > 0 || filters.benefits.length > 0 || filters.categories.length > 0) {
-        console.log('Solution:', solution.title, {
-          typeMatch, modalityMatch, durationMatch, audienceMatch, benefitsMatch, categoriesMatch, matches
-        });
-      }
+      console.log('Solution:', solution.title, {
+        typeMatch, modalityMatch, durationMatch, audienceMatch, benefitsMatch, categoriesMatch, allMatches
+      });
       
-      return matches;
+      return allMatches;
     });
     
     console.log('Filtered solutions count:', filtered.length);

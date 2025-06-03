@@ -91,16 +91,6 @@ const FilterBar = ({
   const [benefits, setBenefits] = useState(initialFilters.benefits || []);
   const [categories, setCategories] = useState(initialFilters.categories || []);
 
-  useEffect(() => {
-    // Reset filters when initialFilters change
-    setSolutionTypes(initialFilters.solutionTypes || []);
-    setModalities(initialFilters.modalities || []);
-    setDurations(initialFilters.durations || []);
-    setAudiences(initialFilters.audiences || []);
-    setBenefits(initialFilters.benefits || []);
-    setCategories(initialFilters.categories || []);
-  }, [initialFilters]);
-
   // Apply filters in real-time whenever any filter changes
   useEffect(() => {
     const currentFilters = {
@@ -112,28 +102,9 @@ const FilterBar = ({
       categories,
     };
     
-    console.log('Publishing filters:', currentFilters);
+    console.log('Publishing filters in real-time:', currentFilters);
     filterEventBus.publish('filtersChanged', currentFilters);
   }, [solutionTypes, modalities, durations, audiences, benefits, categories]);
-
-  const handleApplyFilters = () => {
-    const finalFilters = {
-      solutionTypes,
-      modalities,
-      durations,
-      audiences,
-      benefits,
-      categories,
-    };
-    
-    if (onApplyFilters) {
-      onApplyFilters(finalFilters);
-    }
-    
-    console.log('Applying final filters:', finalFilters);
-    filterEventBus.publish('filtersChanged', finalFilters);
-    onClose();
-  };
 
   const clearAllFilters = () => {
     console.log('Clearing all filters');
@@ -143,17 +114,6 @@ const FilterBar = ({
     setAudiences([]);
     setBenefits([]);
     setCategories([]);
-    
-    // Immediately publish empty filters
-    const emptyFilters = {
-      solutionTypes: [],
-      modalities: [],
-      durations: [],
-      audiences: [],
-      benefits: [],
-      categories: [],
-    };
-    filterEventBus.publish('filtersChanged', emptyFilters);
   };
 
   const totalSelectedFilters = 
@@ -264,10 +224,10 @@ const FilterBar = ({
             Limpiar filtros {totalSelectedFilters > 0 && `(${totalSelectedFilters})`}
           </button>
           <button
-            onClick={handleApplyFilters}
+            onClick={onClose}
             className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all-200 font-poppins"
           >
-            Aplicar filtros
+            Cerrar filtros
           </button>
         </div>
       </div>
