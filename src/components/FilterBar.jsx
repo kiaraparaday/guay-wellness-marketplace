@@ -1,82 +1,10 @@
 
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, ChevronUp } from "lucide-react";
 import { filterEventBus } from "@/services/eventBus";
-
-const FilterGroup = ({
-  title,
-  options,
-  selectedOptions,
-  onChange,
-  collapse = false,
-}) => {
-  const [isOpen, setIsOpen] = useState(!collapse);
-
-  const toggleOption = (id) => {
-    const newSelected = selectedOptions.includes(id)
-      ? selectedOptions.filter((item) => item !== id)
-      : [...selectedOptions, id];
-    console.log(`Filter ${title} changed:`, newSelected);
-    onChange(newSelected);
-  };
-
-  return (
-    <div className="mb-4">
-      {collapse ? (
-        <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-          <CollapsibleTrigger className="flex w-full items-center justify-between py-2 font-poppins text-sm font-medium">
-            <span>{title}</span>
-            {isOpen ? (
-              <ChevronUp className="h-4 w-4 text-muted-foreground" />
-            ) : (
-              <ChevronDown className="h-4 w-4 text-muted-foreground" />
-            )}
-          </CollapsibleTrigger>
-          <CollapsibleContent className="pt-2">
-            <div className="flex flex-wrap gap-2">
-              {options.map((option) => (
-                <button
-                  key={option.id}
-                  onClick={() => toggleOption(option.id)}
-                  className={cn(
-                    "px-3 py-1.5 rounded-full text-sm font-medium transition duration-200 font-poppins",
-                    selectedOptions.includes(option.id)
-                      ? "bg-primary text-white shadow-sm"
-                      : "bg-secondary hover:bg-primary/10"
-                  )}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
-          </CollapsibleContent>
-        </Collapsible>
-      ) : (
-        <>
-          <h3 className="font-poppins font-medium mb-2 text-sm">{title}</h3>
-          <div className="flex flex-wrap gap-2">
-            {options.map((option) => (
-              <button
-                key={option.id}
-                onClick={() => toggleOption(option.id)}
-                className={cn(
-                  "px-3 py-1.5 rounded-full text-sm font-medium transition duration-200 font-poppins",
-                  selectedOptions.includes(option.id)
-                    ? "bg-primary text-white shadow-sm"
-                    : "bg-secondary hover:bg-primary/10"
-                )}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
-  );
-};
+import TopicsFiltersSection from "./filters/TopicsFiltersSection";
+import CharacteristicsFiltersSection from "./filters/CharacteristicsFiltersSection";
+import FilterControls from "./filters/FilterControls";
 
 const FilterBar = ({ 
   onClose, 
@@ -130,123 +58,32 @@ const FilterBar = ({
       isSticky && "shadow-sm"
     )}>
       <div className="max-w-7xl mx-auto">
-        {/* Primer bloque: Temas que deseas abordar */}
-        <div className="mb-8">
-          <h2 className="text-lg font-semibold mb-4 font-poppins text-gray-900">
-            ¿Qué temas deseas que aborde la solución?
-          </h2>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-            <FilterGroup
-              title="Categorías"
-              options={[
-                { id: "mental-workload", label: "Gestión de Cargas Mentales" },
-                { id: "work-autonomy", label: "Autonomía Laboral" },
-                { id: "work-life-balance", label: "Relación Vida-Trabajo" },
-                { id: "stress-management", label: "Manejo del Estrés" },
-              ]}
-              selectedOptions={categories}
-              onChange={setCategories}
-            />
-
-            <FilterGroup
-              title="¿Qué deseas mejorar?"
-              options={[
-                { id: "stress", label: "Reducir estrés" },
-                { id: "emotional-wellbeing", label: "Bienestar emocional" },
-                { id: "mental-load", label: "Carga mental" },
-                { id: "productivity", label: "Productividad" },
-                { id: "leadership", label: "Liderazgo" },
-                { id: "teamwork", label: "Trabajo en equipo" },
-                { id: "work-life-balance", label: "Equilibrio vida-trabajo" },
-                { id: "inclusion", label: "Inclusión" },
-              ]}
-              selectedOptions={benefits}
-              onChange={setBenefits}
-            />
-          </div>
-        </div>
+        <TopicsFiltersSection
+          categories={categories}
+          setCategories={setCategories}
+          benefits={benefits}
+          setBenefits={setBenefits}
+        />
 
         {/* Línea divisoria sutil */}
         <div className="border-t border-gray-200 mb-8"></div>
 
-        {/* Segundo bloque: Características de la solución */}
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-4 font-poppins text-gray-900">
-            Filtra por características específicas de la solución
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-            <FilterGroup
-              title="Tipo de solución"
-              options={[
-                { id: "workshop", label: "Taller" },
-                { id: "course", label: "Curso" },
-                { id: "webinar", label: "Webinar" },
-                { id: "coaching", label: "Coaching" },
-                { id: "assessment", label: "Evaluación" },
-              ]}
-              selectedOptions={solutionTypes}
-              onChange={setSolutionTypes}
-            />
+        <CharacteristicsFiltersSection
+          solutionTypes={solutionTypes}
+          setSolutionTypes={setSolutionTypes}
+          modalities={modalities}
+          setModalities={setModalities}
+          durations={durations}
+          setDurations={setDurations}
+          audiences={audiences}
+          setAudiences={setAudiences}
+        />
 
-            <FilterGroup
-              title="Modalidad"
-              options={[
-                { id: "in-person", label: "Presencial" },
-                { id: "virtual", label: "Virtual" },
-                { id: "hybrid", label: "Híbrido" },
-              ]}
-              selectedOptions={modalities}
-              onChange={setModalities}
-            />
-
-            <FilterGroup
-              title="Duración"
-              options={[
-                { id: "short", label: "Menos de 2 horas" },
-                { id: "medium", label: "2-6 horas" },
-                { id: "long", label: "Más de 6 horas" },
-                { id: "multi-session", label: "Varias sesiones" },
-              ]}
-              selectedOptions={durations}
-              onChange={setDurations}
-              collapse={true}
-            />
-
-            <FilterGroup
-              title="Audiencia objetivo"
-              options={[
-                { id: "leaders", label: "Líderes" },
-                { id: "employees", label: "Colaboradores" },
-                { id: "executives", label: "Ejecutivos" },
-                { id: "hr", label: "Recursos Humanos" },
-              ]}
-              selectedOptions={audiences}
-              onChange={setAudiences}
-              collapse={true}
-            />
-          </div>
-        </div>
-
-        <div className="flex justify-between mt-6">
-          <button
-            onClick={clearAllFilters}
-            className={cn(
-              "text-sm text-muted-foreground hover:text-primary transition-all-200 font-poppins",
-              totalSelectedFilters === 0 && "opacity-50 cursor-not-allowed"
-            )}
-            disabled={totalSelectedFilters === 0}
-          >
-            Limpiar filtros {totalSelectedFilters > 0 && `(${totalSelectedFilters})`}
-          </button>
-          <button
-            onClick={onClose}
-            className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all-200 font-poppins"
-          >
-            Cerrar filtros
-          </button>
-        </div>
+        <FilterControls
+          totalSelectedFilters={totalSelectedFilters}
+          onClearFilters={clearAllFilters}
+          onClose={onClose}
+        />
       </div>
     </div>
   );
