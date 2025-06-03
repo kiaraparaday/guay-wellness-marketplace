@@ -88,6 +88,7 @@ const FilterBar = ({
   const [durations, setDurations] = useState(initialFilters.durations || []);
   const [audiences, setAudiences] = useState(initialFilters.audiences || []);
   const [benefits, setBenefits] = useState(initialFilters.benefits || []);
+  const [categories, setCategories] = useState(initialFilters.categories || []);
 
   useEffect(() => {
     // Reset filters when initialFilters change
@@ -96,6 +97,7 @@ const FilterBar = ({
     setDurations(initialFilters.durations || []);
     setAudiences(initialFilters.audiences || []);
     setBenefits(initialFilters.benefits || []);
+    setCategories(initialFilters.categories || []);
   }, [initialFilters]);
 
   const handleApplyFilters = () => {
@@ -106,6 +108,7 @@ const FilterBar = ({
         durations,
         audiences,
         benefits,
+        categories,
       });
     }
     // Use the filterEventBus to publish the filters
@@ -115,6 +118,7 @@ const FilterBar = ({
       durations,
       audiences,
       benefits,
+      categories,
     });
     onClose();
   };
@@ -125,6 +129,7 @@ const FilterBar = ({
     setDurations([]);
     setAudiences([]);
     setBenefits([]);
+    setCategories([]);
   };
 
   const totalSelectedFilters = 
@@ -132,7 +137,8 @@ const FilterBar = ({
     modalities.length + 
     durations.length + 
     audiences.length +
-    benefits.length;
+    benefits.length +
+    categories.length;
 
   return (
     <div className={cn(
@@ -140,7 +146,7 @@ const FilterBar = ({
       isSticky && "shadow-sm"
     )}>
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 lg:gap-6">
           <FilterGroup
             title="Tipo de solución"
             options={[
@@ -206,6 +212,19 @@ const FilterBar = ({
             ]}
             selectedOptions={benefits}
             onChange={setBenefits}
+            collapse={true}
+          />
+
+          <FilterGroup
+            title="Categoría"
+            options={[
+              { id: "mental-workload", label: "Gestión de Cargas Mentales" },
+              { id: "work-autonomy", label: "Autonomía Laboral" },
+              { id: "work-life-balance", label: "Relación Vida-Trabajo" },
+              { id: "stress-management", label: "Manejo del Estrés" },
+            ]}
+            selectedOptions={categories}
+            onChange={setCategories}
             collapse={true}
           />
         </div>

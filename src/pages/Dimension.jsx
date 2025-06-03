@@ -61,6 +61,7 @@ const DimensionPage = () => {
     durations: [],
     audiences: [],
     benefits: [],
+    categories: [],
   });
   const [filteredSolutions, setFilteredSolutions] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -151,8 +152,12 @@ const DimensionPage = () => {
                 return false;
             }
           });
+
+        // Categories filter
+        const categoriesMatch = filters.categories.length === 0 || 
+          filters.categories.some(category => solution.competencies.includes(category));
         
-        return typeMatch && modalityMatch && durationMatch && audienceMatch && benefitsMatch;
+        return typeMatch && modalityMatch && durationMatch && audienceMatch && benefitsMatch && categoriesMatch;
       });
       
       setFilteredSolutions(filtered);
@@ -255,6 +260,7 @@ const DimensionPage = () => {
                   durations: [],
                   audiences: [],
                   benefits: [],
+                  categories: [],
                 })}
                 className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-quicksand"
               >

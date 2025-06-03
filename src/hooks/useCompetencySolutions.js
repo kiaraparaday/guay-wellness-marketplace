@@ -13,6 +13,7 @@ export const useCompetencySolutions = (competencyId) => {
     durations: [],
     audiences: [],
     benefits: [],
+    categories: [],
   });
   
   // Set up initial solutions based on competency ID - now responds to real-time updates
@@ -119,8 +120,12 @@ export const useCompetencySolutions = (competencyId) => {
               return false;
           }
         });
+
+      // Categories filter - check if solution competencies include any of the selected categories
+      const categoriesMatch = filters.categories.length === 0 || 
+        filters.categories.some(category => solution.competencies.includes(category));
       
-      return typeMatch && modalityMatch && durationMatch && audienceMatch && benefitsMatch;
+      return typeMatch && modalityMatch && durationMatch && audienceMatch && benefitsMatch && categoriesMatch;
     });
     
     setFilteredSolutions(filtered);
@@ -138,6 +143,7 @@ export const useCompetencySolutions = (competencyId) => {
       filters.modalities.length + 
       filters.durations.length + 
       filters.audiences.length +
-      filters.benefits.length
+      filters.benefits.length +
+      filters.categories.length
   };
 };
