@@ -34,23 +34,23 @@ const SolutionsSection = ({
   const hasGroups = Object.keys(solutionGroups).length > 0;
 
   return (
-    <section className="py-6 px-6">
+    <section className="py-3 px-6">
       <div className="max-w-7xl mx-auto">
         {hasGroups ? (
           Object.values(solutionGroups).map((group) => (
-            <div key={group.competency.id} className="mb-8" id={group.competency.id}>
-              {/* Competency Header - More compact */}
-              <div className="mb-4 p-4 bg-white rounded-lg shadow-sm border border-gray-100">
-                <h2 className="text-lg font-semibold mb-1 font-quicksand text-gray-800">
+            <div key={group.competency.id} className="mb-6" id={group.competency.id}>
+              {/* Competency Header - Very compact */}
+              <div className="mb-3 p-3 bg-white rounded-lg shadow-sm border border-gray-100">
+                <h2 className="text-base font-semibold mb-1 font-quicksand text-gray-800">
                   {group.competency.title}
                 </h2>
-                <p className="text-muted-foreground text-sm max-w-3xl font-quicksand">
+                <p className="text-muted-foreground text-xs max-w-3xl font-quicksand">
                   {group.competency.description}
                 </p>
               </div>
               
-              {/* Solutions Grid - Tighter spacing */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* Solutions Grid - Compact spacing */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {group.solutions.map((solution, solutionIndex) => (
                   <SolutionCard 
                     key={solution.id} 
@@ -62,7 +62,7 @@ const SolutionsSection = ({
             </div>
           ))
         ) : (
-          <div className="text-center py-8 bg-secondary/30 rounded-lg">
+          <div className="text-center py-6 bg-secondary/30 rounded-lg">
             <p className="text-lg mb-4 font-quicksand">
               No encontramos soluciones con estos filtros. Intenta ajustar tu búsqueda.
             </p>
