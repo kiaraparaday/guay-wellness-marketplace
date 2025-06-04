@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useHistory } from "react-router-dom";
 import { Menu, Search, User, LogOut, LogIn, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import SearchBar from "./SearchBar";
@@ -37,7 +36,7 @@ const Header: React.FC = () => {
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const { currentUser, userData, loading } = useAuth();
   const location = useLocation();
-  const navigate = useNavigate();
+  const history = useHistory();
   
   const menuItems = [
     { label: "Inicio", path: "/" },
@@ -79,7 +78,7 @@ const Header: React.FC = () => {
       const [route, anchor] = path.split('#');
       if (route === '/') {
         // If we're going to home page with anchor
-        navigate('/');
+        history.push('/');
         setTimeout(() => {
           const element = document.getElementById(anchor);
           if (element) {
@@ -88,7 +87,7 @@ const Header: React.FC = () => {
         }, 100);
       }
     } else {
-      navigate(path);
+      history.push(path);
     }
     setIsMobileMenuOpen(false);
   };
