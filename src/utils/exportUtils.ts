@@ -3,10 +3,31 @@
  * Utilidades para exportar datos en diferentes formatos
  */
 
-import { AppointmentData, getAllAppointments, getAllSolutionsFromFirebase, syncAllMarketplaceData } from "@/services/firebaseService";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { solutionsArray } from "@/data/solutions";
+
+// Mock interfaces since Firebase is disabled
+interface AppointmentData {
+  name: string;
+  email: string;
+  company?: string;
+  date: Date;
+  time: string;
+  status: string;
+  message?: string;
+  createdAt: Date;
+}
+
+interface SolutionType {
+  id: string;
+  title: string;
+  description: string;
+  type: string;
+  modality: string;
+  duration?: string;
+  audience?: string;
+}
 
 /**
  * Convierte un array de objetos a formato CSV
@@ -50,17 +71,13 @@ export const objectsToCSV = (data: any[]): string => {
  */
 export const exportAppointmentsToCSV = async (): Promise<void> => {
   try {
-    // Obtener citas de Firebase
-    const result = await getAllAppointments();
+    console.log("Firebase service is disabled - using mock data for export");
     
-    if (!result.success || !result.appointments) {
-      throw new Error("Error al obtener citas de Firebase");
-    }
-    
-    const appointments = result.appointments;
+    // Mock appointments data since Firebase is disabled
+    const mockAppointments: AppointmentData[] = [];
     
     // Formatear los datos para que sean más legibles en el CSV
-    const formattedAppointments = appointments.map(appointment => {
+    const formattedAppointments = mockAppointments.map(appointment => {
       return {
         Nombre: appointment.name,
         Email: appointment.email,
@@ -103,14 +120,10 @@ export const exportAppointmentsToCSV = async (): Promise<void> => {
  */
 export const exportSolutionsToCSV = async (): Promise<void> => {
   try {
-    // Obtener soluciones de Firebase
-    const result = await getAllSolutionsFromFirebase();
+    console.log("Firebase service is disabled - using local solutions data for export");
     
-    if (!result.success || !result.solutions) {
-      throw new Error("Error al obtener soluciones de Firebase");
-    }
-    
-    const solutions = result.solutions;
+    // Use local solutions data since Firebase is disabled
+    const solutions = solutionsArray;
     
     // Formatear los datos para que sean más legibles en el CSV
     const formattedSolutions = solutions.map(solution => {
@@ -122,7 +135,6 @@ export const exportSolutionsToCSV = async (): Promise<void> => {
         Modalidad: solution.modality,
         Duración: solution.duration || "",
         Audiencia: solution.audience || "",
-        // Eliminamos las referencias a la propiedad pricing que no existe en el tipo SolutionType
       };
     });
     
@@ -156,17 +168,13 @@ export const exportSolutionsToCSV = async (): Promise<void> => {
  */
 export const exportAllMarketplaceData = async (): Promise<void> => {
   try {
-    // Primero sincronizar todos los datos con Firebase
-    await syncAllMarketplaceData();
+    console.log("Firebase service is disabled - using local data for export");
     
-    // Exportar soluciones
+    // Export solutions using local data
     await exportSolutionsToCSV();
     
-    // Exportar citas
+    // Export appointments (will be empty since Firebase is disabled)
     await exportAppointmentsToCSV();
-    
-    // Podríamos añadir más exportaciones aquí según sea necesario
-    // Por ejemplo, testimonios, dimensiones, competencias, etc.
     
     return Promise.resolve();
   } catch (error) {
