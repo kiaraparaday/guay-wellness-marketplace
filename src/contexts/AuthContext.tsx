@@ -1,8 +1,21 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { User } from "firebase/auth";
-import { auth, getUserData, UserData } from "../services/firebaseService";
-import { onAuthStateChanged } from "firebase/auth";
+
+// Mock User interface since Firebase is disabled
+interface User {
+  uid: string;
+  email: string | null;
+  displayName: string | null;
+}
+
+// Mock UserData interface
+interface UserData {
+  nombre: string;
+  email: string;
+  empresa?: string;
+  rol: string;
+  fechaRegistro: Date;
+}
 
 interface AuthContextType {
   currentUser: User | null;
@@ -23,59 +36,17 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false); // Set to false since Firebase is disabled
 
   const refreshUserData = async () => {
-    if (currentUser) {
-      try {
-        console.log("Refreshing user data for UID:", currentUser.uid);
-        const userDoc = await getUserData(currentUser.uid);
-        if (userDoc) {
-          console.log("User data refreshed:", userDoc.nombre);
-          setUserData(userDoc);
-        } else {
-          console.log("No user data found in Firestore");
-          setUserData(null);
-        }
-      } catch (error) {
-        console.error("Error refreshing user data:", error);
-        setUserData(null);
-      }
-    } else {
-      setUserData(null);
-    }
+    console.log("Firebase service is disabled - refreshUserData is a no-op");
+    // Since Firebase is disabled, this is a no-op
   };
 
   useEffect(() => {
-    console.log("Setting up Firebase auth state listener...");
-    
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      console.log("Firebase auth state changed:", user ? `User logged in: ${user.email}` : "User logged out");
-      setCurrentUser(user);
-      
-      if (user) {
-        try {
-          console.log("Fetching user data for UID:", user.uid);
-          const userDoc = await getUserData(user.uid);
-          if (userDoc) {
-            console.log("User data loaded:", userDoc.nombre);
-            setUserData(userDoc);
-          } else {
-            console.log("No user data found in Firestore for this user");
-            setUserData(null);
-          }
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-          setUserData(null);
-        }
-      } else {
-        setUserData(null);
-      }
-      
-      setLoading(false);
-    });
-
-    return unsubscribe;
+    console.log("Firebase service is disabled - no auth state listener");
+    // Since Firebase is disabled, we don't set up any auth listener
+    setLoading(false);
   }, []);
 
   const value = {
