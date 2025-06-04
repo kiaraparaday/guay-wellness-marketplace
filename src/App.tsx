@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { setupGlobalButtonHandler, setupAgendarCitaRedirection } from "@/utils/googleCalendarButton";
 import Index from "./pages/Index";
@@ -59,25 +59,25 @@ const App = () => {
               
               <Header />
               <div className="pt-8 px-4 md:px-8 max-w-7xl mx-auto relative z-10">
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/dimension/:id" element={<Dimension />} />
-                  <Route path="/competency/:id" element={<Competency />} />
-                  <Route path="/solution/:id" element={<Solution />} />
-                  <Route path="/solutions" element={<Solutions />} />
-                  <Route path="/search" element={<SearchResults />} />
-                  <Route path="/resultados" element={<ResultadosPage />} />
-                  <Route path="/appointment" element={<Appointment />} />
-                  <Route path="/my-appointments" element={<MyAppointments />} />
-                  <Route path="/request-solution" element={<RequestSolution />} />
-                  <Route path="/testimonials" element={<Testimonials />} />
-                  <Route path="/controls" element={<ControlDemo />} />
-                  <Route path="/categorias" element={<Categories />} />
-                  <Route path="/nosotras" element={<AboutUs />} />
-                  <Route path="/quienes-somos" element={<QuienesSomos />} />
-                  <Route path="/agenda" element={<Appointment />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
+                <Switch>
+                  <Route exact path="/" component={Index} />
+                  <Route path="/dimension/:id" component={Dimension} />
+                  <Route path="/competency/:id" component={Competency} />
+                  <Route path="/solution/:id" component={Solution} />
+                  <Route path="/solutions" component={Solutions} />
+                  <Route path="/search" component={SearchResults} />
+                  <Route path="/resultados" component={ResultadosPage} />
+                  <Route path="/appointment" component={Appointment} />
+                  <Route path="/my-appointments" component={MyAppointments} />
+                  <Route path="/request-solution" component={RequestSolution} />
+                  <Route path="/testimonials" component={Testimonials} />
+                  <Route path="/controls" component={ControlDemo} />
+                  <Route path="/categorias" component={Categories} />
+                  <Route path="/nosotras" component={AboutUs} />
+                  <Route path="/quienes-somos" component={QuienesSomos} />
+                  <Route path="/agenda" component={Appointment} />
+                  <Route component={NotFound} />
+                </Switch>
               </div>
               <SimpleFooter />
             </div>
