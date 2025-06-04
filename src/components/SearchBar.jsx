@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { Search } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 
 const SearchBar = ({ onClose }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const inputRef = useRef(null);
-  const navigate = useNavigate();
+  const history = useHistory();
 
   useEffect(() => {
     // Focus the input when component mounts
@@ -37,7 +37,7 @@ const SearchBar = ({ onClose }) => {
     // Navigate to search results page with the search term
     const trimmedTerm = searchTerm.trim();
     console.log(`Searching for: ${trimmedTerm}`);
-    navigate(`/resultados?q=${encodeURIComponent(trimmedTerm)}`);
+    history.push(`/resultados?q=${encodeURIComponent(trimmedTerm)}`);
     onClose();
   };
 
@@ -45,7 +45,7 @@ const SearchBar = ({ onClose }) => {
     setSearchTerm(term);
     // Navigate directly instead of using form submission
     console.log(`Popular search: ${term}`);
-    navigate(`/resultados?q=${encodeURIComponent(term)}`);
+    history.push(`/resultados?q=${encodeURIComponent(term)}`);
     onClose();
   };
 
