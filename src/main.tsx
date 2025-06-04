@@ -5,7 +5,7 @@ import App from './App.tsx'
 import './index.css'
 import { StrictMode } from 'react'
 
-// React 16 compatible rendering
+// React 16.13.1 compatible rendering
 ReactDOM.render(
   <StrictMode>
     <App />
