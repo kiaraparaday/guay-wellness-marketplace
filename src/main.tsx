@@ -1,12 +1,14 @@
 
-import { createRoot } from 'react-dom/client'
+import React from 'react'
+import ReactDOM from 'react-dom'
 import App from './App.tsx'
 import './index.css'
 import { StrictMode } from 'react'
 
-// Inicializar la aplicación con StrictMode para ayudar a detectar problemas
-createRoot(document.getElementById("root")!).render(
+// React 16 compatible rendering
+ReactDOM.render(
   <StrictMode>
     <App />
-  </StrictMode>
+  </StrictMode>,
+  document.getElementById("root")
 );
