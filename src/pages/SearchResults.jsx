@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import SolutionCard from "@/components/SolutionCard";
 import { solutionsArray } from "@/data/solutions";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import { ArrowLeft } from "lucide-react";
 
 const SearchResults = () => {
   const location = useLocation();
-  const navigate = useNavigate();
+  const history = useHistory();
   const searchParams = new URLSearchParams(location.search);
   const query = searchParams.get("q") || "";
   
@@ -58,7 +58,7 @@ const SearchResults = () => {
       <Button 
         variant="outline" 
         className="mb-6 flex items-center gap-2"
-        onClick={() => navigate(-1)}
+        onClick={() => history.goBack()}
       >
         <ArrowLeft className="h-4 w-4" /> Volver
       </Button>
@@ -94,7 +94,7 @@ const SearchResults = () => {
             No hemos encontrado soluciones que coincidan con "{query}".
           </p>
           <Button 
-            onClick={() => navigate("/solutions")}
+            onClick={() => history.push("/solutions")}
             className="bg-primary hover:bg-primary/90"
           >
             Ver todas las soluciones
