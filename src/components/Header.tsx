@@ -6,7 +6,6 @@ import SearchBar from "./SearchBar";
 import GuayLogo from "./GuayLogo";
 import { Button } from "@/components/ui/button";
 import { filterEventBus } from "@/services/eventBus";
-import { logoutUser } from "@/services/firebaseService";
 import { useAuth } from "@/contexts/AuthContext";
 import UserRegistrationModal from "./UserRegistrationModal";
 import UserLoginModal from "./UserLoginModal";
@@ -102,8 +101,7 @@ const Header: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      console.log("Logging out user...");
-      await logoutUser();
+      console.log("Firebase service is disabled - logout is a no-op");
       toast.success("Sesión cerrada correctamente");
     } catch (error) {
       console.error("Error logging out:", error);
