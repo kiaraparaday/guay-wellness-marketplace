@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Clock, Users } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "../lib/utils";
 
 const SolutionCard = ({ solution, index }) => {
   const [imageError, setImageError] = useState(false);
