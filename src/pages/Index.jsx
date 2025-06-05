@@ -355,7 +355,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA Section - Mejorada con imagen */}
       <section className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
