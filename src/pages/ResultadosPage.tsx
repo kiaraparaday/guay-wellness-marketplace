@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from "react";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SolutionCard from "@/components/SolutionCard";
 import { solutionsArray } from "@/data/solutions";
 import { Button } from "@/components/ui/button";
@@ -10,7 +9,7 @@ import { Separator } from "@/components/ui/separator";
 
 const ResultadosPage = () => {
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
   const query = searchParams.get("q") || "";
   
@@ -81,7 +80,7 @@ const ResultadosPage = () => {
         <Button 
           variant="outline" 
           className="flex items-center gap-2"
-          onClick={() => history.goBack()}
+          onClick={() => navigate(-1)}
         >
           <ArrowLeft className="h-4 w-4" /> Volver
         </Button>
@@ -134,7 +133,7 @@ const ResultadosPage = () => {
             Intenta con otro término como: liderazgo, estrés, comunicación, trabajo en equipo, inclusión, mindfulness...
           </p>
           <Button 
-            onClick={() => history.push("/solutions")}
+            onClick={() => navigate("/solutions")}
             variant="guay-primary"
             size="grande"
           >

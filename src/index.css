@@ -1,6 +1,9 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+/* Importar Quicksand (fuente principal de GUAY) */
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+/* Importar fuentes secundarias que ya se estaban usando */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,47 +11,83 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 220 14% 16%; /* #15253C */
+
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 220 14% 16%; /* #15253C */
+
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    --popover-foreground: 220 14% 16%; /* #15253C */
+
+    /* GUAY brand colors basados en los colores actualizados */
+    --primary: 198 55% 42%; /* #2188B4 (Azul GUAY) */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 220 14% 16%; /* #15253C */
+
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 0 0% 44%; /* #707070 */
+
+    --accent: 74 54% 49%; /* #9CB537 (Verde GUAY) */
+    --accent-foreground: 220 14% 16%; /* #15253C */
+
+    --destructive: 0 100% 49%; /* #F90101 */
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 9% 85%; /* #D9D9D9 */
+    --input: 220 9% 85%; /* #D9D9D9 */
+    --ring: 330 60% 44%; /* #AF2F72 (Magenta GUAY) */
+
     --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 225 10% 46%; /* #686D82 */
+    --sidebar-primary: 220 14% 16%; /* #15253C */
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 220 14% 16%; /* #15253C */
+    --sidebar-border: 220 9% 85%; /* #D9D9D9 */
+    --sidebar-ring: 330 60% 44%; /* #AF2F72 (Magenta GUAY) */
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 94.1%;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 198 55% 42%; /* #2188B4 (Azul GUAY) */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 74 54% 49%; /* #9CB537 (Verde GUAY) */
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 100% 49%; /* #F90101 */
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 330 60% 44%; /* #AF2F72 (Magenta GUAY) */
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 198 55% 42%; /* #2188B4 (Azul GUAY) */
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 330 60% 44%; /* #AF2F72 (Magenta GUAY) */
   }
 }
 
@@ -56,68 +95,169 @@
   * {
     @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground font-poppins;
+    /* Mantenemos Quicksand como fuente principal */
+    @apply bg-background text-foreground font-quicksand;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Sistema tipográfico basado en Base 16 1.62 */
+  
+  /* Título / h1 - Size: 48px, Weight: Bold, Line Height: proporcional */
+  h1 {
+    @apply text-[48px] font-bold leading-tight tracking-tight;
+  }
+
+  /* Título / h2 - Size: 40px, Weight: Bold, Line Height: proporcional */
+  h2 {
+    @apply text-[40px] font-bold leading-tight tracking-tight;
+  }
+
+  /* Título / h3 - Size: 24px, Weight: Bold, Line Height: proporcional */
+  h3 {
+    @apply text-[24px] font-bold leading-tight tracking-tight;
+  }
+
+  /* Subtítulo (big copy) - Size: 24px, Weight: Semibold, Line Height: proporcional */
+  .subtitle {
+    @apply text-[24px] font-semibold leading-tight;
+  }
+
+  /* Énfasis - Size: 20px, Weight: Bold, Line Height: proporcional */
+  .emphasis {
+    @apply text-[20px] font-bold leading-tight;
+  }
+
+  /* Bold copy - Size: 16px, Weight: Bold, Line Height: proporcional */
+  .bold-copy {
+    @apply text-[16px] font-bold leading-normal;
+  }
+
+  /* Cuerpo copy - Size: 16px, Weight: Medium, Line Height: proporcional */
+  p, .body-copy {
+    @apply text-[16px] font-medium leading-normal;
+  }
+
+  /* Small copy - Size: 14px, Weight: Semibold, Line Height: proporcional */
+  .small-copy {
+    @apply text-[14px] font-semibold leading-normal;
+  }
+
+  /* Pre title - Size: 12px, Weight: Bold, Line Height: 18px */
+  .pre-title {
+    @apply text-[12px] font-bold leading-[18px] uppercase tracking-wider;
   }
 }
 
 @layer utilities {
+  /* Glass morphism */
+  .glass {
+    @apply bg-white bg-opacity-20 backdrop-blur-lg border border-white border-opacity-20 shadow-glass;
+  }
+
+  .glass-dark {
+    @apply bg-black bg-opacity-20 backdrop-blur-lg border border-white border-opacity-10 shadow-glass;
+  }
+
+  /* Animation utilities */
   .transition-all-200 {
-    transition: all 0.2s ease-in-out;
+    @apply transition-all duration-200;
   }
-  
-  .line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+
+  .transition-all-300 {
+    @apply transition-all duration-300;
   }
-  
-  .line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+
+  .transition-transform-300 {
+    @apply transition-transform duration-300;
   }
-  
+
   .hover-scale {
-    transition: transform 0.2s ease-in-out;
+    @apply transition-transform duration-200 hover:scale-[1.03];
+  }
+
+  /* Smooth link animation */
+  .link-underline {
+    @apply relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
+  }
+
+  /* GUAY-specific styles updated to match brand colors */
+  .guay-gradient {
+    @apply bg-gradient-to-r from-guay-green via-guay-blue to-guay-purple;
   }
   
-  .hover-scale:hover {
-    transform: scale(1.02);
+  .guay-heading {
+    @apply font-quicksand text-guay-dark-blue font-medium;
   }
   
-  /* Typography classes for consistency */
-  .pre-title {
-    @apply text-xs font-medium uppercase tracking-wider;
+  .guay-text-gradient {
+    @apply bg-gradient-to-r from-guay-blue to-guay-purple bg-clip-text text-transparent;
+  }
+
+  /* Colored circle backgrounds usando los nuevos colores exactos */
+  .circle-bg-green {
+    @apply bg-guay-green rounded-full;
   }
   
-  .subtitle {
-    @apply text-lg;
+  .circle-bg-blue {
+    @apply bg-guay-blue rounded-full;
   }
   
-  .body-copy {
-    @apply text-base;
+  .circle-bg-purple {
+    @apply bg-guay-purple rounded-full;
   }
   
-  .small-copy {
-    @apply text-sm;
+  .circle-bg-orange {
+    @apply bg-guay-orange rounded-full;
+  }
+
+  /* Nuevas utilidades para los colores primarios */
+  .text-primary-guay {
+    @apply text-guay-dark-blue;
+  }
+  
+  .text-secondary-guay {
+    @apply text-guay-slate;
+  }
+  
+  .text-tertiary-guay {
+    @apply text-guay-gray;
   }
 }
 
-/* Custom animations for React 16 compatibility */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.5s ease-out forwards;
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}
+
+/* Font family */
+.font-inter {
+  font-family: 'Inter', sans-serif;
+}
+
+.font-playfair {
+  font-family: 'Playfair Display', serif;
+}
+
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+}
+
+.font-quicksand {
+  font-family: 'Quicksand', sans-serif;
 }

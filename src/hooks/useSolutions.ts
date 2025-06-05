@@ -2,12 +2,13 @@
 import { useState, useEffect } from "react";
 import { onSnapshot, collection } from "firebase/firestore";
 import { db } from "@/services/firebaseService";
+import { SolutionType } from "@/components/SolutionCard";
 import { solutionsArray } from "@/data/solutions";
 
 export const useSolutions = () => {
-  const [solutions, setSolutions] = useState(solutionsArray); // Start with local data
+  const [solutions, setSolutions] = useState<SolutionType[]>(solutionsArray); // Start with local data
   const [loading, setLoading] = useState(false); // Don't start loading immediately
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [isUsingFallback, setIsUsingFallback] = useState(true); // Default to local data
 
   useEffect(() => {
@@ -19,7 +20,7 @@ export const useSolutions = () => {
       collection(db, "solutions"),
       (snapshot) => {
         if (!snapshot.empty) {
-          const firebaseSolutions = [];
+          const firebaseSolutions: SolutionType[] = [];
           snapshot.forEach((doc) => {
             const data = doc.data();
             const solutionData = {
@@ -37,7 +38,7 @@ export const useSolutions = () => {
                 "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?auto=format&fit=crop&q=80" : 
                 data.image || "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?auto=format&fit=crop&q=80",
               ...data
-            };
+            } as SolutionType;
             firebaseSolutions.push(solutionData);
           });
           

@@ -1,11 +1,13 @@
+
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useHistory } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, Search, User, LogOut, LogIn, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import SearchBar from "./SearchBar";
 import GuayLogo from "./GuayLogo";
 import { Button } from "@/components/ui/button";
 import { filterEventBus } from "@/services/eventBus";
+import { logoutUser } from "@/services/firebaseService";
 import { useAuth } from "@/contexts/AuthContext";
 import UserRegistrationModal from "./UserRegistrationModal";
 import UserLoginModal from "./UserLoginModal";
@@ -35,7 +37,7 @@ const Header: React.FC = () => {
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const { currentUser, userData, loading } = useAuth();
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   
   const menuItems = [
     { label: "Inicio", path: "/" },
@@ -77,7 +79,7 @@ const Header: React.FC = () => {
       const [route, anchor] = path.split('#');
       if (route === '/') {
         // If we're going to home page with anchor
-        history.push('/');
+        navigate('/');
         setTimeout(() => {
           const element = document.getElementById(anchor);
           if (element) {
@@ -86,7 +88,7 @@ const Header: React.FC = () => {
         }, 100);
       }
     } else {
-      history.push(path);
+      navigate(path);
     }
     setIsMobileMenuOpen(false);
   };
@@ -101,7 +103,8 @@ const Header: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      console.log("Firebase service is disabled - logout is a no-op");
+      console.log("Logging out user...");
+      await logoutUser();
       toast.success("Sesión cerrada correctamente");
     } catch (error) {
       console.error("Error logging out:", error);

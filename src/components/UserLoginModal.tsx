@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
+import { loginUser, signInWithGoogle } from "@/services/firebaseService";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface UserLoginModalProps {
@@ -46,14 +47,37 @@ const UserLoginModal: React.FC<UserLoginModalProps> = ({
     setIsLoading(true);
     
     try {
-      console.log("Firebase service is disabled - login attempt with email:", data.email);
+      console.log("Attempting to login user with email:", data.email);
+      await loginUser(data.email, data.password);
       
-      toast.error("Servicio de autenticación no disponible", {
-        description: "Firebase ha sido deshabilitado. Contacta al administrador.",
+      // Refresh user data after successful login
+      await refreshUserData();
+      
+      toast.success("¡Inicio de sesión exitoso!", {
+        description: "Bienvenido/a de nuevo a Guay",
       });
+      
+      onSuccess?.();
+      onClose();
+      
+      // Reset form
+      form.reset();
     } catch (error: any) {
       console.error("Error logging in:", error);
-      toast.error("Error al iniciar sesión. Servicio no disponible.");
+      
+      let errorMessage = "Error al iniciar sesión. Verifica tus credenciales.";
+      
+      if (error.code === 'auth/user-not-found') {
+        errorMessage = "No existe una cuenta con este correo electrónico";
+      } else if (error.code === 'auth/wrong-password') {
+        errorMessage = "Contraseña incorrecta";
+      } else if (error.code === 'auth/invalid-credential') {
+        errorMessage = "Credenciales inválidas";
+      } else if (error.code === 'auth/too-many-requests') {
+        errorMessage = "Demasiados intentos fallidos. Intenta más tarde.";
+      }
+      
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -63,14 +87,39 @@ const UserLoginModal: React.FC<UserLoginModalProps> = ({
     setIsGoogleLoading(true);
     
     try {
-      console.log("Firebase service is disabled - Google sign-in not available");
+      console.log("Starting Google sign-in process...");
+      const user = await signInWithGoogle();
+      console.log("Google sign-in successful for:", user.email);
       
-      toast.error("Servicio de autenticación no disponible", {
-        description: "Firebase ha sido deshabilitado. Contacta al administrador.",
+      // Refresh user data after successful login
+      await refreshUserData();
+      
+      toast.success("¡Inicio de sesión exitoso!", {
+        description: "Bienvenido/a a Guay",
       });
+      
+      onSuccess?.();
+      onClose();
     } catch (error: any) {
       console.error("Error signing in with Google:", error);
-      toast.error("Error al iniciar sesión con Google. Servicio no disponible.");
+      
+      let errorMessage = "Error al iniciar sesión con Google";
+      
+      if (error.code === 'auth/unauthorized-domain') {
+        errorMessage = "Dominio no autorizado para Google Sign-In. Contacta al administrador.";
+      } else if (error.code === 'auth/popup-closed-by-user') {
+        errorMessage = "Inicio de sesión cancelado";
+      } else if (error.code === 'auth/popup-blocked') {
+        errorMessage = "Popup bloqueado. Permite popups para continuar.";
+      } else if (error.code === 'auth/cancelled-popup-request') {
+        errorMessage = "Solicitud de popup cancelada";
+      } else if (error.code === 'auth/network-request-failed') {
+        errorMessage = "Error de conexión. Verifica tu internet.";
+      }
+      
+      toast.error(errorMessage, {
+        duration: 5000,
+      });
     } finally {
       setIsGoogleLoading(false);
     }
@@ -95,9 +144,9 @@ const UserLoginModal: React.FC<UserLoginModalProps> = ({
           <Button
             type="button"
             variant="outline"
-            className="w-full border-gray-300 hover:bg-gray-50 opacity-50"
+            className="w-full border-gray-300 hover:bg-gray-50"
             onClick={handleGoogleSignIn}
-            disabled={true}
+            disabled={isGoogleLoading || isLoading}
           >
             <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -105,7 +154,7 @@ const UserLoginModal: React.FC<UserLoginModalProps> = ({
               <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
             </svg>
-            Servicio no disponible
+            {isGoogleLoading ? "Iniciando..." : "Continuar con Google"}
           </Button>
         </div>
 
@@ -128,7 +177,7 @@ const UserLoginModal: React.FC<UserLoginModalProps> = ({
                 <FormItem>
                   <FormLabel>Correo electrónico</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="tu.correo@empresa.com" {...field} disabled />
+                    <Input type="email" placeholder="tu.correo@empresa.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -142,7 +191,7 @@ const UserLoginModal: React.FC<UserLoginModalProps> = ({
                 <FormItem>
                   <FormLabel>Contraseña</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Tu contraseña" {...field} disabled />
+                    <Input type="password" placeholder="Tu contraseña" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -152,10 +201,10 @@ const UserLoginModal: React.FC<UserLoginModalProps> = ({
             <DialogFooter className="flex-col gap-3 mt-6">
               <Button 
                 type="submit" 
-                className="w-full bg-guay-green hover:bg-guay-green/90 opacity-50" 
-                disabled={true}
+                className="w-full bg-guay-green hover:bg-guay-green/90" 
+                disabled={isLoading || isGoogleLoading}
               >
-                Servicio no disponible
+                {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
               </Button>
               
               <div className="text-center w-full text-sm mt-1">
@@ -166,8 +215,7 @@ const UserLoginModal: React.FC<UserLoginModalProps> = ({
                     handleClose();
                     onRegisterClick();
                   }}
-                  className="text-guay-green hover:underline font-medium opacity-50"
-                  disabled
+                  className="text-guay-green hover:underline font-medium"
                 >
                   Regístrate
                 </button>

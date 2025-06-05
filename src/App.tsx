@@ -27,7 +27,7 @@ import AboutUs from "./pages/AboutUs";
 import QuienesSomos from "./pages/QuienesSomos";
 import { AuthProvider } from "./contexts/AuthContext";
 
-// Initialize Firebase in App.jsx for global availability
+// Initialize Firebase in App.tsx for global availability
 import "./services/firebaseService";
 
 const queryClient = new QueryClient();

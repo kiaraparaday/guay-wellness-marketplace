@@ -4,38 +4,11 @@ import { toast } from "sonner";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { ArrowLeft, Calendar, Clock, Building, Mail, MessageSquare, Download, RefreshCw } from "lucide-react";
+import { getAppointmentsByEmail, getAllAppointments } from "@/services/firebaseService";
+import type { AppointmentData } from "@/services/firebaseService";
 import { exportAppointmentsToCSV } from "@/utils/exportUtils";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-
-// Mock interfaces since Firebase is disabled
-interface AppointmentData {
-  name: string;
-  email: string;
-  company?: string;
-  date: Date;
-  time: string;
-  status: string;
-  message?: string;
-  createdAt: Date;
-}
-
-// Mock Firebase functions since Firebase is disabled
-const getAppointmentsByEmail = async (email: string) => {
-  console.log("Firebase service is disabled - returning empty appointments for email:", email);
-  return {
-    success: true,
-    appointments: [] as AppointmentData[]
-  };
-};
-
-const getAllAppointments = async () => {
-  console.log("Firebase service is disabled - returning empty appointments");
-  return {
-    success: true,
-    appointments: [] as AppointmentData[]
-  };
-};
 
 const MyAppointmentsPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -62,10 +35,11 @@ const MyAppointmentsPage: React.FC = () => {
         setShowAppointments(true);
         
         if (result.appointments.length === 0) {
-          toast.info("No se encontraron citas con este correo electrónico (Firebase deshabilitado)");
+          toast.info("No se encontraron citas con este correo electrónico");
         }
       } else {
         toast.error("Ha ocurrido un error al buscar sus citas. Por favor intente nuevamente.");
+        console.error("Error al buscar citas:", result.error);
       }
     } catch (error) {
       toast.error("Ha ocurrido un error al buscar sus citas. Por favor intente nuevamente.");
@@ -76,10 +50,15 @@ const MyAppointmentsPage: React.FC = () => {
   };
 
   const handleExportCSV = async () => {
+    if (appointments.length === 0) {
+      toast.info("No hay citas para exportar");
+      return;
+    }
+    
     try {
       setIsSyncing(true);
       await exportAppointmentsToCSV();
-      toast.success("Citas exportadas correctamente (datos locales - Firebase deshabilitado)");
+      toast.success("Citas exportadas correctamente desde Firebase");
     } catch (error) {
       console.error("Error al exportar citas:", error);
       toast.error("Ha ocurrido un error al exportar las citas");
@@ -95,7 +74,7 @@ const MyAppointmentsPage: React.FC = () => {
       
       if (result.success && result.appointments) {
         setAppointments(result.appointments);
-        toast.success("Todas las citas sincronizadas (Firebase deshabilitado - sin datos)");
+        toast.success("Todas las citas sincronizadas correctamente desde Firebase");
       } else {
         toast.error("Error al sincronizar citas con Firebase");
       }

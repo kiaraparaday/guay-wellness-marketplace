@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
+import { registerUser, signInWithGoogle } from "@/services/firebaseService";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface UserRegistrationModalProps {
@@ -59,14 +60,42 @@ const UserRegistrationModal: React.FC<UserRegistrationModalProps> = ({
     setIsLoading(true);
     
     try {
-      console.log("Firebase service is disabled - registration attempt with email:", data.email);
-      
-      toast.error("Servicio de registro no disponible", {
-        description: "Firebase ha sido deshabilitado. Contacta al administrador.",
+      console.log("Attempting to register user with email:", data.email);
+      await registerUser({
+        nombre: data.nombre,
+        email: data.email,
+        password: data.password,
+        empresa: data.empresa || "",
+        rol: data.rol,
+        fechaRegistro: new Date(),
       });
+      
+      // Refresh user data after successful registration
+      await refreshUserData();
+      
+      toast.success("¡Cuenta creada exitosamente!", {
+        description: "Bienvenido/a a Guay",
+      });
+      
+      onSuccess?.();
+      onClose();
+      
+      // Reset form
+      form.reset();
     } catch (error: any) {
       console.error("Error registering user:", error);
-      toast.error("Error al crear la cuenta. Servicio no disponible.");
+      
+      let errorMessage = "Error al crear la cuenta. Intenta nuevamente.";
+      
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = "Este correo electrónico ya está registrado";
+      } else if (error.code === 'auth/weak-password') {
+        errorMessage = "La contraseña es muy débil";
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = "Correo electrónico no válido";
+      }
+      
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -76,14 +105,39 @@ const UserRegistrationModal: React.FC<UserRegistrationModalProps> = ({
     setIsGoogleLoading(true);
     
     try {
-      console.log("Firebase service is disabled - Google registration not available");
+      console.log("Starting Google registration process...");
+      const user = await signInWithGoogle();
+      console.log("Google registration successful for:", user.email);
       
-      toast.error("Servicio de registro no disponible", {
-        description: "Firebase ha sido deshabilitado. Contacta al administrador.",
+      // Refresh user data after successful login
+      await refreshUserData();
+      
+      toast.success("¡Cuenta creada exitosamente!", {
+        description: "Bienvenido/a a Guay",
       });
+      
+      onSuccess?.();
+      onClose();
     } catch (error: any) {
       console.error("Error signing up with Google:", error);
-      toast.error("Error al registrarse con Google. Servicio no disponible.");
+      
+      let errorMessage = "Error al registrarse con Google";
+      
+      if (error.code === 'auth/unauthorized-domain') {
+        errorMessage = "Dominio no autorizado para Google Sign-In. Contacta al administrador.";
+      } else if (error.code === 'auth/popup-closed-by-user') {
+        errorMessage = "Registro cancelado";
+      } else if (error.code === 'auth/popup-blocked') {
+        errorMessage = "Popup bloqueado. Permite popups para continuar.";
+      } else if (error.code === 'auth/account-exists-with-different-credential') {
+        errorMessage = "Ya existe una cuenta con este correo";
+      } else if (error.code === 'auth/network-request-failed') {
+        errorMessage = "Error de conexión. Verifica tu internet.";
+      }
+      
+      toast.error(errorMessage, {
+        duration: 5000,
+      });
     } finally {
       setIsGoogleLoading(false);
     }
@@ -108,9 +162,9 @@ const UserRegistrationModal: React.FC<UserRegistrationModalProps> = ({
           <Button
             type="button"
             variant="outline"
-            className="w-full border-gray-300 hover:bg-gray-50 opacity-50"
+            className="w-full border-gray-300 hover:bg-gray-50"
             onClick={handleGoogleSignIn}
-            disabled={true}
+            disabled={isGoogleLoading || isLoading}
           >
             <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -118,7 +172,7 @@ const UserRegistrationModal: React.FC<UserRegistrationModalProps> = ({
               <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
             </svg>
-            Servicio no disponible
+            {isGoogleLoading ? "Registrando..." : "Continuar con Google"}
           </Button>
         </div>
 
@@ -141,7 +195,7 @@ const UserRegistrationModal: React.FC<UserRegistrationModalProps> = ({
                 <FormItem>
                   <FormLabel>Nombre completo</FormLabel>
                   <FormControl>
-                    <Input placeholder="Tu nombre" {...field} disabled />
+                    <Input placeholder="Tu nombre" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -155,7 +209,7 @@ const UserRegistrationModal: React.FC<UserRegistrationModalProps> = ({
                 <FormItem>
                   <FormLabel>Correo electrónico</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="tu.correo@empresa.com" {...field} disabled />
+                    <Input type="email" placeholder="tu.correo@empresa.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -169,7 +223,7 @@ const UserRegistrationModal: React.FC<UserRegistrationModalProps> = ({
                 <FormItem>
                   <FormLabel>Contraseña</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Mínimo 6 caracteres" {...field} disabled />
+                    <Input type="password" placeholder="Mínimo 6 caracteres" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -183,7 +237,7 @@ const UserRegistrationModal: React.FC<UserRegistrationModalProps> = ({
                 <FormItem>
                   <FormLabel>Empresa (opcional)</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nombre de tu empresa" {...field} disabled />
+                    <Input placeholder="Nombre de tu empresa" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -196,7 +250,7 @@ const UserRegistrationModal: React.FC<UserRegistrationModalProps> = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Rol o tipo de usuario</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value} disabled>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecciona tu rol" />
@@ -224,7 +278,6 @@ const UserRegistrationModal: React.FC<UserRegistrationModalProps> = ({
                     <Checkbox 
                       checked={field.value} 
                       onCheckedChange={field.onChange}
-                      disabled
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
@@ -240,10 +293,10 @@ const UserRegistrationModal: React.FC<UserRegistrationModalProps> = ({
             <DialogFooter className="flex-col gap-3 mt-6">
               <Button 
                 type="submit" 
-                className="w-full bg-guay-green hover:bg-guay-green/90 opacity-50" 
-                disabled={true}
+                className="w-full bg-guay-green hover:bg-guay-green/90" 
+                disabled={isLoading || isGoogleLoading}
               >
-                Servicio no disponible
+                {isLoading ? "Creando cuenta..." : "Crear cuenta"}
               </Button>
               
               <div className="text-center w-full text-sm mt-1">
@@ -254,8 +307,7 @@ const UserRegistrationModal: React.FC<UserRegistrationModalProps> = ({
                     handleClose();
                     onLoginClick?.();
                   }}
-                  className="text-guay-green hover:underline font-medium opacity-50"
-                  disabled
+                  className="text-guay-green hover:underline font-medium"
                 >
                   Inicia sesión
                 </button>
