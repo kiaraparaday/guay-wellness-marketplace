@@ -91,26 +91,26 @@ const Index = () => {
       {/* Hero Section */}
       <section className="py-12 px-6">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="mb-2 text-sm font-medium text-gray-500">
+          <div className="mb-2 text-sm font-medium text-guay-slate">
             Marketplace de Bienestar Organizacional
           </div>
           
-          <h1 className="text-4xl font-bold mb-4 text-gray-900">
+          <h1 className="text-4xl font-bold mb-4 text-guay-dark-blue">
             Soluciones de<br />
             bienestar organizacional
           </h1>
           
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-guay-gray mb-8 max-w-3xl mx-auto">
             Selecciona una dimensión del bienestar según las necesidades de tu organización o explora el catálogo completo de soluciones.
           </p>
 
           {/* Navigation Question */}
-          <div className="bg-white rounded-lg p-8 shadow-sm border border-gray-200 mb-8">
+          <div className="bg-white rounded-lg p-8 shadow-sm border border-guay-light-gray mb-8">
             <div className="flex items-center justify-center mb-4">
-              <span className="text-blue-500 text-2xl mr-2">🔍</span>
-              <h2 className="text-xl font-semibold">¿Cómo deseas explorar las soluciones?</h2>
+              <span className="text-guay-blue text-2xl mr-2">🔍</span>
+              <h2 className="text-xl font-semibold text-guay-dark-blue">¿Cómo deseas explorar las soluciones?</h2>
             </div>
-            <p className="text-gray-600 mb-6">
+            <p className="text-guay-gray mb-6">
               Elige la forma que mejor se adapte a tus necesidades organizacionales
             </p>
             
@@ -119,8 +119,8 @@ const Index = () => {
                 onClick={() => handleTabChange('dimensions')}
                 className={`px-6 py-3 rounded-lg font-medium transition-colors ${
                   activeTab === 'dimensions'
-                    ? 'bg-gray-900 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ? 'bg-guay-dark-blue text-white'
+                    : 'bg-guay-off-white text-guay-gray hover:bg-guay-light-gray'
                 }`}
               >
                 Explorar por dimensión
@@ -129,8 +129,8 @@ const Index = () => {
                 onClick={() => handleTabChange('catalog')}
                 className={`px-6 py-3 rounded-lg font-medium transition-colors ${
                   activeTab === 'catalog'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                    ? 'bg-guay-blue text-white'
+                    : 'bg-guay-blue/10 text-guay-blue hover:bg-guay-blue/20'
                 }`}
               >
                 Ver catálogo completo
@@ -144,11 +144,11 @@ const Index = () => {
       {activeTab === 'dimensions' && (
         <section className="py-12 px-6 bg-white">
           <div className="max-w-6xl mx-auto">
-            <div className="bg-white rounded-lg p-8 shadow-sm border border-gray-200">
-              <h2 className="text-2xl font-semibold mb-2 text-gray-900">
+            <div className="bg-white rounded-lg p-8 shadow-sm border border-guay-light-gray">
+              <h2 className="text-2xl font-semibold mb-2 text-guay-dark-blue">
                 Dimensiones del bienestar organizacional
               </h2>
-              <p className="text-gray-600 mb-8">
+              <p className="text-guay-gray mb-8">
                 Descubre nuestras soluciones agrupadas por dimensión clave del bienestar, para responder a las distintas necesidades de tu equipo.
               </p>
               
@@ -165,9 +165,9 @@ const Index = () => {
                       className="w-full h-48 object-cover"
                     />
                   </div>
-                  <h3 className="text-lg font-semibold mb-2">Factores Psicosociales</h3>
-                  <p className="text-gray-600 text-sm mb-3">Mejora el bienestar mental y emocional de tu equipo.</p>
-                  <div className="inline-flex items-center text-blue-600 text-sm font-medium group-hover:text-blue-800">
+                  <h3 className="text-lg font-semibold mb-2 text-guay-dark-blue">Factores Psicosociales</h3>
+                  <p className="text-guay-gray text-sm mb-3">Mejora el bienestar mental y emocional de tu equipo.</p>
+                  <div className="inline-flex items-center text-guay-blue text-sm font-medium group-hover:text-guay-blue-accent">
                     Explorar soluciones →
                   </div>
                 </Link>
@@ -184,9 +184,9 @@ const Index = () => {
                       className="w-full h-48 object-cover"
                     />
                   </div>
-                  <h3 className="text-lg font-semibold mb-2">Clima Laboral</h3>
-                  <p className="text-gray-600 text-sm mb-3">Transforma el ambiente de trabajo para potenciar la productividad.</p>
-                  <div className="inline-flex items-center text-blue-600 text-sm font-medium group-hover:text-blue-800">
+                  <h3 className="text-lg font-semibold mb-2 text-guay-dark-blue">Clima Laboral</h3>
+                  <p className="text-guay-gray text-sm mb-3">Transforma el ambiente de trabajo para potenciar la productividad.</p>
+                  <div className="inline-flex items-center text-guay-blue text-sm font-medium group-hover:text-guay-blue-accent">
                     Explorar soluciones →
                   </div>
                 </Link>
@@ -203,9 +203,9 @@ const Index = () => {
                       className="w-full h-48 object-cover"
                     />
                   </div>
-                  <h3 className="text-lg font-semibold mb-2">Cultura Organizacional</h3>
-                  <p className="text-gray-600 text-sm mb-3">Fortalece valores compartidos y desarrolla capacidades de equipo.</p>
-                  <div className="inline-flex items-center text-blue-600 text-sm font-medium group-hover:text-blue-800">
+                  <h3 className="text-lg font-semibold mb-2 text-guay-dark-blue">Cultura Organizacional</h3>
+                  <p className="text-guay-gray text-sm mb-3">Fortalece valores compartidos y desarrolla capacidades de equipo.</p>
+                  <div className="inline-flex items-center text-guay-blue text-sm font-medium group-hover:text-guay-blue-accent">
                     Explorar soluciones →
                   </div>
                 </Link>
@@ -222,9 +222,9 @@ const Index = () => {
                       className="w-full h-48 object-cover"
                     />
                   </div>
-                  <h3 className="text-lg font-semibold mb-2">Diversidad, Equidad e Inclusión</h3>
-                  <p className="text-gray-600 text-sm mb-3">Crea espacios donde cada persona pueda brillar siendo auténtica.</p>
-                  <div className="inline-flex items-center text-blue-600 text-sm font-medium group-hover:text-blue-800">
+                  <h3 className="text-lg font-semibold mb-2 text-guay-dark-blue">Diversidad, Equidad e Inclusión</h3>
+                  <p className="text-guay-gray text-sm mb-3">Crea espacios donde cada persona pueda brillar siendo auténtica.</p>
+                  <div className="inline-flex items-center text-guay-blue text-sm font-medium group-hover:text-guay-blue-accent">
                     Explorar soluciones →
                   </div>
                 </Link>
@@ -239,14 +239,14 @@ const Index = () => {
         <div className="max-w-6xl mx-auto">
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h2 className="text-2xl font-semibold mb-2">SOLUCIONES DESTACADAS</h2>
-              <p className="text-gray-600">
+              <h2 className="text-2xl font-semibold mb-2 text-guay-dark-blue">SOLUCIONES DESTACADAS</h2>
+              <p className="text-guay-gray">
                 Seleccionadas por su alto impacto, relevancia y resultados comprobados en bienestar organizacional.
               </p>
             </div>
             <Link 
               to="/solutions"
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
+              className="bg-guay-blue text-white px-6 py-3 rounded-lg hover:bg-guay-blue/90 transition-colors flex items-center"
             >
               Ver el catálogo completo de soluciones →
             </Link>
@@ -262,31 +262,31 @@ const Index = () => {
                     className="w-full h-48 object-cover"
                   />
                   <div className="absolute top-3 left-3 flex gap-2">
-                    <span className="px-2 py-1 bg-black text-white text-xs rounded">
+                    <span className="px-2 py-1 bg-guay-dark-blue text-white text-xs rounded">
                       {solution.type}
                     </span>
-                    <span className="px-2 py-1 bg-black text-white text-xs rounded">
+                    <span className="px-2 py-1 bg-guay-dark-blue text-white text-xs rounded">
                       {solution.modality}
                     </span>
                   </div>
                 </div>
                 
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold mb-2">{solution.title}</h3>
-                  <p className="text-gray-600 text-sm mb-4">{solution.description}</p>
+                  <h3 className="text-lg font-semibold mb-2 text-guay-dark-blue">{solution.title}</h3>
+                  <p className="text-guay-gray text-sm mb-4">{solution.description}</p>
                   
                   <div className="flex flex-wrap gap-2 mb-4">
                     {solution.tags.map((tag, index) => (
                       <span 
                         key={index}
-                        className="px-2 py-1 bg-pink-100 text-pink-700 text-xs rounded"
+                        className="px-2 py-1 bg-guay-purple/10 text-guay-purple text-xs rounded"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
                   
-                  <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
+                  <div className="flex justify-between items-center text-sm text-guay-slate mb-4">
                     <span className="flex items-center">
                       <span className="mr-1">⏱</span> {solution.duration}
                     </span>
@@ -297,7 +297,7 @@ const Index = () => {
                   
                   <Link 
                     to={`/solution/${solution.id}`}
-                    className="block w-full text-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                    className="block w-full text-center bg-guay-blue text-white px-4 py-2 rounded-lg hover:bg-guay-blue/90 transition-colors"
                   >
                     Ver detalles
                   </Link>
@@ -309,18 +309,18 @@ const Index = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-12 px-6 bg-gray-50">
+      <section className="py-12 px-6 bg-guay-off-white">
         <div className="max-w-6xl mx-auto">
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h2 className="text-2xl font-semibold mb-2">Casos de Éxito</h2>
-              <p className="text-gray-600">
+              <h2 className="text-2xl font-semibold mb-2 text-guay-dark-blue">Casos de Éxito</h2>
+              <p className="text-guay-gray">
                 Experiencias reales de organizaciones que han transformado su bienestar
               </p>
             </div>
             <Link 
               to="/testimonials"
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+              className="bg-guay-blue text-white px-6 py-3 rounded-lg hover:bg-guay-blue/90 transition-colors"
             >
               Ver más testimonios →
             </Link>
@@ -329,8 +329,8 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {testimonials.map((testimonial) => (
               <div key={testimonial.id} className="bg-white rounded-lg p-6 shadow-sm">
-                <div className="mb-4 text-blue-500 text-4xl">"</div>
-                <p className="text-gray-700 italic mb-6">{testimonial.quote}</p>
+                <div className="mb-4 text-guay-blue text-4xl">"</div>
+                <p className="text-guay-gray italic mb-6">{testimonial.quote}</p>
                 <div className="flex items-center">
                   <img 
                     src={testimonial.image} 
@@ -338,9 +338,9 @@ const Index = () => {
                     className="w-12 h-12 rounded-full object-cover mr-4"
                   />
                   <div>
-                    <h4 className="font-semibold">{testimonial.author}</h4>
-                    <p className="text-sm text-gray-600">{testimonial.position}</p>
-                    <div className="flex items-center text-xs text-gray-500 mt-1">
+                    <h4 className="font-semibold text-guay-dark-blue">{testimonial.author}</h4>
+                    <p className="text-sm text-guay-gray">{testimonial.position}</p>
+                    <div className="flex items-center text-xs text-guay-slate mt-1">
                       <span>🏢</span>
                       <span className="ml-1">{testimonial.company}</span>
                       <span className="mx-2">•</span>
@@ -361,13 +361,13 @@ const Index = () => {
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <div className="grid grid-cols-1 lg:grid-cols-2">
               <div className="p-12 flex flex-col justify-center">
-                <h2 className="text-3xl font-semibold mb-4">
+                <h2 className="text-3xl font-semibold mb-4 text-guay-dark-blue">
                   ¿No encuentras lo que estás buscando?
                 </h2>
-                <p className="text-gray-600 mb-6">
+                <p className="text-guay-gray mb-6">
                   Nuestro equipo de expertos puede ayudarte a diseñar una solución personalizada según tus necesidades organizacionales.
                 </p>
-                <button className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-lg font-medium transition-colors w-fit">
+                <button className="bg-guay-green hover:bg-guay-green/90 text-white px-8 py-3 rounded-lg font-medium transition-colors w-fit">
                   Contáctanos
                 </button>
               </div>
@@ -384,16 +384,16 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 px-6">
+      <footer className="bg-guay-dark-blue text-white py-12 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {/* Logo y descripción */}
             <div className="md:col-span-1">
               <div className="flex items-center mb-4">
                 <span className="text-2xl font-bold">guay</span>
-                <span className="ml-2 text-sm text-gray-400">Wellness Marketplace</span>
+                <span className="ml-2 text-sm text-guay-light-gray">Wellness Marketplace</span>
               </div>
-              <p className="text-gray-400 text-sm">
+              <p className="text-guay-light-gray text-sm">
                 Soluciones de bienestar personalizadas para organizaciones que buscan potenciar el desarrollo humano.
               </p>
             </div>
@@ -401,7 +401,7 @@ const Index = () => {
             {/* Enlaces Rápidos */}
             <div>
               <h3 className="font-semibold mb-4">Enlaces Rápidos</h3>
-              <ul className="space-y-2 text-sm text-gray-400">
+              <ul className="space-y-2 text-sm text-guay-light-gray">
                 <li><Link to="/" className="hover:text-white transition-colors">Inicio</Link></li>
                 <li><Link to="/solutions" className="hover:text-white transition-colors">Soluciones</Link></li>
                 <li><Link to="/testimonials" className="hover:text-white transition-colors">Testimonios</Link></li>
@@ -411,7 +411,7 @@ const Index = () => {
             {/* Servicios */}
             <div>
               <h3 className="font-semibold mb-4">Servicios</h3>
-              <ul className="space-y-2 text-sm text-gray-400">
+              <ul className="space-y-2 text-sm text-guay-light-gray">
                 <li><Link to="/appointment" className="hover:text-white transition-colors">Agendar Cita</Link></li>
                 <li><Link to="/request-solution" className="hover:text-white transition-colors">Solicitar Solución</Link></li>
               </ul>
@@ -420,15 +420,15 @@ const Index = () => {
             {/* Contacto */}
             <div>
               <h3 className="font-semibold mb-4">Contacto</h3>
-              <ul className="space-y-2 text-sm text-gray-400">
+              <ul className="space-y-2 text-sm text-guay-light-gray">
                 <li>info@guay.mx</li>
                 <li>+52 55 1234 5678</li>
               </ul>
             </div>
           </div>
 
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center">
-            <p className="text-gray-400 text-sm">
+          <div className="border-t border-guay-slate mt-8 pt-8 text-center">
+            <p className="text-guay-light-gray text-sm">
               © 2025 guay. Todos los derechos reservados.
             </p>
           </div>
