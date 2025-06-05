@@ -1,12 +1,21 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useSolutions } from "../hooks/useSolutions";
 
 const Index = () => {
+  const { solutions: allSolutions, loading, error, isUsingFallback, refetch } = useSolutions();
   const [activeTab, setActiveTab] = useState('dimensions');
+  
+  // Display first 4 solutions
+  const displaySolutions = allSolutions.slice(0, 4);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
+  };
+
+  const handleRetryLoad = () => {
+    refetch();
   };
 
   const testimonials = [
@@ -37,53 +46,6 @@ const Index = () => {
       industry: "Salud",
       image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80",
     },
-  ];
-
-  const featuredSolutions = [
-    {
-      id: "taller-gestion-estres",
-      title: "Taller de Gestión del Estrés y Carga Mental",
-      type: "Taller",
-      modality: "Presencial",
-      duration: "4 horas",
-      audience: "Todos los colaboradores",
-      description: "Este taller práctico proporciona herramientas y técnicas concretas para identificar y manejar el estrés y la carga mental en el entorno laboral.",
-      tags: ["Carga Mental", "Bienestar", "Estrés"],
-      image: "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?auto=format&fit=crop&q=80"
-    },
-    {
-      id: "curso-comunicacion-efectiva",
-      title: "Curso Online de Comunicación Efectiva",
-      type: "Curso",
-      modality: "Virtual",
-      duration: "6 semanas",
-      audience: "Líderes",
-      description: "Desarrolla habilidades para transmitir mensajes claros, escuchar activamente y gestionar conversaciones difíciles.",
-      tags: ["Comunicación", "Liderazgo", "Trabajo en Equipo"],
-      image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80"
-    },
-    {
-      id: "taller-comunicacion-asertiva",
-      title: "Taller de Comunicación Asertiva",
-      type: "Taller",
-      modality: "Presencial",
-      duration: "8 horas",
-      audience: "Todos los niveles",
-      description: "Aprende a comunicarte con claridad y respeto, defendiendo tus ideas mientras respetas las de los demás.",
-      tags: ["Comunicación", "Asertividad", "Resolución de Conflictos"],
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80"
-    },
-    {
-      id: "herramientas-trabajo-colaborativo",
-      title: "Herramientas para el Trabajo Colaborativo Eficiente",
-      type: "Webinar",
-      modality: "Virtual",
-      duration: "2 horas",
-      audience: "Equipos de trabajo",
-      description: "Optimiza la colaboración y comunicación en equipo mediante metodologías y herramientas digitales avanzadas.",
-      tags: ["Trabajo en Equipo", "Productividad", "Herramientas Digitales"],
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80"
-    }
   ];
 
   return (
@@ -136,6 +98,24 @@ const Index = () => {
                 Ver catálogo completo
               </button>
             </div>
+
+            {/* Error handling for React 16.13.1 */}
+            {error && (
+              <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p className="text-yellow-700 text-sm">
+                  {isUsingFallback ? 
+                    "Mostrando datos locales - Firebase no disponible" : 
+                    `Error de Firebase: ${error}`
+                  }
+                </p>
+                <button 
+                  onClick={handleRetryLoad} 
+                  className="mt-2 px-3 py-1 bg-yellow-200 text-yellow-800 rounded text-sm hover:bg-yellow-300 transition-colors"
+                >
+                  Reintentar Firebase
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -252,59 +232,76 @@ const Index = () => {
             </Link>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-            {featuredSolutions.map((solution) => (
-              <div key={solution.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="relative">
-                  <img 
-                    src={solution.image} 
-                    alt={solution.title}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="absolute top-3 left-3 flex gap-2">
-                    <span className="px-2 py-1 bg-guay-dark-blue text-white text-xs rounded">
-                      {solution.type}
-                    </span>
-                    <span className="px-2 py-1 bg-guay-dark-blue text-white text-xs rounded">
-                      {solution.modality}
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="p-6">
-                  <h3 className="text-lg font-semibold mb-2 text-guay-dark-blue">{solution.title}</h3>
-                  <p className="text-guay-gray text-sm mb-4">{solution.description}</p>
-                  
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {solution.tags.map((tag, index) => (
-                      <span 
-                        key={index}
-                        className="px-2 py-1 bg-guay-purple/10 text-guay-purple text-xs rounded"
-                      >
-                        {tag}
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-guay-blue mx-auto mb-4"></div>
+              <p className="text-lg">Conectando con Firebase...</p>
+            </div>
+          ) : displaySolutions.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+              {displaySolutions.map((solution, index) => (
+                <div key={solution.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                  <div className="relative">
+                    <img 
+                      src={solution.image} 
+                      alt={solution.title}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="absolute top-3 left-3 flex gap-2">
+                      <span className="px-2 py-1 bg-guay-dark-blue text-white text-xs rounded">
+                        {solution.type}
                       </span>
-                    ))}
+                      <span className="px-2 py-1 bg-guay-dark-blue text-white text-xs rounded">
+                        {solution.modality}
+                      </span>
+                    </div>
                   </div>
                   
-                  <div className="flex justify-between items-center text-sm text-guay-slate mb-4">
-                    <span className="flex items-center">
-                      <span className="mr-1">⏱</span> {solution.duration}
-                    </span>
-                    <span className="flex items-center">
-                      <span className="mr-1">👥</span> {solution.audience}
-                    </span>
+                  <div className="p-6">
+                    <h3 className="text-lg font-semibold mb-2 text-guay-dark-blue">{solution.title}</h3>
+                    <p className="text-guay-gray text-sm mb-4">{solution.description}</p>
+                    
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {solution.tags && solution.tags.map((tag, tagIndex) => (
+                        <span 
+                          key={tagIndex}
+                          className="px-2 py-1 bg-guay-purple/10 text-guay-purple text-xs rounded"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    
+                    <div className="flex justify-between items-center text-sm text-guay-slate mb-4">
+                      <span className="flex items-center">
+                        <span className="mr-1">⏱</span> {solution.duration}
+                      </span>
+                      <span className="flex items-center">
+                        <span className="mr-1">👥</span> {solution.audience}
+                      </span>
+                    </div>
+                    
+                    <Link 
+                      to={`/solution/${solution.id}`}
+                      className="block w-full text-center bg-guay-blue text-white px-4 py-2 rounded-lg hover:bg-guay-blue/90 transition-colors"
+                    >
+                      Ver detalles
+                    </Link>
                   </div>
-                  
-                  <Link 
-                    to={`/solution/${solution.id}`}
-                    className="block w-full text-center bg-guay-blue text-white px-4 py-2 rounded-lg hover:bg-guay-blue/90 transition-colors"
-                  >
-                    Ver detalles
-                  </Link>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 bg-yellow-50 rounded-lg">
+              <p className="text-lg mb-4">No hay soluciones disponibles</p>
+              <button 
+                onClick={handleRetryLoad} 
+                className="px-4 py-2 bg-guay-blue text-white rounded-lg hover:bg-guay-blue/90 transition-colors"
+              >
+                Reintentar conexión
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
@@ -355,7 +352,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CTA Section - Mejorada con imagen */}
+      {/* CTA Section */}
       <section className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">

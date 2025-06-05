@@ -34,9 +34,9 @@ const App = () => {
         <AuthProvider>
           <div className="min-h-screen bg-[#f0f2f8] relative overflow-hidden">
             {/* Decorative circles */}
-            <div className="fixed -top-32 -left-32 w-64 h-64 rounded-full bg-green-400 opacity-20 z-0"></div>
-            <div className="fixed top-48 left-12 w-8 h-8 rounded-full bg-orange-400 opacity-30 z-0"></div>
-            <div className="fixed top-1/2 -right-32 transform -translate-y-1/2 w-64 h-64 rounded-full bg-purple-400 opacity-20 z-0"></div>
+            <div className="fixed -top-32 -left-32 w-64 h-64 rounded-full bg-guay-green opacity-20 z-0"></div>
+            <div className="fixed top-48 left-12 w-8 h-8 rounded-full bg-guay-orange opacity-30 z-0"></div>
+            <div className="fixed top-1/2 -right-32 transform -translate-y-1/2 w-64 h-64 rounded-full bg-guay-purple opacity-20 z-0"></div>
             
             <Header />
             <div className="pt-8 px-4 md:px-8 max-w-7xl mx-auto relative z-10">
