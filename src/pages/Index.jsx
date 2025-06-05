@@ -1,5 +1,6 @@
 
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
@@ -25,28 +26,40 @@ const Index = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Factores Psicosociales */}
-            <div className="bg-gradient-to-b from-blue-400 to-blue-600 rounded-xl p-6 text-white">
+            <Link 
+              to="/dimension/psychosocial"
+              className="bg-gradient-to-b from-blue-400 to-blue-600 rounded-xl p-6 text-white hover:from-blue-500 hover:to-blue-700 transition-all duration-300 block"
+            >
               <h3 className="text-xl font-semibold mb-3">Factores Psicosociales</h3>
               <p className="text-blue-100">Mejora el bienestar mental y emocional de tu equipo.</p>
-            </div>
+            </Link>
             
             {/* Clima Laboral */}
-            <div className="bg-gradient-to-b from-orange-400 to-orange-600 rounded-xl p-6 text-white">
+            <Link 
+              to="/dimension/climate"
+              className="bg-gradient-to-b from-orange-400 to-orange-600 rounded-xl p-6 text-white hover:from-orange-500 hover:to-orange-700 transition-all duration-300 block"
+            >
               <h3 className="text-xl font-semibold mb-3">Clima Laboral</h3>
               <p className="text-orange-100">Transforma el ambiente de trabajo para potenciar la productividad.</p>
-            </div>
+            </Link>
             
             {/* Cultura Organizacional */}
-            <div className="bg-gradient-to-b from-green-400 to-green-600 rounded-xl p-6 text-white">
+            <Link 
+              to="/dimension/culture"
+              className="bg-gradient-to-b from-green-400 to-green-600 rounded-xl p-6 text-white hover:from-green-500 hover:to-green-700 transition-all duration-300 block"
+            >
               <h3 className="text-xl font-semibold mb-3">Cultura Organizacional</h3>
               <p className="text-green-100">Fortalece valores compartidos y desarrolla capacidades de equipo.</p>
-            </div>
+            </Link>
             
             {/* Diversidad, Equidad e Inclusión */}
-            <div className="bg-gradient-to-b from-purple-400 to-purple-600 rounded-xl p-6 text-white">
+            <Link 
+              to="/dimension/dei"
+              className="bg-gradient-to-b from-purple-400 to-purple-600 rounded-xl p-6 text-white hover:from-purple-500 hover:to-purple-700 transition-all duration-300 block"
+            >
               <h3 className="text-xl font-semibold mb-3">Diversidad, Equidad e Inclusión</h3>
               <p className="text-purple-100">Crea espacios donde cada persona pueda brillar siendo auténtica.</p>
-            </div>
+            </Link>
           </div>
         </div>
       </section>
@@ -60,9 +73,17 @@ const Index = () => {
           <p className="text-xl text-gray-600 mb-8">
             Nuestro equipo de expertos puede ayudarte a diseñar una solución personalizada según tus necesidades organizacionales.
           </p>
-          <button className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors">
-            Contáctanos
-          </button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link 
+              to="/solutions"
+              className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Ver todas las soluciones
+            </Link>
+            <button className="bg-white text-blue-600 border border-blue-600 px-8 py-3 rounded-lg hover:bg-blue-50 transition-colors">
+              Contáctanos
+            </button>
+          </div>
         </div>
       </section>
     </div>

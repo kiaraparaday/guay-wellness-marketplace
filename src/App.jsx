@@ -2,6 +2,8 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Index from "./pages/Index";
+import Solutions from "./pages/Solutions";
+import Dimension from "./pages/Dimension";
 import Header from "./components/Header";
 import SimpleFooter from "./components/SimpleFooter";
 
@@ -13,6 +15,8 @@ const App = () => {
         <main className="pt-4">
           <Switch>
             <Route exact path="/" component={Index} />
+            <Route exact path="/solutions" component={Solutions} />
+            <Route exact path="/dimension/:id" component={Dimension} />
             <Route render={() => <div className="text-center py-12"><h1 className="text-2xl">Página no encontrada</h1></div>} />
           </Switch>
         </main>
