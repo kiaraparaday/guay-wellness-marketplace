@@ -25,6 +25,7 @@ import ControlDemo from "./pages/ControlDemo";
 import Categories from "./pages/Categories";
 import AboutUs from "./pages/AboutUs";
 import QuienesSomos from "./pages/QuienesSomos";
+import Sitemap from "./pages/Sitemap";
 import { AuthProvider } from "./contexts/AuthContext";
 
 // Initialize Firebase in App.tsx for global availability
