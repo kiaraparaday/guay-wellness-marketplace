@@ -17,7 +17,6 @@ export const useDimensionFilters = (allDimensionSolutions = []) => {
   // Subscribe to filter changes
   useEffect(() => {
     const unsubscribe = filterEventBus.subscribe('filtersChanged', (newFilters) => {
-      console.log('Dimension page received filters:', newFilters);
       if (newFilters && typeof newFilters === 'object') {
         setFilters(newFilters);
       }
@@ -32,10 +31,6 @@ export const useDimensionFilters = (allDimensionSolutions = []) => {
 
   // Apply filters when they change
   useEffect(() => {
-    console.log('Applying filters:', filters);
-    console.log('All dimension solutions:', allDimensionSolutions.length);
-    
-    // Always ensure we have an array to work with
     const solutionsToFilter = Array.isArray(allDimensionSolutions) ? allDimensionSolutions : [];
     
     if (solutionsToFilter.length === 0) {
@@ -45,20 +40,15 @@ export const useDimensionFilters = (allDimensionSolutions = []) => {
 
     const filtered = solutionsToFilter.filter(solution => {
       if (!solution || typeof solution !== 'object') {
-        console.warn('Invalid solution object:', solution);
         return false;
       }
       
-      console.log('Filtering solution:', solution.title);
-      
-      // Categories filter - if categories are selected, only show solutions from those categories
+      // Categories filter
       const categoriesMatch = !filters.categories || filters.categories.length === 0 || 
         (Array.isArray(solution.competencies) && filters.categories.some(category => {
           return solution.competencies.includes(category);
         }));
-      console.log('Categories match:', categoriesMatch, 'solution competencies:', solution.competencies, 'filters:', filters.categories);
       
-      // If categories filter is active and this solution doesn't match, exclude it
       if (filters.categories && filters.categories.length > 0 && !categoriesMatch) {
         return false;
       }
@@ -66,12 +56,10 @@ export const useDimensionFilters = (allDimensionSolutions = []) => {
       // Type filter
       const typeMatch = !filters.solutionTypes || filters.solutionTypes.length === 0 || 
         filters.solutionTypes.includes(solution.type);
-      console.log('Type match:', typeMatch, 'solution type:', solution.type, 'filters:', filters.solutionTypes);
       
       // Modality filter
       const modalityMatch = !filters.modalities || filters.modalities.length === 0 || 
         filters.modalities.includes(solution.modality);
-      console.log('Modality match:', modalityMatch, 'solution modality:', solution.modality, 'filters:', filters.modalities);
       
       // Duration filter
       let durationCategory = "";
@@ -92,7 +80,6 @@ export const useDimensionFilters = (allDimensionSolutions = []) => {
       
       const durationMatch = !filters.durations || filters.durations.length === 0 || 
         filters.durations.includes(durationCategory);
-      console.log('Duration match:', durationMatch, 'solution duration:', solution.duration, 'category:', durationCategory, 'filters:', filters.durations);
       
       // Audience filter
       let audienceCategory = "";
@@ -115,7 +102,6 @@ export const useDimensionFilters = (allDimensionSolutions = []) => {
       
       const audienceMatch = !filters.audiences || filters.audiences.length === 0 || 
         filters.audiences.includes(audienceCategory);
-      console.log('Audience match:', audienceMatch, 'solution audience:', solution.audience, 'category:', audienceCategory, 'filters:', filters.audiences);
 
       // Benefits filter
       const benefitsMatch = !filters.benefits || filters.benefits.length === 0 || 
@@ -145,15 +131,10 @@ export const useDimensionFilters = (allDimensionSolutions = []) => {
               return false;
           }
         });
-      console.log('Benefits match:', benefitsMatch, 'solution tags:', solution.tags, 'filters:', filters.benefits);
       
-      const finalMatch = typeMatch && modalityMatch && durationMatch && audienceMatch && benefitsMatch && categoriesMatch;
-      console.log('Final match for', solution.title, ':', finalMatch);
-      
-      return finalMatch;
+      return typeMatch && modalityMatch && durationMatch && audienceMatch && benefitsMatch && categoriesMatch;
     });
     
-    console.log('Filtered solutions count:', filtered.length);
     setFilteredSolutions(filtered);
   }, [filters, allDimensionSolutions]);
 
