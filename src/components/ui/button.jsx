@@ -1,0 +1,65 @@
+
+import React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cva } from "class-variance-authority";
+import { cn } from "@/lib/utils";
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+        accent: "bg-guay-green text-white hover:bg-guay-green/90", 
+        white: "bg-white text-guay-dark-blue border border-border hover:bg-gray-50",
+        light: "bg-white/10 text-white border border-white/30 hover:bg-white/20",
+        // Variantes guay con el color exacto del header #131F36
+        "guay-primary": "bg-[#131F36] text-white hover:bg-[#131F36]/90 font-quicksand font-medium",
+        "guay-secondary": "bg-[#131F36]/10 text-[#131F36] hover:bg-[#131F36]/20 font-quicksand font-medium border border-[#131F36]/20",
+        // Nuevas variantes CTA con verde institucional
+        "guay-cta-primary": "bg-[#A2C73F] text-white hover:bg-[#A2C73F]/90 font-quicksand font-medium",
+        "guay-cta-secondary": "bg-white text-[#A2C73F] hover:bg-gray-50 font-quicksand font-medium border-2 border-[#A2C73F]",
+        // Nueva variante para botones de acción principal unificados
+        "guay-action-primary": "bg-[#131F36] text-white hover:bg-[#131F36]/90 font-quicksand font-medium shadow-lg rounded-full",
+      },
+      size: {
+        grande: "h-12 px-6 py-3 rounded-full text-base", // Botón grande
+        mediano: "h-10 px-5 py-2.5 rounded-full", // Botón mediano (estándar)
+        chico: "h-8 px-4 py-1.5 rounded-full text-sm", // Botón chico
+        default: "h-10 px-4 py-2", // Mantener compatibilidad
+        sm: "h-9 rounded-md px-3", // Mantener compatibilidad
+        lg: "h-11 rounded-md px-8", // Mantener compatibilidad
+        icon: "h-10 w-10 rounded-full", // Botón de icono
+        "icon-sm": "h-8 w-8 rounded-full", // Botón de icono pequeño
+        // Nuevo tamaño específico para botones de acción principal
+        "action-primary": "h-12 px-8 py-3 rounded-full text-base", // Botón de acción principal unificado
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "mediano",
+    },
+  }
+);
+
+const Button = React.forwardRef((props, ref) => {
+  const { className, variant, size, asChild = false, ...otherProps } = props;
+  const Comp = asChild ? Slot : "button";
+  
+  return (
+    <Comp
+      className={cn(buttonVariants({ variant, size, className }))}
+      ref={ref}
+      {...otherProps}
+    />
+  );
+});
+
+Button.displayName = "Button";
+
+export { Button, buttonVariants };
