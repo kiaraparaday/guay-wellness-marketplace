@@ -15,18 +15,32 @@ import { Button } from "../components/ui/button";
 
 const DimensionPage = () => {
   const { id } = useParams();
-  const dimension = getDimensionById(id || "");
-  const { solutions: allSolutions, loading, error } = useSolutions();
-  
+  const [dimension, setDimension] = useState(null);
   const [allDimensionSolutions, setAllDimensionSolutions] = useState([]);
+  const [loading, setLoading] = useState(true);
   
+  const { solutions: allSolutions, loading: solutionsLoading, error } = useSolutions();
   const { filters, setFilters, filteredSolutions, totalActiveFilters } = useDimensionFilters(allDimensionSolutions);
+
+  // Initialize dimension data
+  useEffect(() => {
+    if (id) {
+      try {
+        const dimensionData = getDimensionById(id);
+        setDimension(dimensionData);
+        setLoading(false);
+      } catch (err) {
+        console.error('Error loading dimension:', err);
+        setLoading(false);
+      }
+    }
+  }, [id]);
 
   // Set up solutions for this dimension
   useEffect(() => {
     window.scrollTo(0, 0);
     
-    if (dimension && allSolutions.length > 0) {
+    if (dimension && allSolutions && allSolutions.length > 0) {
       console.log('Setting up solutions for dimension:', dimension.title);
       console.log('All solutions:', allSolutions.length);
       
@@ -51,14 +65,31 @@ const DimensionPage = () => {
     }
   }, [dimension, allSolutions]);
 
+  if (loading || solutionsLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30 font-quicksand">
+        <Header />
+        <div className="min-h-screen flex items-center justify-center pt-32">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <h2 className="text-xl font-semibold mb-2">Cargando dimensión...</h2>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!dimension) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-[40px] font-bold mb-4">Dimensión no encontrada</h2>
-          <Button asChild variant="guay-primary" size="grande">
-            <Link to="/">Volver al inicio</Link>
-          </Button>
+      <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30 font-quicksand">
+        <Header />
+        <div className="min-h-screen flex items-center justify-center pt-32">
+          <div className="text-center">
+            <h2 className="text-[40px] font-bold mb-4">Dimensión no encontrada</h2>
+            <Button asChild variant="guay-primary" size="grande">
+              <Link to="/">Volver al inicio</Link>
+            </Button>
+          </div>
         </div>
       </div>
     );

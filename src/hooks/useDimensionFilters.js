@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { filterEventBus } from "@/services/eventBus";
+import { filterEventBus } from "../services/eventBus";
 
 export const useDimensionFilters = (allDimensionSolutions) => {
   const [filters, setFilters] = useState({
@@ -22,21 +22,25 @@ export const useDimensionFilters = (allDimensionSolutions) => {
     });
     
     return () => {
-      unsubscribe();
+      if (unsubscribe && typeof unsubscribe === 'function') {
+        unsubscribe();
+      }
     };
   }, []);
 
   // Apply filters when they change
   useEffect(() => {
     console.log('Applying filters:', filters);
-    console.log('All dimension solutions:', allDimensionSolutions.length);
+    console.log('All dimension solutions:', allDimensionSolutions ? allDimensionSolutions.length : 0);
     
-    if (allDimensionSolutions.length === 0) {
+    if (!allDimensionSolutions || allDimensionSolutions.length === 0) {
       setFilteredSolutions([]);
       return;
     }
 
     const filtered = allDimensionSolutions.filter(solution => {
+      if (!solution) return false;
+      
       console.log('Filtering solution:', solution.title);
       
       // Categories filter - if categories are selected, only show solutions from those categories
@@ -64,7 +68,7 @@ export const useDimensionFilters = (allDimensionSolutions) => {
       
       // Duration filter
       let durationCategory = "";
-      const durationString = solution.duration?.toLowerCase() || "";
+      const durationString = solution.duration ? solution.duration.toLowerCase() : "";
       
       if (durationString.includes("hora")) {
         const hours = parseInt(durationString);
@@ -85,7 +89,7 @@ export const useDimensionFilters = (allDimensionSolutions) => {
       
       // Audience filter
       let audienceCategory = "";
-      const audienceString = solution.audience?.toLowerCase() || "";
+      const audienceString = solution.audience ? solution.audience.toLowerCase() : "";
       
       if (audienceString.includes("todos") || audienceString.includes("colaboradores")) {
         audienceCategory = "employees";
@@ -109,9 +113,9 @@ export const useDimensionFilters = (allDimensionSolutions) => {
       // Benefits filter
       const benefitsMatch = filters.benefits.length === 0 || 
         filters.benefits.some(benefit => {
-          const solutionTags = solution.tags?.join(" ").toLowerCase() || "";
-          const solutionTitle = solution.title?.toLowerCase() || "";
-          const solutionDescription = solution.description?.toLowerCase() || "";
+          const solutionTags = solution.tags ? solution.tags.join(" ").toLowerCase() : "";
+          const solutionTitle = solution.title ? solution.title.toLowerCase() : "";
+          const solutionDescription = solution.description ? solution.description.toLowerCase() : "";
           
           switch (benefit) {
             case "stress":
