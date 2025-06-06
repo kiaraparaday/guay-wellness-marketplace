@@ -18,7 +18,9 @@ export const useDimensionFilters = (allDimensionSolutions) => {
   useEffect(() => {
     const unsubscribe = filterEventBus.subscribe('filtersChanged', (newFilters) => {
       console.log('Dimension page received filters:', newFilters);
-      setFilters(newFilters);
+      if (newFilters && typeof newFilters === 'object') {
+        setFilters(newFilters);
+      }
     });
     
     return () => {
@@ -33,36 +35,38 @@ export const useDimensionFilters = (allDimensionSolutions) => {
     console.log('Applying filters:', filters);
     console.log('All dimension solutions:', allDimensionSolutions ? allDimensionSolutions.length : 0);
     
-    if (!allDimensionSolutions || allDimensionSolutions.length === 0) {
+    if (!allDimensionSolutions || !Array.isArray(allDimensionSolutions) || allDimensionSolutions.length === 0) {
       setFilteredSolutions([]);
       return;
     }
 
     const filtered = allDimensionSolutions.filter(solution => {
-      if (!solution) return false;
+      if (!solution || typeof solution !== 'object') {
+        console.warn('Invalid solution object:', solution);
+        return false;
+      }
       
       console.log('Filtering solution:', solution.title);
       
       // Categories filter - if categories are selected, only show solutions from those categories
-      const categoriesMatch = filters.categories.length === 0 || 
-        filters.categories.some(category => {
-          if (!solution.competencies) return false;
+      const categoriesMatch = !filters.categories || filters.categories.length === 0 || 
+        (Array.isArray(solution.competencies) && filters.categories.some(category => {
           return solution.competencies.includes(category);
-        });
+        }));
       console.log('Categories match:', categoriesMatch, 'solution competencies:', solution.competencies, 'filters:', filters.categories);
       
       // If categories filter is active and this solution doesn't match, exclude it
-      if (filters.categories.length > 0 && !categoriesMatch) {
+      if (filters.categories && filters.categories.length > 0 && !categoriesMatch) {
         return false;
       }
       
       // Type filter
-      const typeMatch = filters.solutionTypes.length === 0 || 
+      const typeMatch = !filters.solutionTypes || filters.solutionTypes.length === 0 || 
         filters.solutionTypes.includes(solution.type);
       console.log('Type match:', typeMatch, 'solution type:', solution.type, 'filters:', filters.solutionTypes);
       
       // Modality filter
-      const modalityMatch = filters.modalities.length === 0 || 
+      const modalityMatch = !filters.modalities || filters.modalities.length === 0 || 
         filters.modalities.includes(solution.modality);
       console.log('Modality match:', modalityMatch, 'solution modality:', solution.modality, 'filters:', filters.modalities);
       
@@ -83,7 +87,7 @@ export const useDimensionFilters = (allDimensionSolutions) => {
         durationCategory = "multi-session";
       }
       
-      const durationMatch = filters.durations.length === 0 || 
+      const durationMatch = !filters.durations || filters.durations.length === 0 || 
         filters.durations.includes(durationCategory);
       console.log('Duration match:', durationMatch, 'solution duration:', solution.duration, 'category:', durationCategory, 'filters:', filters.durations);
       
@@ -106,14 +110,14 @@ export const useDimensionFilters = (allDimensionSolutions) => {
         audienceCategory = "employees";
       }
       
-      const audienceMatch = filters.audiences.length === 0 || 
+      const audienceMatch = !filters.audiences || filters.audiences.length === 0 || 
         filters.audiences.includes(audienceCategory);
       console.log('Audience match:', audienceMatch, 'solution audience:', solution.audience, 'category:', audienceCategory, 'filters:', filters.audiences);
 
       // Benefits filter
-      const benefitsMatch = filters.benefits.length === 0 || 
+      const benefitsMatch = !filters.benefits || filters.benefits.length === 0 || 
         filters.benefits.some(benefit => {
-          const solutionTags = solution.tags ? solution.tags.join(" ").toLowerCase() : "";
+          const solutionTags = Array.isArray(solution.tags) ? solution.tags.join(" ").toLowerCase() : "";
           const solutionTitle = solution.title ? solution.title.toLowerCase() : "";
           const solutionDescription = solution.description ? solution.description.toLowerCase() : "";
           
@@ -147,21 +151,21 @@ export const useDimensionFilters = (allDimensionSolutions) => {
     });
     
     console.log('Filtered solutions count:', filtered.length);
-    setFilteredSolutions(filtered);
+    setFilteredSolutions(filtered || []);
   }, [filters, allDimensionSolutions]);
 
   const totalActiveFilters = 
-    filters.solutionTypes.length + 
-    filters.modalities.length + 
-    filters.durations.length + 
-    filters.audiences.length +
-    filters.benefits.length +
-    filters.categories.length;
+    (filters.solutionTypes ? filters.solutionTypes.length : 0) + 
+    (filters.modalities ? filters.modalities.length : 0) + 
+    (filters.durations ? filters.durations.length : 0) + 
+    (filters.audiences ? filters.audiences.length : 0) +
+    (filters.benefits ? filters.benefits.length : 0) +
+    (filters.categories ? filters.categories.length : 0);
 
   return {
     filters,
     setFilters,
-    filteredSolutions,
+    filteredSolutions: filteredSolutions || [],
     totalActiveFilters
   };
 };

@@ -45,7 +45,7 @@ const DimensionPage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     
-    if (dimension && allSolutions && allSolutions.length > 0) {
+    if (dimension && allSolutions && Array.isArray(allSolutions) && allSolutions.length > 0) {
       console.log('Setting up solutions for dimension:', dimension.title);
       console.log('All solutions:', allSolutions.length);
       
@@ -56,7 +56,9 @@ const DimensionPage = () => {
       
       // Filter solutions that belong to any competency in this dimension
       const relatedSolutions = allSolutions.filter(solution => {
-        if (!solution || !solution.competencies) return false;
+        if (!solution || !solution.competencies || !Array.isArray(solution.competencies)) {
+          return false;
+        }
         
         const hasCompetency = solution.competencies.some(compId => 
           competencyIds.includes(compId)
@@ -69,6 +71,8 @@ const DimensionPage = () => {
       
       console.log('Related solutions found:', relatedSolutions.length);
       setAllDimensionSolutions(relatedSolutions);
+    } else {
+      setAllDimensionSolutions([]);
     }
   }, [dimension, allSolutions]);
 
@@ -124,8 +128,8 @@ const DimensionPage = () => {
       </div>
 
       <SolutionsSection 
-        filteredSolutions={filteredSolutions}
-        totalActiveFilters={totalActiveFilters}
+        filteredSolutions={filteredSolutions || []}
+        totalActiveFilters={totalActiveFilters || 0}
         setFilters={setFilters}
         dimension={dimension}
       />
