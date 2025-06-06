@@ -19,44 +19,45 @@ const DimensionPage = () => {
   const [allDimensionSolutions, setAllDimensionSolutions] = useState([]);
   const [loading, setLoading] = useState(true);
   
+  // Always call hooks in the same order
   const { solutions: allSolutions, loading: solutionsLoading, error } = useSolutions();
   const { filters, setFilters, filteredSolutions, totalActiveFilters } = useDimensionFilters(allDimensionSolutions);
 
   // Initialize dimension data
   useEffect(() => {
+    console.log('Dimension effect running for id:', id);
     if (id) {
       try {
         const dimensionData = getDimensionById(id);
-        if (dimensionData) {
-          console.log('Dimension found:', dimensionData);
-          setDimension(dimensionData);
-        } else {
-          console.error('Dimension not found for id:', id);
-        }
-        setLoading(false);
+        console.log('Dimension data found:', dimensionData);
+        setDimension(dimensionData);
       } catch (err) {
         console.error('Error loading dimension:', err);
-        setLoading(false);
+        setDimension(null);
       }
+    } else {
+      setDimension(null);
     }
+    setLoading(false);
   }, [id]);
 
   // Set up solutions for this dimension
   useEffect(() => {
+    console.log('Solutions effect running');
     window.scrollTo(0, 0);
     
-    if (dimension && allSolutions && Array.isArray(allSolutions) && allSolutions.length > 0) {
+    if (dimension && allSolutions && Array.isArray(allSolutions)) {
       console.log('Setting up solutions for dimension:', dimension.title);
       console.log('All solutions:', allSolutions.length);
       
       // Get competencies for this dimension
-      const dimensionCompetencies = dimension.competencies || [];
+      const dimensionCompetencies = Array.isArray(dimension.competencies) ? dimension.competencies : [];
       const competencyIds = dimensionCompetencies.map(comp => comp.id);
       console.log('Dimension competency IDs:', competencyIds);
       
       // Filter solutions that belong to any competency in this dimension
       const relatedSolutions = allSolutions.filter(solution => {
-        if (!solution || !solution.competencies || !Array.isArray(solution.competencies)) {
+        if (!solution || !Array.isArray(solution.competencies)) {
           return false;
         }
         
@@ -72,10 +73,12 @@ const DimensionPage = () => {
       console.log('Related solutions found:', relatedSolutions.length);
       setAllDimensionSolutions(relatedSolutions);
     } else {
+      console.log('Clearing dimension solutions');
       setAllDimensionSolutions([]);
     }
   }, [dimension, allSolutions]);
 
+  // Show loading state
   if (loading || solutionsLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30 font-quicksand">
@@ -90,6 +93,7 @@ const DimensionPage = () => {
     );
   }
 
+  // Show error state
   if (!dimension) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30 font-quicksand">
@@ -106,6 +110,7 @@ const DimensionPage = () => {
     );
   }
 
+  // Main render
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30 font-quicksand">
       <Header />
@@ -128,8 +133,8 @@ const DimensionPage = () => {
       </div>
 
       <SolutionsSection 
-        filteredSolutions={filteredSolutions || []}
-        totalActiveFilters={totalActiveFilters || 0}
+        filteredSolutions={filteredSolutions}
+        totalActiveFilters={totalActiveFilters}
         setFilters={setFilters}
         dimension={dimension}
       />

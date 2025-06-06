@@ -5,8 +5,8 @@ import { filterEventBus } from "@/services/eventBus";
 import { Button } from "@/components/ui/button";
 
 const SolutionsSection = ({ 
-  filteredSolutions, 
-  totalActiveFilters, 
+  filteredSolutions = [], 
+  totalActiveFilters = 0, 
   setFilters, 
   dimension 
 }) => {
@@ -42,6 +42,12 @@ const SolutionsSection = ({
 
   const solutionGroups = groupSolutionsByCompetency(safeSolutions);
   const hasGroups = Object.keys(solutionGroups).length > 0;
+
+  console.log('SolutionsSection render:', {
+    safeSolutions: safeSolutions.length,
+    hasGroups,
+    dimension: dimension?.title
+  });
 
   return (
     <section className="py-3 px-6">
@@ -88,8 +94,10 @@ const SolutionsSection = ({
                   benefits: [],
                   categories: []
                 };
-                setFilters(emptyFilters);
-                filterEventBus.publish('filtersChanged', emptyFilters);
+                if (typeof setFilters === 'function') {
+                  setFilters(emptyFilters);
+                  filterEventBus.publish('filtersChanged', emptyFilters);
+                }
               }}
             >
               Limpiar filtros

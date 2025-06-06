@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { filterEventBus } from "../services/eventBus";
 
-export const useDimensionFilters = (allDimensionSolutions) => {
+export const useDimensionFilters = (allDimensionSolutions = []) => {
   const [filters, setFilters] = useState({
     solutionTypes: [],
     modalities: [],
@@ -33,14 +33,17 @@ export const useDimensionFilters = (allDimensionSolutions) => {
   // Apply filters when they change
   useEffect(() => {
     console.log('Applying filters:', filters);
-    console.log('All dimension solutions:', allDimensionSolutions ? allDimensionSolutions.length : 0);
+    console.log('All dimension solutions:', allDimensionSolutions.length);
     
-    if (!allDimensionSolutions || !Array.isArray(allDimensionSolutions) || allDimensionSolutions.length === 0) {
+    // Always ensure we have an array to work with
+    const solutionsToFilter = Array.isArray(allDimensionSolutions) ? allDimensionSolutions : [];
+    
+    if (solutionsToFilter.length === 0) {
       setFilteredSolutions([]);
       return;
     }
 
-    const filtered = allDimensionSolutions.filter(solution => {
+    const filtered = solutionsToFilter.filter(solution => {
       if (!solution || typeof solution !== 'object') {
         console.warn('Invalid solution object:', solution);
         return false;
@@ -151,7 +154,7 @@ export const useDimensionFilters = (allDimensionSolutions) => {
     });
     
     console.log('Filtered solutions count:', filtered.length);
-    setFilteredSolutions(filtered || []);
+    setFilteredSolutions(filtered);
   }, [filters, allDimensionSolutions]);
 
   const totalActiveFilters = 
@@ -165,7 +168,7 @@ export const useDimensionFilters = (allDimensionSolutions) => {
   return {
     filters,
     setFilters,
-    filteredSolutions: filteredSolutions || [],
+    filteredSolutions,
     totalActiveFilters
   };
 };
