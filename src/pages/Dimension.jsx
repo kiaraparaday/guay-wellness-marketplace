@@ -1,16 +1,16 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useSolutions } from "../hooks/useSolutions";
-import { useDimensionFilters } from "../hooks/useDimensionFilters";
+import { useSolutions } from "../hooks/useSolutions.js";
+import { useDimensionFilters } from "../hooks/useDimensionFilters.js";
 import { filterEventBus } from "../services/eventBus";
 import { getDimensionById } from "../data/dimensionsData";
-import Header from "../components/Header";
-import CompetencyFilterBar from "../components/CompetencyFilterBar";
-import CallToActionSection from "../components/CallToActionSection";
+import Header from "../components/Header.jsx";
+import CompetencyFilterBar from "../components/CompetencyFilterBar.jsx";
+import CallToActionSection from "../components/CallToActionSection.jsx";
 import SimpleFooter from "../components/SimpleFooter";
-import DimensionHero from "../components/dimension/DimensionHero";
-import SolutionsSection from "../components/dimension/SolutionsSection";
+import DimensionHero from "../components/dimension/DimensionHero.jsx";
+import SolutionsSection from "../components/dimension/SolutionsSection.jsx";
 import { Button } from "../components/ui/button";
 
 const DimensionPage = () => {
@@ -27,7 +27,12 @@ const DimensionPage = () => {
     if (id) {
       try {
         const dimensionData = getDimensionById(id);
-        setDimension(dimensionData);
+        if (dimensionData) {
+          console.log('Dimension found:', dimensionData);
+          setDimension(dimensionData);
+        } else {
+          console.error('Dimension not found for id:', id);
+        }
         setLoading(false);
       } catch (err) {
         console.error('Error loading dimension:', err);
@@ -51,7 +56,9 @@ const DimensionPage = () => {
       
       // Filter solutions that belong to any competency in this dimension
       const relatedSolutions = allSolutions.filter(solution => {
-        const hasCompetency = solution.competencies && solution.competencies.some(compId => 
+        if (!solution || !solution.competencies) return false;
+        
+        const hasCompetency = solution.competencies.some(compId => 
           competencyIds.includes(compId)
         );
         if (hasCompetency) {
