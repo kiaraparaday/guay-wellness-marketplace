@@ -1,17 +1,17 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useSolutions } from "@/hooks/useSolutions";
-import { useDimensionFilters } from "@/hooks/useDimensionFilters";
-import { filterEventBus } from "@/services/eventBus";
-import { getDimensionById } from "@/data/dimensionsData";
-import Header from "@/components/Header";
-import CompetencyFilterBar from "@/components/CompetencyFilterBar";
-import CallToActionSection from "@/components/CallToActionSection";
-import SimpleFooter from "@/components/SimpleFooter";
-import DimensionHero from "@/components/dimension/DimensionHero";
-import SolutionsSection from "@/components/dimension/SolutionsSection";
-import { Button } from "@/components/ui/button";
+import { useSolutions } from "../hooks/useSolutions";
+import { useDimensionFilters } from "../hooks/useDimensionFilters";
+import { filterEventBus } from "../services/eventBus";
+import { getDimensionById } from "../data/dimensionsData";
+import Header from "../components/Header";
+import CompetencyFilterBar from "../components/CompetencyFilterBar";
+import CallToActionSection from "../components/CallToActionSection";
+import SimpleFooter from "../components/SimpleFooter";
+import DimensionHero from "../components/dimension/DimensionHero";
+import SolutionsSection from "../components/dimension/SolutionsSection";
+import { Button } from "../components/ui/button";
 
 const DimensionPage = () => {
   const { id } = useParams();
