@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useSolutions } from "../hooks/useSolutions.js";
+import { useDimensionFilters } from "../hooks/useDimensionFilters.js";
 import { getDimensionById } from "../data/dimensionsData";
 import Header from "../components/Header.jsx";
 import CompetencyFilterBar from "../components/CompetencyFilterBar.jsx";
@@ -10,56 +11,47 @@ import SimpleFooter from "../components/SimpleFooter";
 import DimensionHero from "../components/dimension/DimensionHero.jsx";
 import SolutionCard from "../components/SolutionCard.jsx";
 import { Button } from "../components/ui/button";
-import { ArrowLeft } from "lucide-react";
 
 const DimensionPage = () => {
   const { id } = useParams();
   const [dimension, setDimension] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({
-    solutionTypes: [],
-    modalities: [],
-    durations: [],
-    audiences: [],
-    benefits: [],
-    categories: []
-  });
 
+  // Always call hooks in the same order
   const { solutions: allSolutions, loading: solutionsLoading } = useSolutions();
+  const { filters, totalActiveFilters } = useDimensionFilters();
 
-  // Initialize dimension data
+  // Initialize dimension data - always runs
   useEffect(() => {
+    let dimensionData = null;
+    
     if (id) {
       try {
-        const dimensionData = getDimensionById(id);
-        setDimension(dimensionData);
+        dimensionData = getDimensionById(id);
       } catch (err) {
         console.error('Error loading dimension:', err);
-        setDimension(null);
       }
     }
+    
+    setDimension(dimensionData);
     setLoading(false);
   }, [id]);
 
-  // Scroll to top when dimension changes
+  // Always scroll to top - always runs
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
 
   // Filter solutions for this dimension
   const getDimensionSolutions = () => {
-    if (!dimension || !allSolutions || !Array.isArray(allSolutions)) {
+    // Safe checks with fallbacks
+    if (!dimension?.competencies || !Array.isArray(allSolutions)) {
       return [];
     }
 
-    const dimensionCompetencies = dimension.competencies || [];
-    const competencyIds = dimensionCompetencies.map(comp => comp.id);
-
+    const competencyIds = dimension.competencies.map(comp => comp.id);
     return allSolutions.filter(solution => {
-      if (!solution || !Array.isArray(solution.competencies)) {
-        return false;
-      }
-      return solution.competencies.some(compId => competencyIds.includes(compId));
+      return solution?.competencies?.some?.(compId => competencyIds.includes(compId)) || false;
     });
   };
 
@@ -67,22 +59,23 @@ const DimensionPage = () => {
   const getFilteredSolutions = () => {
     const dimensionSolutions = getDimensionSolutions();
     
-    if (!filters || Object.values(filters).every(arr => !arr || arr.length === 0)) {
+    // If no filters are active, return all dimension solutions
+    if (totalActiveFilters === 0) {
       return dimensionSolutions;
     }
 
     return dimensionSolutions.filter(solution => {
       // Type filter
-      const typeMatch = !filters.solutionTypes || filters.solutionTypes.length === 0 || 
+      const typeMatch = filters.solutionTypes.length === 0 || 
         filters.solutionTypes.includes(solution.type);
       
       // Modality filter
-      const modalityMatch = !filters.modalities || filters.modalities.length === 0 || 
+      const modalityMatch = filters.modalities.length === 0 || 
         filters.modalities.includes(solution.modality);
       
       // Duration filter
       let durationCategory = "";
-      const durationString = solution.duration ? solution.duration.toLowerCase() : "";
+      const durationString = solution.duration?.toLowerCase() || "";
       
       if (durationString.includes("hora")) {
         const hours = parseInt(durationString);
@@ -97,63 +90,48 @@ const DimensionPage = () => {
         durationCategory = "multi-session";
       }
       
-      const durationMatch = !filters.durations || filters.durations.length === 0 || 
+      const durationMatch = filters.durations.length === 0 || 
         filters.durations.includes(durationCategory);
       
       // Audience filter
-      let audienceCategory = "";
-      const audienceString = solution.audience ? solution.audience.toLowerCase() : "";
+      let audienceCategory = "employees"; // default
+      const audienceString = solution.audience?.toLowerCase() || "";
       
-      if (audienceString.includes("todos") || audienceString.includes("colaboradores")) {
-        audienceCategory = "employees";
-      } else if (audienceString.includes("equipo")) {
-        audienceCategory = "employees";
-      } else if (audienceString.includes("líder") || audienceString.includes("lider") || 
-                audienceString.includes("directiv") || audienceString.includes("ejecutiv")) {
+      if (audienceString.includes("líder") || audienceString.includes("lider") || 
+          audienceString.includes("directiv") || audienceString.includes("ejecutiv")) {
         audienceCategory = "leaders";
       } else if (audienceString.includes("recursos humanos") || audienceString.includes("rrhh")) {
         audienceCategory = "hr";
-      } else {
-        audienceCategory = "employees";
       }
       
-      const audienceMatch = !filters.audiences || filters.audiences.length === 0 || 
+      const audienceMatch = filters.audiences.length === 0 || 
         filters.audiences.includes(audienceCategory);
 
       // Benefits filter
-      const benefitsMatch = !filters.benefits || filters.benefits.length === 0 || 
+      const benefitsMatch = filters.benefits.length === 0 || 
         filters.benefits.some(benefit => {
-          const solutionTags = Array.isArray(solution.tags) ? solution.tags.join(" ").toLowerCase() : "";
-          const solutionTitle = solution.title ? solution.title.toLowerCase() : "";
-          const solutionDescription = solution.description ? solution.description.toLowerCase() : "";
+          const solutionTags = solution.tags?.join(" ").toLowerCase() || "";
+          const solutionTitle = solution.title?.toLowerCase() || "";
+          const solutionDescription = solution.description?.toLowerCase() || "";
           
-          switch (benefit) {
-            case "stress":
-              return solutionTags.includes("estrés") || solutionTitle.includes("estrés") || solutionDescription.includes("estrés");
-            case "emotional-wellbeing":
-              return solutionTags.includes("bienestar") || solutionTitle.includes("bienestar") || solutionDescription.includes("bienestar");
-            case "mental-load":
-              return solutionTags.includes("carga mental") || solutionTitle.includes("carga mental") || solutionDescription.includes("carga mental");
-            case "productivity":
-              return solutionTags.includes("productividad") || solutionTitle.includes("productividad") || solutionDescription.includes("productividad");
-            case "leadership":
-              return solutionTags.includes("liderazgo") || solutionTitle.includes("liderazgo") || solutionDescription.includes("liderazgo");
-            case "teamwork":
-              return solutionTags.includes("equipo") || solutionTitle.includes("equipo") || solutionDescription.includes("equipo");
-            case "work-life-balance":
-              return solutionTags.includes("equilibrio") || solutionTitle.includes("equilibrio") || solutionDescription.includes("equilibrio");
-            case "inclusion":
-              return solutionTags.includes("inclusión") || solutionTitle.includes("inclusión") || solutionDescription.includes("inclusión");
-            default:
-              return false;
-          }
+          const searchTerms = {
+            "stress": "estrés",
+            "emotional-wellbeing": "bienestar",
+            "mental-load": "carga mental",
+            "productivity": "productividad",
+            "leadership": "liderazgo",
+            "teamwork": "equipo",
+            "work-life-balance": "equilibrio",
+            "inclusion": "inclusión"
+          };
+          
+          const term = searchTerms[benefit];
+          return term && (solutionTags.includes(term) || solutionTitle.includes(term) || solutionDescription.includes(term));
         });
 
-      // Categories filter (competencies)
-      const categoriesMatch = !filters.categories || filters.categories.length === 0 || 
-        (Array.isArray(solution.competencies) && filters.categories.some(category => {
-          return solution.competencies.includes(category);
-        }));
+      // Categories filter
+      const categoriesMatch = filters.categories.length === 0 || 
+        (solution.competencies?.some?.(category => filters.categories.includes(category)) || false);
       
       return typeMatch && modalityMatch && durationMatch && audienceMatch && benefitsMatch && categoriesMatch;
     });
@@ -163,16 +141,13 @@ const DimensionPage = () => {
   const groupSolutionsByCompetency = (solutions) => {
     const groups = {};
     
-    if (!dimension || !dimension.competencies || !Array.isArray(dimension.competencies)) {
+    if (!dimension?.competencies) {
       return groups;
     }
     
     dimension.competencies.forEach(competency => {
       const competencySolutions = solutions.filter(solution => 
-        solution && 
-        solution.competencies && 
-        Array.isArray(solution.competencies) && 
-        solution.competencies.includes(competency.id)
+        solution?.competencies?.includes?.(competency.id)
       );
       
       if (competencySolutions.length > 0) {
@@ -189,14 +164,6 @@ const DimensionPage = () => {
   const filteredSolutions = getFilteredSolutions();
   const solutionGroups = groupSolutionsByCompetency(filteredSolutions);
   const hasGroups = Object.keys(solutionGroups).length > 0;
-
-  const totalActiveFilters = 
-    (filters.solutionTypes ? filters.solutionTypes.length : 0) + 
-    (filters.modalities ? filters.modalities.length : 0) + 
-    (filters.durations ? filters.durations.length : 0) + 
-    (filters.audiences ? filters.audiences.length : 0) +
-    (filters.benefits ? filters.benefits.length : 0) +
-    (filters.categories ? filters.categories.length : 0);
 
   // Show loading state
   if (loading || solutionsLoading) {
@@ -240,13 +207,7 @@ const DimensionPage = () => {
       {/* Filters Section */}
       <div className="bg-white border-b border-border sticky top-16 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2">
-          <CompetencyFilterBar 
-            initialFilters={filters}
-            onApplyFilters={(newFilters) => {
-              setFilters(newFilters);
-            }}
-            isSticky={true}
-          />
+          <CompetencyFilterBar isSticky={true} />
         </div>
       </div>
 
@@ -286,17 +247,7 @@ const DimensionPage = () => {
               <Button
                 variant="guay-primary"
                 size="grande"
-                onClick={() => {
-                  const emptyFilters = {
-                    solutionTypes: [],
-                    modalities: [],
-                    durations: [],
-                    audiences: [],
-                    benefits: [],
-                    categories: []
-                  };
-                  setFilters(emptyFilters);
-                }}
+                onClick={() => window.location.reload()}
               >
                 Limpiar filtros
               </Button>
