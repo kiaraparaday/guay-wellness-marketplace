@@ -5,7 +5,6 @@ import SolutionCard from "@/components/SolutionCard";
 import GuayLogo from "@/components/GuayLogo";
 import SolutionNavigationTabs from "@/components/SolutionNavigationTabs";
 import SolutionsSection from "@/components/SolutionsSection";
-import ContactModal from "@/components/ContactModal";
 import { Link } from "react-router-dom";
 import { ArrowRight, Star, Quote, Users, Building, RefreshCw } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -77,7 +76,6 @@ const testimonials = [
 const IndexPage: React.FC = () => {
   const { solutions: allSolutions, loading, error, isUsingFallback, refetch } = useSolutions();
   const [activeTab, setActiveTab] = useState<'dimensions' | 'catalog'>('dimensions');
-  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [filters, setFilters] = useState({
     solutionTypes: [] as string[],
     modalities: [] as string[],
@@ -100,6 +98,14 @@ const IndexPage: React.FC = () => {
     if (solutionsElement) {
       solutionsElement.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const handleContactClick = () => {
+    window.open(
+      'https://calendar.google.com/calendar/appointments/schedules/AcZssZ0CSfvvxue3MDVfGyXgfjnhXcsu6XkxEoXnnPXjb3J54puN0BGDnntVlpwPMihC6RTbeQ0j1gRZ?gv=true',
+      '_blank',
+      'noopener,noreferrer'
+    );
   };
 
   return (
@@ -315,7 +321,7 @@ const IndexPage: React.FC = () => {
             </div>
           </section>
       
-          {/* CTA Section - Updated with new flow */}
+          {/* CTA Section - Updated with direct redirection */}
           <section id="contacto" className="py-20 px-6 bg-gradient-to-b from-white to-primary/5">
             <div className="max-w-7xl mx-auto">
               <div className="bg-white rounded-2xl shadow-subtle overflow-hidden">
@@ -329,7 +335,7 @@ const IndexPage: React.FC = () => {
                     </p>
                     <div className="flex justify-center sm:justify-start">
                       <Button 
-                        onClick={() => setIsContactModalOpen(true)}
+                        onClick={handleContactClick}
                         size="grande" 
                         variant="guay-cta-primary"
                         className="font-quicksand"
@@ -365,12 +371,6 @@ const IndexPage: React.FC = () => {
           </footer>
         </div>
       </section>
-      
-      {/* Contact Modal */}
-      <ContactModal 
-        isOpen={isContactModalOpen}
-        onClose={() => setIsContactModalOpen(false)}
-      />
     </div>
   );
 };
