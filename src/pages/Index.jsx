@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import Header from "../components/Header";
 import DimensionCard from "../components/DimensionCard";
@@ -203,7 +204,7 @@ const IndexPage = () => {
                   size="action-primary"
                 >
                   <Link to="/solutions" className="flex items-center group">
-                    Ver el catálogo completo de soluciones
+                    Ver catálogo completo
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </Button>
