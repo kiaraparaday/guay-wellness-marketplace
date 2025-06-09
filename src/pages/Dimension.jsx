@@ -5,17 +5,21 @@ import { useSolutions } from "../hooks/useSolutions.js";
 import { useDimensionFilters } from "../hooks/useDimensionFilters.js";
 import { getDimensionById } from "../data/dimensionsData";
 import Header from "../components/Header.jsx";
-import CompetencyFilterBar from "../components/CompetencyFilterBar.jsx";
 import CallToActionSection from "../components/CallToActionSection.jsx";
 import SimpleFooter from "../components/SimpleFooter";
 import DimensionHero from "../components/dimension/DimensionHero.jsx";
 import SolutionCard from "../components/SolutionCard.jsx";
 import { Button } from "../components/ui/button";
+import FilterToggleButton from "../components/filters/FilterToggleButton.jsx";
+import FilterChips from "../components/filters/FilterChips.jsx";
+import CollapsibleFilterPanel from "../components/filters/CollapsibleFilterPanel.jsx";
+import { filterEventBus } from "../services/eventBus";
 
 const DimensionPage = () => {
   const { id } = useParams();
   const [dimension, setDimension] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
 
   // Always call hooks in the same order
   const { solutions: allSolutions, loading: solutionsLoading } = useSolutions();
@@ -161,6 +165,26 @@ const DimensionPage = () => {
     return groups;
   };
 
+  // Handle removing individual filters
+  const handleRemoveFilter = (filterType, value) => {
+    const newFilters = { ...filters };
+    newFilters[filterType] = newFilters[filterType].filter(item => item !== value);
+    filterEventBus.publish('filtersChanged', newFilters);
+  };
+
+  // Handle clearing all filters
+  const handleClearAllFilters = () => {
+    const emptyFilters = {
+      solutionTypes: [],
+      modalities: [],
+      durations: [],
+      audiences: [],
+      benefits: [],
+      categories: []
+    };
+    filterEventBus.publish('filtersChanged', emptyFilters);
+  };
+
   const filteredSolutions = getFilteredSolutions();
   const solutionGroups = groupSolutionsByCompetency(filteredSolutions);
   const hasGroups = Object.keys(solutionGroups).length > 0;
@@ -204,31 +228,58 @@ const DimensionPage = () => {
       
       <DimensionHero dimension={dimension} />
 
-      {/* Filters Section */}
+      {/* New Filter Section with improved UX */}
       <div className="bg-white border-b border-border sticky top-16 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2">
-          <CompetencyFilterBar isSticky={true} />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+          <div className="flex flex-col">
+            {/* Filter Toggle Button */}
+            <div className="flex items-center justify-between">
+              <FilterToggleButton
+                isOpen={isFilterPanelOpen}
+                onToggle={() => setIsFilterPanelOpen(!isFilterPanelOpen)}
+                activeFiltersCount={totalActiveFilters}
+              />
+              
+              <div className="text-sm text-muted-foreground font-quicksand">
+                {filteredSolutions.length} soluciones encontradas
+              </div>
+            </div>
+            
+            {/* Active Filter Chips */}
+            <FilterChips
+              filters={filters}
+              onRemoveFilter={handleRemoveFilter}
+              onClearAll={handleClearAllFilters}
+            />
+          </div>
+          
+          {/* Collapsible Filter Panel */}
+          <CollapsibleFilterPanel
+            isOpen={isFilterPanelOpen}
+            onClose={() => setIsFilterPanelOpen(false)}
+            filters={filters}
+          />
         </div>
       </div>
 
       {/* Solutions Section */}
-      <section className="py-3 px-6">
+      <section className="py-6 px-6">
         <div className="max-w-7xl mx-auto">
           {hasGroups ? (
             Object.values(solutionGroups).map((group) => (
-              <div key={group.competency.id} className="mb-6" id={group.competency.id}>
+              <div key={group.competency.id} className="mb-8" id={group.competency.id}>
                 {/* Competency Header */}
-                <div className="mb-3 p-3 bg-white rounded-lg shadow-sm border border-gray-100">
-                  <h2 className="text-base font-semibold mb-1 font-quicksand text-gray-800">
+                <div className="mb-4 p-4 bg-white rounded-lg shadow-sm border border-gray-100">
+                  <h2 className="text-lg font-semibold mb-2 font-quicksand text-gray-800">
                     {group.competency.title || 'Sin título'}
                   </h2>
-                  <p className="text-muted-foreground text-xs max-w-3xl font-quicksand">
+                  <p className="text-muted-foreground text-sm max-w-3xl font-quicksand">
                     {group.competency.description || 'Sin descripción'}
                   </p>
                 </div>
                 
                 {/* Solutions Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {group.solutions.map((solution, solutionIndex) => (
                     <SolutionCard 
                       key={solution.id || `solution-${solutionIndex}`} 
@@ -240,14 +291,14 @@ const DimensionPage = () => {
               </div>
             ))
           ) : (
-            <div className="text-center py-6 bg-secondary/30 rounded-lg">
+            <div className="text-center py-12 bg-secondary/30 rounded-lg">
               <p className="text-lg mb-4 font-quicksand">
                 No encontramos soluciones con estos filtros. Intenta ajustar tu búsqueda.
               </p>
               <Button
                 variant="guay-primary"
                 size="grande"
-                onClick={() => window.location.reload()}
+                onClick={handleClearAllFilters}
               >
                 Limpiar filtros
               </Button>
