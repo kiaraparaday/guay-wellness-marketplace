@@ -213,56 +213,70 @@ const Header = () => {
       {/* Barra de navegación - Separada debajo del header */}
       <nav className="fixed top-16 left-0 right-0 z-40 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="hidden lg:flex items-center justify-center space-x-2 py-3">
-            <NavigationMenu>
-              <NavigationMenuList className="space-x-2">
-                {menuItems.map((item, index) => (
-                  <NavigationMenuItem key={index}>
-                    {item.isDropdown ? (
-                      <>
-                        <NavigationMenuTrigger
+          <div className="hidden lg:flex items-center justify-between py-3">
+            {/* Navegación centrada */}
+            <div className="flex-1 flex justify-center">
+              <NavigationMenu>
+                <NavigationMenuList className="space-x-2">
+                  {menuItems.map((item, index) => (
+                    <NavigationMenuItem key={index}>
+                      {item.isDropdown ? (
+                        <>
+                          <NavigationMenuTrigger
+                            className={cn(
+                              "px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 font-quicksand bg-transparent border-0",
+                              (location.pathname === "/solutions" || location.pathname.startsWith("/solutions"))
+                                ? "bg-[#131F36] text-white hover:bg-[#131F36]/90"
+                                : "text-[#131F36] hover:bg-gray-100"
+                            )}
+                          >
+                            {item.label}
+                          </NavigationMenuTrigger>
+                          <NavigationMenuContent className="bg-white border border-gray-200 shadow-lg rounded-lg p-2 min-w-[300px]">
+                            <div className="space-y-1">
+                              {item.subItems?.map((subItem, subIndex) => (
+                                <button
+                                  key={subIndex}
+                                  onClick={() => handleMenuClick(subItem.path)}
+                                  className="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors"
+                                >
+                                  <div className="font-medium text-[#131F36] mb-1">{subItem.label}</div>
+                                  <div className="text-sm text-gray-600">{subItem.description}</div>
+                                </button>
+                              ))}
+                            </div>
+                          </NavigationMenuContent>
+                        </>
+                      ) : (
+                        <Button
+                          onClick={() => handleMenuClick(item.path)}
+                          variant="ghost"
                           className={cn(
-                            "px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 font-quicksand bg-transparent border-0",
-                            (location.pathname === "/solutions" || location.pathname.startsWith("/solutions"))
+                            "px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 font-quicksand",
+                            location.pathname === item.path
                               ? "bg-[#131F36] text-white hover:bg-[#131F36]/90"
                               : "text-[#131F36] hover:bg-gray-100"
                           )}
                         >
                           {item.label}
-                        </NavigationMenuTrigger>
-                        <NavigationMenuContent className="bg-white border border-gray-200 shadow-lg rounded-lg p-2 min-w-[300px]">
-                          <div className="space-y-1">
-                            {item.subItems?.map((subItem, subIndex) => (
-                              <button
-                                key={subIndex}
-                                onClick={() => handleMenuClick(subItem.path)}
-                                className="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors"
-                              >
-                                <div className="font-medium text-[#131F36] mb-1">{subItem.label}</div>
-                                <div className="text-sm text-gray-600">{subItem.description}</div>
-                              </button>
-                            ))}
-                          </div>
-                        </NavigationMenuContent>
-                      </>
-                    ) : (
-                      <Button
-                        onClick={() => handleMenuClick(item.path)}
-                        variant="ghost"
-                        className={cn(
-                          "px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 font-quicksand",
-                          location.pathname === item.path
-                            ? "bg-[#131F36] text-white hover:bg-[#131F36]/90"
-                            : "text-[#131F36] hover:bg-gray-100"
-                        )}
-                      >
-                        {item.label}
-                      </Button>
-                    )}
-                  </NavigationMenuItem>
-                ))}
-              </NavigationMenuList>
-            </NavigationMenu>
+                        </Button>
+                      )}
+                    </NavigationMenuItem>
+                  ))}
+                </NavigationMenuList>
+              </NavigationMenu>
+            </div>
+            
+            {/* Botón de búsqueda alineado con las pestañas */}
+            <div className="flex items-center">
+              <button
+                onClick={toggleSearch}
+                className="flex items-center justify-center px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 font-quicksand text-[#131F36] hover:bg-gray-100"
+                aria-label="Search"
+              >
+                <Search className="w-5 h-5" />
+              </button>
+            </div>
           </div>
         </div>
       </nav>
