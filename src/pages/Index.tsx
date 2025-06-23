@@ -141,19 +141,15 @@ const IndexPage: React.FC = () => {
       {/* Hero Section */}
       <section className="pt-8 pb-8 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col items-center text-center md:text-left md:items-start mb-6">
-            <div className="mb-2 text-sm font-medium text-[#91AFC7] animate-fade-in">
-              Marketplace de Bienestar Organizacional
-            </div>
-            
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight animate-fade-in" style={{ animationDelay: "100ms" }}>
+          <div className="flex flex-col items-center text-center md:text-left md:items-start mb-8">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight animate-fade-in">
               Soluciones de <br className="hidden md:block" />
               <span className="text-black">
                 bienestar organizacional
               </span>
             </h1>
             
-            <p className="text-lg text-muted-foreground mb-6 max-w-2xl animate-fade-in" style={{ animationDelay: "200ms" }}>
+            <p className="text-lg text-muted-foreground mb-6 max-w-2xl animate-fade-in" style={{ animationDelay: "100ms" }}>
               Explora todas las soluciones que tenemos disponibles para transformar el bienestar en tu organización.
             </p>
           </div>
@@ -250,7 +246,7 @@ const IndexPage: React.FC = () => {
                 </div>
               </div>
             </div>
-          </section>
+          </div>
         </div>
       </section>
     </div>

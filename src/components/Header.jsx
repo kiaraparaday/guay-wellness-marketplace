@@ -1,275 +1,133 @@
 
-import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, Search, User, LogOut, LogIn, ChevronDown } from "lucide-react";
-import { cn } from "../lib/utils";
-import SearchBar from "./SearchBar";
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { User, Menu, X, Search } from "lucide-react";
 import GuayLogo from "./GuayLogo";
+import SearchBar from "./SearchBar";
 import { Button } from "./ui/button";
-import { filterEventBus } from "../services/eventBus";
-import { logoutUser } from "../services/firebaseService";
-import { useAuth } from "../contexts/AuthContext";
-import UserRegistrationModal from "./UserRegistrationModal";
-import UserLoginModal from "./UserLoginModal";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { toast } from "sonner";
-
-export { filterEventBus };
 
 const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
-  const { currentUser, userData, loading } = useAuth();
   const location = useLocation();
-  const navigate = useNavigate();
-  
-  const menuItems = [
-    { label: "Inicio", path: "/" },
-    { label: "Testimonios", path: "/testimonials" },
-    { label: "Agenda una cita", path: "/appointment" },
-    { label: "Sobre guay", path: "/quienes-somos" },
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const toggleSearch = () => setIsSearchOpen(!isSearchOpen);
+
+  const isActiveRoute = (path) => location.pathname === path;
+
+  const navItems = [
+    { name: "Inicio", path: "/" },
+    { name: "Testimonios", path: "/testimonials" },
+    { name: "Agenda una cita", path: "/appointment" },
+    { name: "Sobre Guay", path: "/about" }
   ];
 
-  const toggleSearch = () => {
-    setIsSearchOpen(!isSearchOpen);
-    if (isMobileMenuOpen) setIsMobileMenuOpen(false);
-  };
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-    if (isSearchOpen) setIsSearchOpen(false);
-  };
-
-  const handleMenuClick = (path) => {
-    navigate(path);
-    setIsMobileMenuOpen(false);
-  };
-  
-  const handleLogin = () => {
-    setIsLoginModalOpen(true);
-  };
-
-  const handleRegister = () => {
-    setIsRegisterModalOpen(true);
-  };
-
-  const handleLogout = async () => {
-    try {
-      console.log("Logging out user...");
-      await logoutUser();
-      toast.success("Sesión cerrada correctamente");
-    } catch (error) {
-      console.error("Error logging out:", error);
-      toast.error("Error al cerrar sesión");
-    }
-  };
-
-  const handleAuthSuccess = () => {
-    console.log("Authentication successful, user data will be refreshed automatically");
-  };
-
-  // Get display name for user
-  const getUserDisplayName = () => {
-    if (userData?.nombre) {
-      return userData.nombre.split(' ')[0]; // First name only
-    }
-    if (currentUser?.displayName) {
-      return currentUser.displayName.split(' ')[0];
-    }
-    if (currentUser?.email) {
-      return currentUser.email.split('@')[0];
-    }
-    return 'Usuario';
-  };
-
   return (
-    <>
-      {/* Fixed Header - Azul marino institucional con logo centrado */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#131F36] text-white shadow-md">
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 h-16">
-          {/* Icono hamburguesa (solo mobile) */}
-          <div className="flex items-center">
+    <header className="bg-white border-b border-border sticky top-0 z-50 font-quicksand">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex items-center justify-between h-16">
+          {/* Mobile menu button */}
+          <div className="md:hidden">
             <button
-              onClick={toggleMobileMenu}
-              className="lg:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
-              aria-label="Menu"
+              onClick={toggleMenu}
+              className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
             >
-              <Menu className="w-6 h-6" />
+              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
-            {/* Espacio vacío en desktop para centrar el logo */}
-            <div className="hidden lg:block w-20"></div>
           </div>
 
-          {/* Logo centrado */}
-          <Link to="/" className="flex items-center absolute left-1/2 transform -translate-x-1/2 lg:relative lg:left-auto lg:transform-none">
-            <GuayLogo variant="white" className="py-1" />
-          </Link>
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <Link to="/" className="flex items-center">
+              <GuayLogo showText={true} className="h-8" />
+            </Link>
+          </div>
 
-          {/* Botones a la derecha */}
-          <div className="flex items-center space-x-3">
-            {/* Botón Usuario - Verde institucional */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  className="bg-[#A6B94C] hover:bg-[#A6B94C]/90 text-white rounded-lg px-4 py-2 flex items-center gap-2 font-medium"
-                  size="sm"
-                  disabled={loading}
+          {/* Desktop Navigation and Search */}
+          <div className="hidden md:flex items-center space-x-8">
+            {/* Navigation Links */}
+            <nav className="flex items-center space-x-8">
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className={`text-sm font-medium transition-colors hover:text-primary ${
+                    isActiveRoute(item.path) 
+                      ? "text-primary border-b-2 border-primary" 
+                      : "text-muted-foreground"
+                  }`}
                 >
-                  <User className="w-4 h-4" />
-                  <span className="hidden md:inline">
-                    {loading ? 'Cargando...' : currentUser ? getUserDisplayName() : 'Usuario'}
-                  </span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="min-w-[200px] bg-white">
-                {currentUser ? (
-                  <>
-                    <DropdownMenuLabel className="font-medium">{getUserDisplayName()}</DropdownMenuLabel>
-                    <DropdownMenuLabel className="text-xs text-gray-500 font-normal">{currentUser.email}</DropdownMenuLabel>
-                    {userData?.empresa && (
-                      <DropdownMenuLabel className="text-sm text-gray-500">{userData.empresa}</DropdownMenuLabel>
-                    )}
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-600 focus:text-red-600">
-                      <LogOut className="mr-2 h-4 w-4" />
-                      <span>Cerrar sesión</span>
-                    </DropdownMenuItem>
-                  </>
-                ) : (
-                  <>
-                    <DropdownMenuItem onClick={handleLogin} className="cursor-pointer">
-                      <LogIn className="mr-2 h-4 w-4" />
-                      <span>Iniciar sesión</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={handleRegister} className="cursor-pointer">
-                      <User className="mr-2 h-4 w-4" />
-                      <span>Registrarse</span>
-                    </DropdownMenuItem>
-                  </>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
-      </header>
+                  {item.name}
+                </Link>
+              ))}
+            </nav>
 
-      {/* Barra de navegación - Separada debajo del header */}
-      <nav className="fixed top-16 left-0 right-0 z-40 bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="hidden lg:flex items-center justify-between py-3">
-            {/* Navegación centrada */}
-            <div className="flex-1 flex justify-center">
-              <div className="flex items-center space-x-2">
-                {menuItems.map((item, index) => (
-                  <Button
-                    key={index}
-                    onClick={() => handleMenuClick(item.path)}
-                    variant="ghost"
-                    className={cn(
-                      "px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 font-quicksand",
-                      location.pathname === item.path
-                        ? "bg-[#131F36] text-white hover:bg-[#131F36]/90"
-                        : "text-[#131F36] hover:bg-gray-100"
-                    )}
-                  >
-                    {item.label}
-                  </Button>
-                ))}
-              </div>
-            </div>
-            
-            {/* Botón de búsqueda alineado con las pestañas */}
-            <div className="flex items-center">
-              <button
-                onClick={toggleSearch}
-                className="flex items-center justify-center px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 font-quicksand text-[#131F36] hover:bg-gray-100"
-                aria-label="Search"
-              >
-                <Search className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Mobile menu */}
-      <div
-        className={cn(
-          "fixed top-16 left-0 right-0 z-30 bg-white shadow-lg transition-all duration-300 transform lg:hidden border-b border-gray-200",
-          isMobileMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
-        )}
-      >
-        <div className="p-4 space-y-2">
-          {menuItems.map((item, index) => (
-            <Button
-              key={index}
-              onClick={() => handleMenuClick(item.path)}
-              variant="ghost"
-              className={cn(
-                "w-full justify-start rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 font-quicksand",
-                location.pathname === item.path
-                  ? "bg-[#131F36] text-white hover:bg-[#131F36]/90"
-                  : "text-[#131F36] hover:bg-gray-100"
-              )}
+            {/* Search Icon */}
+            <button
+              onClick={toggleSearch}
+              className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
             >
-              {item.label}
+              <Search className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* User button */}
+          <div className="flex items-center">
+            <Button 
+              variant="default" 
+              size="sm" 
+              className="bg-primary hover:bg-primary/90 text-white"
+            >
+              <User className="w-4 h-4 mr-2" />
+              <span className="hidden sm:inline">Usuario</span>
             </Button>
-          ))}
-          
-          {/* Search button for mobile */}
-          <button
-            onClick={toggleSearch}
-            className="w-full text-left rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 font-quicksand text-[#131F36] hover:bg-gray-100 flex items-center"
-          >
-            <Search className="w-5 h-5 mr-2" />
-            Buscar
-          </button>
+          </div>
         </div>
-      </div>
 
-      {/* Search overlay */}
-      <div
-        className={cn(
-          "fixed top-16 left-0 right-0 z-40 bg-white shadow-lg transition-all duration-300 transform",
-          isSearchOpen ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0 pointer-events-none"
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="md:hidden border-t border-border bg-white">
+            <nav className="px-4 pt-4 pb-6 space-y-4">
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className={`block text-sm font-medium transition-colors hover:text-primary ${
+                    isActiveRoute(item.path) 
+                      ? "text-primary" 
+                      : "text-muted-foreground"
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              ))}
+              
+              {/* Mobile Search */}
+              <div className="pt-4 border-t border-border">
+                <button
+                  onClick={toggleSearch}
+                  className="flex items-center text-sm font-medium text-muted-foreground hover:text-primary"
+                >
+                  <Search className="w-4 h-4 mr-2" />
+                  Buscar
+                </button>
+              </div>
+            </nav>
+          </div>
         )}
-      >
-        <SearchBar onClose={() => setIsSearchOpen(false)} />
+
+        {/* Search Bar */}
+        {isSearchOpen && (
+          <div className="border-t border-border bg-white">
+            <div className="px-4 py-4">
+              <SearchBar onClose={() => setIsSearchOpen(false)} />
+            </div>
+          </div>
+        )}
       </div>
-
-      {/* Modals */}
-      <UserLoginModal 
-        isOpen={isLoginModalOpen} 
-        onClose={() => setIsLoginModalOpen(false)} 
-        onRegisterClick={() => {
-          setIsLoginModalOpen(false);
-          setIsRegisterModalOpen(true);
-        }}
-        onSuccess={handleAuthSuccess}
-      />
-      
-      <UserRegistrationModal 
-        isOpen={isRegisterModalOpen} 
-        onClose={() => setIsRegisterModalOpen(false)} 
-        onSuccess={handleAuthSuccess}
-        onLoginClick={() => {
-          setIsRegisterModalOpen(false);
-          setIsLoginModalOpen(true);
-        }}
-      />
-
-      {/* Spacer for fixed headers - Ajustado para ambos headers */}
-      <div className="h-[120px]"></div>
-    </>
+    </header>
   );
 };
 
