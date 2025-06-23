@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { onSnapshot, collection } from "firebase/firestore";
 import { db } from "../services/firebaseService";
 import { solutionsArray } from "../data/solutions";
