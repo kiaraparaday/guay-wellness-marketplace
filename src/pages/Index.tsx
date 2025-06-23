@@ -2,12 +2,9 @@
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import SolutionCard from "@/components/SolutionCard";
-import GuayLogo from "@/components/GuayLogo";
-import FilterBar from "@/components/FilterBar";
 import FilterToggleButton from "@/components/filters/FilterToggleButton";
 import CollapsibleFilterPanel from "@/components/filters/CollapsibleFilterPanel";
 import FilterChips from "@/components/filters/FilterChips";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useSolutions } from "@/hooks/useSolutions";
 import { filterEventBus } from "@/services/eventBus";
@@ -19,8 +16,6 @@ const IndexPage: React.FC = () => {
     modalities: [] as string[],
     durations: [] as string[],
     audiences: [] as string[],
-    benefits: [] as string[],
-    categories: [] as string[],
   });
   
   const [filteredSolutions, setFilteredSolutions] = useState(allSolutions);
@@ -97,43 +92,7 @@ const IndexPage: React.FC = () => {
       const audienceMatch = filters.audiences.length === 0 || 
         filters.audiences.includes(audienceCategory);
 
-      // Benefits filter
-      const benefitsMatch = filters.benefits.length === 0 || 
-        filters.benefits.some(benefit => {
-          const solutionTags = solution.tags?.join(" ").toLowerCase() || "";
-          const solutionTitle = solution.title?.toLowerCase() || "";
-          const solutionDescription = solution.description?.toLowerCase() || "";
-          
-          switch (benefit) {
-            case "stress":
-              return solutionTags.includes("estrés") || solutionTitle.includes("estrés") || solutionDescription.includes("estrés");
-            case "emotional-wellbeing":
-              return solutionTags.includes("bienestar") || solutionTitle.includes("bienestar") || solutionDescription.includes("bienestar");
-            case "mental-load":
-              return solutionTags.includes("carga mental") || solutionTitle.includes("carga mental") || solutionDescription.includes("carga mental");
-            case "productivity":
-              return solutionTags.includes("productividad") || solutionTitle.includes("productividad") || solutionDescription.includes("productividad");
-            case "leadership":
-              return solutionTags.includes("liderazgo") || solutionTitle.includes("liderazgo") || solutionDescription.includes("liderazgo");
-            case "teamwork":
-              return solutionTags.includes("equipo") || solutionTitle.includes("equipo") || solutionDescription.includes("equipo");
-            case "work-life-balance":
-              return solutionTags.includes("equilibrio") || solutionTitle.includes("equilibrio") || solutionDescription.includes("equilibrio");
-            case "inclusion":
-              return solutionTags.includes("inclusión") || solutionTitle.includes("inclusión") || solutionDescription.includes("inclusión");
-            default:
-              return false;
-          }
-        });
-      
-      // Categories filter
-      const categoriesMatch = filters.categories.length === 0 || 
-        filters.categories.some(category => {
-          if (!solution.competencies) return false;
-          return solution.competencies.includes(category);
-        });
-      
-      return typeMatch && modalityMatch && durationMatch && audienceMatch && benefitsMatch && categoriesMatch;
+      return typeMatch && modalityMatch && durationMatch && audienceMatch;
     });
     
     console.log('Filtered solutions count:', filtered.length);
@@ -144,9 +103,7 @@ const IndexPage: React.FC = () => {
     filters.solutionTypes.length + 
     filters.modalities.length + 
     filters.durations.length + 
-    filters.audiences.length +
-    filters.benefits.length +
-    filters.categories.length;
+    filters.audiences.length;
 
   const handleRemoveFilter = (filterType: string, value: string) => {
     const newFilters = { ...filters };
@@ -163,9 +120,7 @@ const IndexPage: React.FC = () => {
       solutionTypes: [],
       modalities: [],
       durations: [],
-      audiences: [],
-      benefits: [],
-      categories: []
+      audiences: []
     };
     setFilters(emptyFilters);
     filterEventBus.publish('filtersChanged', emptyFilters);
@@ -199,7 +154,7 @@ const IndexPage: React.FC = () => {
             </h1>
             
             <p className="text-lg text-muted-foreground mb-6 max-w-2xl animate-fade-in" style={{ animationDelay: "200ms" }}>
-              Selecciona una solución que se adapte a las necesidades de tu organización o explora el catálogo completo de soluciones.
+              Explora todas las soluciones que tenemos disponibles para transformar el bienestar en tu organización.
             </p>
           </div>
 
@@ -213,7 +168,7 @@ const IndexPage: React.FC = () => {
                   activeFiltersCount={totalActiveFilters}
                 />
                 <span className="text-sm text-muted-foreground">
-                  {filteredSolutions.length} soluciones encontradas
+                  Mostrando {filteredSolutions.length} soluciones
                 </span>
               </div>
             </div>
@@ -236,17 +191,6 @@ const IndexPage: React.FC = () => {
 
           {/* Solutions Grid */}
           <section className="mb-12">
-            <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-              <div>
-                <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-black">
-                  CATÁLOGO DE SOLUCIONES
-                </h2>
-                <p className="text-muted-foreground max-w-xl mt-2">
-                  Explora todas nuestras soluciones de bienestar organizacional disponibles.
-                </p>
-              </div>
-            </div>
-            
             {loading ? (
               <div className="text-center py-12">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
@@ -307,19 +251,6 @@ const IndexPage: React.FC = () => {
               </div>
             </div>
           </section>
-      
-          {/* Footer */}
-          <footer className="py-8 px-6 bg-white border-t border-border">
-            <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
-              <div className="flex items-center mb-4 md:mb-0">
-                <GuayLogo showText={true} className="h-6" />
-              </div>
-              
-              <div className="text-sm text-muted-foreground">
-                © {new Date().getFullYear()} guay. Todos los derechos reservados.
-              </div>
-            </div>
-          </footer>
         </div>
       </section>
     </div>
