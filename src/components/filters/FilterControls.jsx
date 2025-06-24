@@ -1,15 +1,14 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 
-const FilterControls = ({ 
-  totalSelectedFilters, 
-  onClearFilters, 
-  onClose 
+const FilterControls = ({
+  totalSelectedFilters,
+  onClearFilters,
+  onClose,
 }) => {
   return (
-    <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-200">
+    <div className="flex justify-between mt-6">
       <button
         onClick={onClearFilters}
         className={cn(
@@ -20,13 +19,12 @@ const FilterControls = ({
       >
         Limpiar filtros {totalSelectedFilters > 0 && `(${totalSelectedFilters})`}
       </button>
-      
-      <Button
+      <button
         onClick={onClose}
         className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all-200 font-poppins"
       >
         Cerrar filtros
-      </Button>
+      </button>
     </div>
   );
 };

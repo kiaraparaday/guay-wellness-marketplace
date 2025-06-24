@@ -14,6 +14,10 @@ const CharacteristicsFiltersSection = ({
 }) => {
   return (
     <div className="mb-6">
+      <h2 className="text-lg font-semibold mb-4 font-poppins text-gray-900">
+        Filtra por características específicas de la solución
+      </h2>
+      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
         <FilterGroup
           title="Tipo de solución"
