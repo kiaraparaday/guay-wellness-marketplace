@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import Header from "../components/Header";
 import DimensionCard from "../components/DimensionCard";
@@ -5,9 +6,7 @@ import SolutionCard from "../components/SolutionCard";
 import GuayLogo from "../components/GuayLogo";
 import SolutionsSection from "../components/SolutionsSection";
 import { Link } from "react-router-dom";
-import { ArrowRight, Star, Quote, Users, Building, RefreshCw } from "lucide-react";
-import { Badge } from "../components/ui/badge";
-import { Card, CardContent } from "../components/ui/card";
+import { ArrowRight, RefreshCw } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { useSolutions } from "../hooks/useSolutions";
 
@@ -39,36 +38,6 @@ const dimensions = [
     description: "Crea espacios donde cada persona pueda brillar siendo auténtica.",
     image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80",
     color: "rgba(236, 72, 153, 0.8)",
-  },
-];
-
-const testimonials = [
-  {
-    id: 1,
-    quote: "Implementar el programa de mindfulness corporativo transformó la cultura de nuestro equipo. Notamos una mejora del 30% en productividad y satisfacción laboral.",
-    author: "María Rodríguez",
-    position: "Directora de Recursos Humanos",
-    company: "TechSolutions S.A.",
-    industry: "Tecnología",
-    image: "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?auto=format&fit=crop&q=80",
-  },
-  {
-    id: 2,
-    quote: "La formación en liderazgo consciente nos permitió desarrollar directivos más empáticos y efectivos. El resultado fue inmediato en la retención de talento.",
-    author: "Carlos Mendoza",
-    position: "CEO",
-    company: "Innogreen",
-    industry: "Energías Renovables",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80",
-  },
-  {
-    id: 3,
-    quote: "El taller de construcción de equipos diversos fue una inversión excelente. Logramos crear un ambiente donde todas las voces son escuchadas y valoradas.",
-    author: "Ana Gómez",
-    position: "Directora de Operaciones",
-    company: "GlobalHealth",
-    industry: "Salud",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80",
   },
 ];
 
@@ -196,71 +165,6 @@ const IndexPage = () => {
                 </Button>
               </div>
             )}
-          </section>
-
-          {/* Testimonials Section */}
-          <section id="casos-exito" className="mb-12">
-            <div className="relative overflow-hidden bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
-              <div className="absolute -top-24 -right-24 w-48 h-48 bg-guay-purple/10 rounded-full blur-xl"></div>
-              <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-guay-blue/10 rounded-full blur-xl"></div>
-              
-              <div className="flex flex-col md:flex-row justify-between items-center mb-8 relative z-10">
-                <div>
-                  <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-black">
-                    Casos de Éxito
-                  </h2>
-                  <p className="text-muted-foreground max-w-xl">
-                    Experiencias reales de organizaciones que han transformado su bienestar
-                  </p>
-                </div>
-                
-                <div className="mt-4 md:mt-0">
-                  <Button 
-                    asChild 
-                    variant="guay-action-primary"
-                    size="action-primary"
-                  >
-                    <Link to="/testimonials" className="flex items-center group">
-                      Ver más testimonios
-                      <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {testimonials.map((testimonial) => (
-                  <Card key={testimonial.id} className="border border-gray-100 shadow-sm hover:shadow-md transition-all-200 hover:border-guay-blue/30">
-                    <CardContent className="p-6">
-                      <div className="mb-4 text-guay-blue">
-                        <Quote className="w-8 h-8 opacity-70" />
-                      </div>
-                      <p className="mb-6 italic text-gray-700">{testimonial.quote}</p>
-                      <div className="flex items-start">
-                        <div className="w-10 h-10 rounded-full overflow-hidden mr-3 flex-shrink-0">
-                          <img 
-                            src={testimonial.image} 
-                            alt={testimonial.author} 
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-gray-900">{testimonial.author}</h4>
-                          <p className="text-sm text-gray-600">{testimonial.position}</p>
-                          <div className="flex items-center mt-1 text-xs text-gray-500">
-                            <Building className="w-3 h-3 mr-1" />
-                            {testimonial.company}
-                            <span className="mx-1.5">•</span>
-                            <Users className="w-3 h-3 mr-1" />
-                            {testimonial.industry}
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
           </section>
       
           {/* CTA Section - Updated with direct redirection */}
