@@ -135,24 +135,10 @@ const IndexPage = () => {
                 </Button>
               </div>
             )}
-            
-            {/* Botón global unificado */}
-            <div className="flex justify-center md:justify-start mt-6 mb-16">
-              <Button 
-                asChild 
-                variant="guay-action-primary"
-                size="action-primary"
-              >
-                <Link to="/solutions" className="flex items-center group">
-                  Ver todas las soluciones
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
-            </div>
           </div>
           
           {/* SOLUTIONS SECTION WITH FILTERS */}
-          <div id="soluciones">
+          <div id="soluciones" className="mb-16">
             <SolutionsSection 
               filteredSolutions={allSolutions}
               setFilters={setFilters}
