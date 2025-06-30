@@ -28,8 +28,8 @@ const CollapsibleFilters = ({ filters, onFiltersChange }) => {
         onClick={toggleFilters}
         variant="outline"
         className={cn(
-          "flex items-center gap-2 h-12 px-4 border-2 font-quicksand transition-all duration-200",
-          isOpen ? "border-primary bg-primary/5" : "border-gray-200 hover:border-gray-300"
+          "flex items-center gap-2 h-12 px-4 border-2 font-quicksand transition-all duration-200 rounded-full",
+          isOpen ? "border-primary bg-primary/5" : "border-gray-300 hover:border-gray-400"
         )}
       >
         <Filter className="h-4 w-4" />
@@ -58,20 +58,8 @@ const CollapsibleFilters = ({ filters, onFiltersChange }) => {
           />
           
           {/* Panel de filtros */}
-          <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 z-50 max-h-[80vh] overflow-y-auto animate-fade-in">
-            <div className="p-4">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold font-quicksand">Filtrar soluciones</h3>
-                <Button
-                  onClick={closeFilters}
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 w-8 p-0"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-              
+          <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 max-h-[80vh] overflow-y-auto animate-fade-in min-w-[800px]">
+            <div className="p-6">
               <FilterBar
                 onClose={closeFilters}
                 initialFilters={filters}
