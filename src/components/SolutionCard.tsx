@@ -64,31 +64,6 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
     return modalities[modality] || modality;
   };
 
-  // Map competency IDs to readable names
-  const competencyLabels: Record<string, string> = {
-    "mental-workload": "Carga Mental",
-    "work-autonomy": "Autonomía Laboral",
-    "work-life-balance": "Equilibrio Vida-Trabajo",
-    "communication": "Comunicación",
-    "capability-development": "Desarrollo de Capacidades",
-    "diversity": "Diversidad",
-    "leadership": "Liderazgo",
-    "teamwork": "Trabajo en Equipo",
-    "innovation": "Innovación",
-    "integrity": "Integridad"
-  };
-
-  // Get category labels to display
-  const getCategoryLabels = () => {
-    // First use categories if available
-    if (solution.categories && solution.categories.length > 0) {
-      return solution.categories;
-    }
-    
-    // Fall back to competency names if no categories are specified
-    return solution.competencies.map(id => competencyLabels[id] || id);
-  };
-
   const handleImageError = () => {
     setImageError(true);
   };
@@ -131,18 +106,6 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution, index }) => {
         <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
           {solution.description}
         </p>
-        
-        {/* Category tags - Nuevo estilo pill con magenta institucional */}
-        <div className="flex flex-wrap gap-2 mb-4">
-          {getCategoryLabels().map((category, idx) => (
-            <span 
-              key={idx} 
-              className="inline-block px-3 py-1.5 bg-guay-purple/10 text-guay-purple rounded-full text-xs font-normal font-quicksand"
-            >
-              {category}
-            </span>
-          ))}
-        </div>
         
         <div className="flex justify-between items-center mt-auto pt-3 border-t border-border">
           <div className="flex items-center text-sm text-muted-foreground">
