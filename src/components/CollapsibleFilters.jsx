@@ -16,11 +16,10 @@ const CollapsibleFilters = ({ filters, onFiltersChange }) => {
     setIsOpen(false);
   };
 
-  // Contar solo los filtros de características específicas
-  const activeFiltersCount = (filters?.solutionTypes?.length || 0) +
-                           (filters?.modalities?.length || 0) +
-                           (filters?.durations?.length || 0) +
-                           (filters?.audiences?.length || 0);
+  // Contar filtros activos
+  const activeFiltersCount = Object.values(filters || {}).reduce((count, filterArray) => {
+    return count + (Array.isArray(filterArray) ? filterArray.length : 0);
+  }, 0);
 
   return (
     <div className="relative">
@@ -29,7 +28,7 @@ const CollapsibleFilters = ({ filters, onFiltersChange }) => {
         onClick={toggleFilters}
         variant="outline"
         className={cn(
-          "flex items-center gap-2 h-12 px-4 border-2 font-quicksand transition-all duration-200 rounded-full bg-white",
+          "flex items-center gap-2 h-12 px-4 border-2 font-quicksand transition-all duration-200 rounded-full",
           isOpen ? "border-primary bg-primary/5" : "border-gray-300 hover:border-gray-400"
         )}
       >
@@ -59,7 +58,7 @@ const CollapsibleFilters = ({ filters, onFiltersChange }) => {
           />
           
           {/* Panel de filtros */}
-          <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 max-h-[80vh] overflow-y-auto animate-fade-in min-w-[800px]">
+          <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 max-h-[80vh] overflow-y-auto animate-fade-in min-w-[800px]">
             <div className="p-6">
               <FilterBar
                 onClose={closeFilters}
