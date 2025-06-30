@@ -126,19 +126,6 @@ const IndexPage = () => {
                   Seleccionadas por su alto impacto, relevancia y resultados comprobados en bienestar organizacional.
                 </p>
               </div>
-              
-              <div className="mt-4 md:mt-0">
-                <Button 
-                  asChild 
-                  variant="guay-action-primary"
-                  size="action-primary"
-                >
-                  <Link to="/solutions" className="flex items-center group">
-                    Ver catálogo completo
-                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </Button>
-              </div>
             </div>
             
             {loading ? (

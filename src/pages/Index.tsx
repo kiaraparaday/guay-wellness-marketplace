@@ -115,20 +115,6 @@ const IndexPage: React.FC = () => {
                 </Button>
               </div>
             )}
-            
-            {/* Botón global unificado */}
-            <div className="flex justify-center md:justify-start mt-6 mb-16">
-              <Button 
-                asChild 
-                variant="guay-action-primary"
-                size="action-primary"
-              >
-                <Link to="/solutions" className="flex items-center group">
-                  Ver todas las soluciones
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
-            </div>
           </div>
           
           {/* SOLUTION NAVIGATION TABS */}
@@ -183,19 +169,6 @@ const IndexPage: React.FC = () => {
                 <p className="text-muted-foreground max-w-xl mt-2">
                   Seleccionadas por su alto impacto, relevancia y resultados comprobados en bienestar organizacional.
                 </p>
-              </div>
-              
-              <div className="mt-4 md:mt-0">
-                <Button 
-                  asChild 
-                  variant="guay-action-primary"
-                  size="action-primary"
-                >
-                  <Link to="/solutions" className="flex items-center group">
-                    Ver el catálogo completo de soluciones
-                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </Button>
               </div>
             </div>
             
