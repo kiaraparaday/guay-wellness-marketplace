@@ -16,7 +16,7 @@ const CollapsibleFilters = ({ filters, onFiltersChange }) => {
     setIsOpen(false);
   };
 
-  // Contar filtros activos
+  // Contar filtros activos - solo características específicas
   const activeFiltersCount = Object.values(filters || {}).reduce((count, filterArray) => {
     return count + (Array.isArray(filterArray) ? filterArray.length : 0);
   }, 0);
