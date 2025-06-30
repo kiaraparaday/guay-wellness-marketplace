@@ -151,27 +151,12 @@ const IndexPage = () => {
             </div>
           </div>
           
-          {/* DIMENSIONS SECTION */}
-          <div id="dimensiones" className="bg-white rounded-2xl p-6 shadow-lg mb-12 border border-gray-blue/10">
-            {/* Subtítulo de agrupación por dimensiones */}
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold mb-2 text-[#6A6A6A] font-quicksand">
-                Dimensiones del bienestar organizacional
-              </h2>
-              <p className="text-[#6A6A6A] text-sm">
-                Descubre nuestras soluciones agrupadas por dimensión clave del bienestar, para responder a las distintas necesidades de tu equipo.
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-              {dimensions.map((dimension, index) => (
-                <DimensionCard 
-                  key={dimension.id}
-                  dimension={dimension}
-                  index={index}
-                />
-              ))}
-            </div>
+          {/* SOLUTIONS SECTION WITH FILTERS */}
+          <div id="soluciones">
+            <SolutionsSection 
+              filteredSolutions={allSolutions}
+              setFilters={setFilters}
+            />
           </div>
           
           {/* Top Solutions Section */}
