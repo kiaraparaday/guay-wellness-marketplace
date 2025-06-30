@@ -16,10 +16,11 @@ const CollapsibleFilters = ({ filters, onFiltersChange }) => {
     setIsOpen(false);
   };
 
-  // Contar filtros activos
-  const activeFiltersCount = Object.values(filters || {}).reduce((count, filterArray) => {
-    return count + (Array.isArray(filterArray) ? filterArray.length : 0);
-  }, 0);
+  // Count only the 4 specific filters we want
+  const activeFiltersCount = (filters?.solutionTypes?.length || 0) +
+                           (filters?.modalities?.length || 0) +
+                           (filters?.durations?.length || 0) +
+                           (filters?.audiences?.length || 0);
 
   return (
     <div className="relative">
