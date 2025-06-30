@@ -3,7 +3,7 @@ import React from "react";
 import SolutionCard from "@/components/SolutionCard";
 import { filterEventBus } from "@/services/eventBus";
 import { Button } from "@/components/ui/button";
-import CompetencyFilterBar from "@/components/CompetencyFilterBar";
+import CollapsibleFilters from "@/components/CollapsibleFilters";
 import { useSolutions } from "@/hooks/useSolutions";
 import { RefreshCw } from "lucide-react";
 
@@ -15,6 +15,11 @@ const SolutionsSection = ({
 
   const handleRetryLoad = () => {
     refetch();
+  };
+
+  const handleFiltersChange = (newFilters) => {
+    setFilters(newFilters);
+    filterEventBus.publish('filtersChanged', newFilters);
   };
 
   if (loading) {
@@ -59,7 +64,16 @@ const SolutionsSection = ({
             </span>
           </h2>
           
-          <CompetencyFilterBar />
+          <CollapsibleFilters 
+            filters={{
+              solutionTypes: [],
+              modalities: [],
+              durations: [],
+              audiences: [],
+              benefits: [],
+            }}
+            onFiltersChange={handleFiltersChange}
+          />
         </div>
         
         {filteredSolutions.length > 0 ? (
