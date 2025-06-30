@@ -72,7 +72,7 @@ const SolutionsSection = ({
         
         <div className="mb-8">
           <h2 className="text-2xl font-semibold font-quicksand">
-            Soluciones destacadas
+            Soluciones
             <span className="ml-2 text-lg text-muted-foreground font-normal">
               ({filteredSolutions.length})
             </span>

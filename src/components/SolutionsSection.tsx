@@ -64,7 +64,7 @@ const SolutionsSection: React.FC<SolutionsSectionProps> = ({
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <h2 className="text-2xl font-semibold font-quicksand">
-            Soluciones destacadas
+            Soluciones
             <span className="ml-2 text-lg text-muted-foreground font-normal">
               ({filteredSolutions.length})
             </span>

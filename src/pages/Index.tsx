@@ -162,7 +162,7 @@ const IndexPage: React.FC = () => {
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
               <div>
                 <h2 className="text-2xl md:text-3xl font-quicksand font-semibold mb-2 text-black">
-                  SOLUCIONES
+                  SOLUCIONES DESTACADAS
                 </h2>
                 
                 <p className="text-muted-foreground max-w-xl mt-2">
