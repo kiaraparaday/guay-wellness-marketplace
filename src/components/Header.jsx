@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, Search, User, LogOut, LogIn, ChevronDown } from "lucide-react";
@@ -41,24 +40,7 @@ const Header = () => {
   
   const menuItems = [
     { label: "Inicio", path: "/" },
-    { 
-      label: "Soluciones", 
-      path: "/solutions",
-      isDropdown: true,
-      subItems: [
-        { 
-          label: "Por dimensión", 
-          path: "/#dimensiones",
-          description: "Explora por tipo de necesidad de tu organización"
-        },
-        { 
-          label: "Catálogo completo", 
-          path: "/solutions",
-          description: "Ve todas las soluciones con filtros"
-        }
-      ]
-    },
-    { label: "Testimonios", path: "/testimonials" },
+    { label: "Soluciones", path: "/#soluciones" },
     { label: "Agenda una cita", path: "/appointment" },
     { label: "Sobre guay", path: "/quienes-somos" },
   ];
@@ -220,47 +202,19 @@ const Header = () => {
                 <NavigationMenuList className="space-x-2">
                   {menuItems.map((item, index) => (
                     <NavigationMenuItem key={index}>
-                      {item.isDropdown ? (
-                        <>
-                          <NavigationMenuTrigger
-                            className={cn(
-                              "px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 font-quicksand bg-transparent border-0",
-                              (location.pathname === "/solutions" || location.pathname.startsWith("/solutions"))
-                                ? "bg-[#131F36] text-white hover:bg-[#131F36]/90"
-                                : "text-[#131F36] hover:bg-gray-100"
-                            )}
-                          >
-                            {item.label}
-                          </NavigationMenuTrigger>
-                          <NavigationMenuContent className="bg-white border border-gray-200 shadow-lg rounded-lg p-2 min-w-[300px]">
-                            <div className="space-y-1">
-                              {item.subItems?.map((subItem, subIndex) => (
-                                <button
-                                  key={subIndex}
-                                  onClick={() => handleMenuClick(subItem.path)}
-                                  className="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors"
-                                >
-                                  <div className="font-medium text-[#131F36] mb-1">{subItem.label}</div>
-                                  <div className="text-sm text-gray-600">{subItem.description}</div>
-                                </button>
-                              ))}
-                            </div>
-                          </NavigationMenuContent>
-                        </>
-                      ) : (
-                        <Button
-                          onClick={() => handleMenuClick(item.path)}
-                          variant="ghost"
-                          className={cn(
-                            "px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 font-quicksand",
-                            location.pathname === item.path
-                              ? "bg-[#131F36] text-white hover:bg-[#131F36]/90"
-                              : "text-[#131F36] hover:bg-gray-100"
-                          )}
-                        >
-                          {item.label}
-                        </Button>
-                      )}
+                      <Button
+                        onClick={() => handleMenuClick(item.path)}
+                        variant="ghost"
+                        className={cn(
+                          "px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 font-quicksand",
+                          (location.pathname === item.path || 
+                           (item.path === "/#soluciones" && (location.pathname === "/solutions" || location.pathname.startsWith("/solutions"))))
+                            ? "bg-[#131F36] text-white hover:bg-[#131F36]/90"
+                            : "text-[#131F36] hover:bg-gray-100"
+                        )}
+                      >
+                        {item.label}
+                      </Button>
                     </NavigationMenuItem>
                   ))}
                 </NavigationMenuList>
@@ -290,36 +244,19 @@ const Header = () => {
       >
         <div className="p-4 space-y-2">
           {menuItems.map((item, index) => (
-            <div key={index}>
-              {item.isDropdown ? (
-                <div className="space-y-1">
-                  <div className="font-medium text-[#131F36] px-4 py-2 text-sm">{item.label}</div>
-                  {item.subItems?.map((subItem, subIndex) => (
-                    <Button
-                      key={subIndex}
-                      onClick={() => handleMenuClick(subItem.path)}
-                      variant="ghost"
-                      className="w-full justify-start rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 font-quicksand text-[#131F36] hover:bg-gray-100"
-                    >
-                      {subItem.label}
-                    </Button>
-                  ))}
-                </div>
-              ) : (
-                <Button
-                  onClick={() => handleMenuClick(item.path)}
-                  variant="ghost"
-                  className={cn(
-                    "w-full justify-start rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 font-quicksand",
-                    location.pathname === item.path
-                      ? "bg-[#131F36] text-white hover:bg-[#131F36]/90"
-                      : "text-[#131F36] hover:bg-gray-100"
-                  )}
-                >
-                  {item.label}
-                </Button>
+            <Button
+              key={index}
+              onClick={() => handleMenuClick(item.path)}
+              variant="ghost"
+              className={cn(
+                "w-full justify-start rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 font-quicksand",
+                location.pathname === item.path
+                  ? "bg-[#131F36] text-white hover:bg-[#131F36]/90"
+                  : "text-[#131F36] hover:bg-gray-100"
               )}
-            </div>
+            >
+              {item.label}
+            </Button>
           ))}
         </div>
       </div>
