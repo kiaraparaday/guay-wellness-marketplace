@@ -1,8 +1,8 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "@/components/Header";
-import { ArrowLeft, Calendar, Clock, Users, Download, Globe, FileText, Tag } from "lucide-react";
+import InfoRequestForm from "@/components/InfoRequestForm";
+import { ArrowLeft, Clock, Users, Download, Globe, FileText, Tag, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -29,7 +29,7 @@ const SolutionPage: React.FC = () => {
   const solution = id ? solutionsData[id] : null;
   
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [showAppointmentForm, setShowAppointmentForm] = useState(false);
+  const [showInfoRequestModal, setShowInfoRequestModal] = useState(false);
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -53,9 +53,8 @@ const SolutionPage: React.FC = () => {
     toast.success("La información ha sido descargada en formato PDF");
   };
 
-  const handleRequestAppointment = () => {
-    // Navigate to appointment page
-    window.location.href = "/appointment";
+  const handleRequestInfo = () => {
+    setShowInfoRequestModal(true);
   };
 
   return (
@@ -237,13 +236,13 @@ const SolutionPage: React.FC = () => {
               <div className="bg-white p-6 rounded-xl border border-border shadow-subtle sticky top-24">
                 <h2 className="text-xl font-medium mb-6">¿Interesado en esta solución?</h2>
                 
-                <Link
-                  to="/appointment"
+                <button
+                  onClick={handleRequestInfo}
                   className="block w-full py-3 mb-4 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-all-200 flex items-center justify-center"
                 >
-                  <Calendar className="w-5 h-5 mr-2" />
-                  Agendar una cita
-                </Link>
+                  <Mail className="w-5 h-5 mr-2" />
+                  Solicitar información
+                </button>
                 
                 <button
                   onClick={handleDownloadPDF}
@@ -255,7 +254,7 @@ const SolutionPage: React.FC = () => {
                 
                 <div className="mt-6 pt-6 border-t border-border">
                   <p className="text-sm text-muted-foreground mb-4">
-                    Agenda una llamada con nuestro equipo para discutir cómo esta solución puede adaptarse a las necesidades específicas de tu organización.
+                    Solicita información específica sobre esta solución y nuestro equipo se pondrá en contacto contigo para discutir cómo puede adaptarse a las necesidades de tu organización.
                   </p>
                   
                   <div className="text-sm text-muted-foreground">
@@ -302,6 +301,13 @@ const SolutionPage: React.FC = () => {
           </div>
         </div>
       </footer>
+
+      {/* Info Request Modal */}
+      <InfoRequestForm
+        isOpen={showInfoRequestModal}
+        onClose={() => setShowInfoRequestModal(false)}
+        solutionTitle={solution.title}
+      />
     </div>
   );
 };
