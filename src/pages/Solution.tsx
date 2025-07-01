@@ -236,13 +236,13 @@ const SolutionPage: React.FC = () => {
               <div className="bg-white p-6 rounded-xl border border-border shadow-subtle sticky top-24">
                 <h2 className="text-xl font-medium mb-6">¿Interesado en esta solución?</h2>
                 
-                <button
-                  onClick={handleRequestInfo}
-                  className="block w-full py-3 mb-4 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-all-200 flex items-center justify-center"
+                <Link
+                  to={`/request-info/${id}`}
+                  className="block w-full py-3 mb-4 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-all-200 flex items-center justify-center text-center"
                 >
                   <Mail className="w-5 h-5 mr-2" />
                   Solicitar información
-                </button>
+                </Link>
                 
                 <button
                   onClick={handleDownloadPDF}
