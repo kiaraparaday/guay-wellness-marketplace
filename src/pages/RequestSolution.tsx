@@ -180,214 +180,215 @@ const RequestSolution: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary/30 font-poppins">
       <Header />
       
-      <div className="py-12 px-6">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <div className="mb-8">
+      <div className="py-4 px-6">
+        <div className="max-w-6xl mx-auto">
+          {/* Compact Header */}
+          <div className="mb-4">
             <Link 
               to={`/solution/${solutionId}`}
-              className="inline-flex items-center text-muted-foreground hover:text-foreground mb-4 transition-colors"
+              className="inline-flex items-center text-muted-foreground hover:text-foreground mb-2 transition-colors text-sm"
             >
               <ArrowLeft className="w-4 h-4 mr-1" />
               Volver a la solución
             </Link>
             
-            <h1 className="text-3xl sm:text-4xl font-semibold mb-4">
+            <h1 className="text-2xl font-semibold mb-2">
               Solicita información personalizada
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-muted-foreground">
               Agenda una llamada para conocer cómo esta solución puede adaptarse a tu organización.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            {/* Left Column - Solution Summary */}
-            <div>
-              <div className="bg-white p-6 rounded-xl border border-border shadow-subtle mb-6">
-                <h2 className="text-xl font-medium mb-4">Solución seleccionada</h2>
-                <div className="flex items-start gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left Column - Solution Summary (Compact) */}
+            <div className="lg:col-span-1">
+              <div className="bg-white p-4 rounded-xl border border-border shadow-subtle">
+                <h2 className="text-lg font-medium mb-3">Solución seleccionada</h2>
+                <div className="flex items-start gap-3">
                   <img 
                     src={solution.image} 
                     alt={solution.title}
-                    className="w-20 h-20 rounded-lg object-cover"
+                    className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
                   />
-                  <div className="flex-1">
-                    <h3 className="font-medium text-lg mb-2">{solution.title}</h3>
-                    <div className="space-y-1 text-sm text-muted-foreground">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-medium mb-2 line-clamp-2">{solution.title}</h3>
+                    <div className="space-y-1 text-xs text-muted-foreground">
                       <p className="flex items-center">
-                        <Clock className="w-4 h-4 mr-2" />
+                        <Clock className="w-3 h-3 mr-1" />
                         {solution.duration}
                       </p>
                       <p className="flex items-center">
-                        <User className="w-4 h-4 mr-2" />
+                        <User className="w-3 h-3 mr-1" />
                         {solution.audience}
                       </p>
                     </div>
                   </div>
                 </div>
-                
-                <Link 
-                  to="/"
-                  className="inline-flex items-center text-primary hover:text-primary/80 text-sm mt-4"
-                >
-                  Volver al catálogo
-                </Link>
               </div>
             </div>
 
-            {/* Right Column - Form */}
-            <div>
-              <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl border border-border shadow-subtle">
-                <h2 className="text-xl font-medium mb-6">Información de contacto</h2>
-                
-                {/* User Information */}
-                <div className="space-y-4 mb-6">
-                  <div>
-                    <Label htmlFor="name" className="flex items-center text-sm font-medium mb-2">
-                      <User className="w-4 h-4 mr-2" />
-                      Nombre completo <span className="text-red-500">*</span>
-                    </Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      placeholder="Tu nombre completo"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="email" className="flex items-center text-sm font-medium mb-2">
-                      <Mail className="w-4 h-4 mr-2" />
-                      Correo electrónico <span className="text-red-500">*</span>
-                    </Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder="tu@email.com"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="company" className="flex items-center text-sm font-medium mb-2">
-                      <Building className="w-4 h-4 mr-2" />
-                      Empresa
-                    </Label>
-                    <Input
-                      id="company"
-                      name="company"
-                      value={formData.company}
-                      onChange={handleInputChange}
-                      placeholder="Nombre de tu empresa"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="message" className="flex items-center text-sm font-medium mb-2">
-                      <MessageSquare className="w-4 h-4 mr-2" />
-                      ¿Hay algo específico que deseas abordar?
-                    </Label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      placeholder="Comparte detalles adicionales sobre lo que necesitas..."
-                      rows={4}
-                    />
-                  </div>
-                </div>
-
-                {/* Date and Time Selection */}
-                <div className="space-y-4 mb-6">
-                  <h3 className="text-lg font-medium">Selecciona fecha y hora</h3>
+            {/* Right Column - Compact Form */}
+            <div className="lg:col-span-2">
+              <form onSubmit={handleSubmit} className="bg-white p-4 rounded-xl border border-border shadow-subtle">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   
-                  {/* Date Picker */}
-                  <div>
-                    <Label className="flex items-center text-sm font-medium mb-2">
-                      <CalendarIcon className="w-4 h-4 mr-2" />
-                      Fecha <span className="text-red-500">*</span>
-                    </Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className={cn(
-                            "w-full justify-start text-left font-normal",
-                            !selectedDate && "text-muted-foreground"
-                          )}
-                        >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {selectedDate ? (
-                            format(selectedDate, "PPP", { locale: es })
-                          ) : (
-                            <span>Selecciona una fecha</span>
-                          )}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={selectedDate}
-                          onSelect={setSelectedDate}
-                          disabled={(date) => 
-                            date < new Date() || !isDateAvailable(date)
-                          }
-                          initialFocus
-                          className="pointer-events-auto"
-                        />
-                      </PopoverContent>
-                    </Popover>
+                  {/* Left Form Column */}
+                  <div className="space-y-3">
+                    <h2 className="text-lg font-medium mb-3">Información de contacto</h2>
+                    
+                    <div>
+                      <Label htmlFor="name" className="flex items-center text-sm font-medium mb-1">
+                        <User className="w-3 h-3 mr-1" />
+                        Nombre <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        placeholder="Tu nombre completo"
+                        required
+                        className="h-9"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="email" className="flex items-center text-sm font-medium mb-1">
+                        <Mail className="w-3 h-3 mr-1" />
+                        Email <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        placeholder="tu@email.com"
+                        required
+                        className="h-9"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="company" className="flex items-center text-sm font-medium mb-1">
+                        <Building className="w-3 h-3 mr-1" />
+                        Empresa
+                      </Label>
+                      <Input
+                        id="company"
+                        name="company"
+                        value={formData.company}
+                        onChange={handleInputChange}
+                        placeholder="Nombre de tu empresa"
+                        className="h-9"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="message" className="flex items-center text-sm font-medium mb-1">
+                        <MessageSquare className="w-3 h-3 mr-1" />
+                        Mensaje adicional
+                      </Label>
+                      <Textarea
+                        id="message"
+                        name="message"
+                        value={formData.message}
+                        onChange={handleInputChange}
+                        placeholder="Comparte detalles específicos..."
+                        rows={3}
+                        className="resize-none"
+                      />
+                    </div>
                   </div>
 
-                  {/* Time Picker */}
-                  {selectedDate && (
+                  {/* Right Form Column - Date & Time */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-medium mb-3">Fecha y hora</h3>
+                    
+                    {/* Date Picker */}
                     <div>
-                      <Label className="flex items-center text-sm font-medium mb-2">
-                        <Clock className="w-4 h-4 mr-2" />
-                        Hora <span className="text-red-500">*</span>
+                      <Label className="flex items-center text-sm font-medium mb-1">
+                        <CalendarIcon className="w-3 h-3 mr-1" />
+                        Fecha <span className="text-red-500">*</span>
                       </Label>
-                      <div className="grid grid-cols-3 gap-2">
-                        {availableSlots.map((slot) => (
+                      <Popover>
+                        <PopoverTrigger asChild>
                           <Button
-                            key={slot.time}
-                            type="button"
-                            variant={selectedTime === slot.time ? "guay-primary" : "outline"}
-                            size="sm"
-                            disabled={!slot.available}
-                            onClick={() => setSelectedTime(slot.time)}
-                            className="text-xs"
+                            variant="outline"
+                            className={cn(
+                              "w-full justify-start text-left font-normal h-9",
+                              !selectedDate && "text-muted-foreground"
+                            )}
                           >
-                            {slot.time}
+                            <CalendarIcon className="mr-2 h-3 w-3" />
+                            {selectedDate ? (
+                              format(selectedDate, "PPP", { locale: es })
+                            ) : (
+                              <span>Selecciona fecha</span>
+                            )}
                           </Button>
-                        ))}
-                      </div>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={selectedDate}
+                            onSelect={setSelectedDate}
+                            disabled={(date) => 
+                              date < new Date() || !isDateAvailable(date)
+                            }
+                            initialFocus
+                            className="pointer-events-auto"
+                          />
+                        </PopoverContent>
+                      </Popover>
                     </div>
-                  )}
-                </div>
 
-                {/* Submit Button */}
-                <Button
-                  type="submit"
-                  variant="guay-primary"
-                  size="lg"
-                  className="w-full"
-                  disabled={isSubmitting || !selectedDate || !selectedTime}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Enviando...
-                    </>
-                  ) : (
-                    "Enviar solicitud y agendar llamada"
-                  )}
-                </Button>
+                    {/* Time Picker */}
+                    {selectedDate && (
+                      <div>
+                        <Label className="flex items-center text-sm font-medium mb-1">
+                          <Clock className="w-3 h-3 mr-1" />
+                          Hora <span className="text-red-500">*</span>
+                        </Label>
+                        <div className="grid grid-cols-3 gap-1">
+                          {availableSlots.map((slot) => (
+                            <Button
+                              key={slot.time}
+                              type="button"
+                              variant={selectedTime === slot.time ? "guay-primary" : "outline"}
+                              size="sm"
+                              disabled={!slot.available}
+                              onClick={() => setSelectedTime(slot.time)}
+                              className="text-xs h-8"
+                            >
+                              {slot.time}
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Submit Button */}
+                    <div className="pt-4">
+                      <Button
+                        type="submit"
+                        variant="guay-primary"
+                        className="w-full h-10"
+                        disabled={isSubmitting || !selectedDate || !selectedTime}
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                            Enviando...
+                          </>
+                        ) : (
+                          "Enviar solicitud"
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
               </form>
             </div>
           </div>
