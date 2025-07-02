@@ -21,8 +21,6 @@ import {
   Building,
   MessageSquare,
   CheckCircle,
-  ChevronRight,
-  ChevronLeft,
   Users,
   Monitor,
   Target
@@ -45,10 +43,6 @@ const RequestSolution: React.FC = () => {
   const navigate = useNavigate();
   const { currentUser, userData } = useAuth();
   const solution = solutionId ? solutionsData[solutionId] : null;
-
-  // Step management
-  const [currentStep, setCurrentStep] = useState(1);
-  const totalSteps = 3;
 
   // Form state
   const [formData, setFormData] = useState({
@@ -111,36 +105,20 @@ const RequestSolution: React.FC = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleNextStep = () => {
-    // Validation for step 1
-    if (currentStep === 1) {
-      if (!formData.name.trim() || !formData.email.trim()) {
-        toast.error("Por favor completa los campos obligatorios");
-        return;
-      }
-    }
-    
-    // Validation for step 2
-    if (currentStep === 2) {
-      if (!selectedDate || !selectedTime) {
-        toast.error("Por favor selecciona una fecha y hora para la cita");
-        return;
-      }
-    }
-
-    if (currentStep < totalSteps) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
-  const handlePrevStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validation
+    if (!formData.name.trim() || !formData.email.trim()) {
+      toast.error("Por favor completa los campos obligatorios");
+      return;
+    }
+    
+    if (!selectedDate || !selectedTime) {
+      toast.error("Por favor selecciona una fecha y hora para la cita");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -181,7 +159,7 @@ const RequestSolution: React.FC = () => {
             <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-6" />
             <h1 className="text-3xl font-semibold mb-4">¡Listo! Tu cita fue agendada</h1>
             <p className="text-lg text-muted-foreground mb-6">
-              Tu cita fue agendada para el {selectedDate && selectedTime && formatAppointmentDate(selectedDate, selectedTime)}. Pronto te contactaremos para confirmar los detalles y resolver tus dudas.
+              Tu cita fue agendada para el {selectedDate && selectedTime && formatAppointmentDate(selectedDate, selectedTime)}. Pronto nos pondremos en contacto contigo para confirmar los detalles.
             </p>
             <div className="bg-white p-6 rounded-xl border border-border shadow-subtle mb-8">
               <p className="font-medium text-lg mb-2">{solution.title}</p>
@@ -237,33 +215,6 @@ const RequestSolution: React.FC = () => {
             </p>
           </div>
 
-          {/* Progress Steps */}
-          <div className="flex items-center justify-center mb-8">
-            {[1, 2, 3].map((step) => (
-              <div key={step} className="flex items-center">
-                <div className={cn(
-                  "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium",
-                  step <= currentStep 
-                    ? "bg-[#131F36] text-white" 
-                    : "bg-gray-200 text-gray-500"
-                )}>
-                  {step}
-                </div>
-                <div className={cn(
-                  "text-sm ml-2 mr-6",
-                  step <= currentStep ? "text-[#131F36] font-medium" : "text-gray-500"
-                )}>
-                  {step === 1 && "Información"}
-                  {step === 2 && "Agenda"}
-                  {step === 3 && "Confirmación"}
-                </div>
-                {step < 3 && (
-                  <ChevronRight className="w-4 h-4 text-gray-400 mr-6" />
-                )}
-              </div>
-            ))}
-          </div>
-
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Solution Summary */}
             <div className="lg:col-span-1">
@@ -292,18 +243,13 @@ const RequestSolution: React.FC = () => {
               </div>
             </div>
 
-            {/* Form Steps */}
+            {/* Form */}
             <div className="lg:col-span-3">
               <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl border border-border shadow-subtle">
-                
-                {/* Step 1: Contact Information */}
-                {currentStep === 1 && (
-                  <div className="space-y-4">
-                    <div className="mb-6">
-                      <h2 className="text-xl font-semibold mb-2">Paso 1: Información de contacto</h2>
-                      <p className="text-muted-foreground">Cuéntanos sobre ti y tu organización</p>
-                    </div>
-
+                <div className="space-y-6">
+                  {/* Contact Information */}
+                  <div>
+                    <h2 className="text-lg font-semibold mb-4">Información de contacto</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="name" className="flex items-center text-sm font-medium mb-2">
@@ -337,7 +283,7 @@ const RequestSolution: React.FC = () => {
                       </div>
                     </div>
 
-                    <div>
+                    <div className="mt-4">
                       <Label htmlFor="company" className="flex items-center text-sm font-medium mb-2">
                         <Building className="w-4 h-4 mr-2" />
                         Empresa
@@ -350,124 +296,126 @@ const RequestSolution: React.FC = () => {
                         placeholder="Nombre de tu empresa"
                       />
                     </div>
+                  </div>
 
-                    <div>
-                      <Label htmlFor="motivation" className="flex items-center text-sm font-medium mb-2">
-                        <Target className="w-4 h-4 mr-2" />
-                        ¿Qué te motivó a interesarte en este taller?
-                      </Label>
-                      <Textarea
-                        id="motivation"
-                        name="motivation"
-                        value={formData.motivation}
-                        onChange={handleInputChange}
-                        placeholder="Comparte qué te llevó a considerar este taller..."
-                        rows={3}
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Additional Information */}
+                  <div>
+                    <h2 className="text-lg font-semibold mb-4">Información adicional</h2>
+                    
+                    <div className="space-y-4">
                       <div>
-                        <Label htmlFor="participants" className="flex items-center text-sm font-medium mb-2">
-                          <Users className="w-4 h-4 mr-2" />
-                          ¿Cuántas personas participarían?
+                        <Label htmlFor="motivation" className="flex items-center text-sm font-medium mb-2">
+                          <Target className="w-4 h-4 mr-2" />
+                          ¿Qué te motivó a interesarte en este taller?
                         </Label>
-                        <Input
-                          id="participants"
-                          name="participants"
-                          type="number"
-                          value={formData.participants}
+                        <Textarea
+                          id="motivation"
+                          name="motivation"
+                          value={formData.motivation}
                           onChange={handleInputChange}
-                          placeholder="Número estimado"
-                          min="1"
+                          placeholder="Comparte qué te llevó a considerar este taller..."
+                          rows={3}
                         />
                       </div>
 
-                      <div>
-                        <Label className="flex items-center text-sm font-medium mb-2">
-                          <Monitor className="w-4 h-4 mr-2" />
-                          Modalidad preferida
-                        </Label>
-                        <Select value={formData.deliveryMode} onValueChange={(value) => handleSelectChange('deliveryMode', value)}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Selecciona modalidad" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="presencial">Presencial</SelectItem>
-                            <SelectItem value="virtual">Virtual</SelectItem>
-                            <SelectItem value="hibrida">Híbrida</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="participants" className="flex items-center text-sm font-medium mb-2">
+                            <Users className="w-4 h-4 mr-2" />
+                            ¿Cuántas personas participarían?
+                          </Label>
+                          <Input
+                            id="participants"
+                            name="participants"
+                            type="number"
+                            value={formData.participants}
+                            onChange={handleInputChange}
+                            placeholder="Número estimado"
+                            min="1"
+                          />
+                        </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <Label className="flex items-center text-sm font-medium mb-2">
-                          <CalendarIcon className="w-4 h-4 mr-2" />
-                          Día preferido de la semana
-                        </Label>
-                        <Select value={formData.preferredDay} onValueChange={(value) => handleSelectChange('preferredDay', value)}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Selecciona día" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="lunes">Lunes</SelectItem>
-                            <SelectItem value="martes">Martes</SelectItem>
-                            <SelectItem value="miercoles">Miércoles</SelectItem>
-                            <SelectItem value="jueves">Jueves</SelectItem>
-                            <SelectItem value="viernes">Viernes</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <div>
+                          <Label className="flex items-center text-sm font-medium mb-2">
+                            <Monitor className="w-4 h-4 mr-2" />
+                            Modalidad preferida
+                          </Label>
+                          <Select value={formData.deliveryMode} onValueChange={(value) => handleSelectChange('deliveryMode', value)}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Selecciona modalidad" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="presencial">Presencial</SelectItem>
+                              <SelectItem value="virtual">Virtual</SelectItem>
+                              <SelectItem value="hibrida">Híbrida</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
                       </div>
 
-                      <div>
-                        <Label className="text-sm font-medium mb-2 block">
-                          ¿Contenido adaptado con casos de tu organización?
-                        </Label>
-                        <RadioGroup 
-                          value={formData.customContent} 
-                          onValueChange={(value) => handleSelectChange('customContent', value)}
-                          className="flex gap-6"
-                        >
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="si" id="si" />
-                            <Label htmlFor="si">Sí</Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="no" id="no" />
-                            <Label htmlFor="no">No</Label>
-                          </div>
-                        </RadioGroup>
-                      </div>
-                    </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label className="flex items-center text-sm font-medium mb-2">
+                            <CalendarIcon className="w-4 h-4 mr-2" />
+                            Día preferido de la semana
+                          </Label>
+                          <Select value={formData.preferredDay} onValueChange={(value) => handleSelectChange('preferredDay', value)}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Selecciona día" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="lunes">Lunes</SelectItem>
+                              <SelectItem value="martes">Martes</SelectItem>
+                              <SelectItem value="miercoles">Miércoles</SelectItem>
+                              <SelectItem value="jueves">Jueves</SelectItem>
+                              <SelectItem value="viernes">Viernes</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
 
-                    <div>
-                      <Label htmlFor="message" className="flex items-center text-sm font-medium mb-2">
-                        <MessageSquare className="w-4 h-4 mr-2" />
-                        Mensaje adicional
-                      </Label>
-                      <Textarea
-                        id="message"
-                        name="message"
-                        value={formData.message}
-                        onChange={handleInputChange}
-                        placeholder="¿Qué te gustaría lograr con este taller? ¿Algo que debamos saber antes de la sesión?"
-                        rows={3}
-                      />
+                        <div>
+                          <Label className="text-sm font-medium mb-2 block">
+                            ¿Contenido adaptado con casos de tu organización?
+                          </Label>
+                          <RadioGroup 
+                            value={formData.customContent} 
+                            onValueChange={(value) => handleSelectChange('customContent', value)}
+                            className="flex gap-6"
+                          >
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem value="si" id="si" />
+                              <Label htmlFor="si">Sí</Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem value="no" id="no" />
+                              <Label htmlFor="no">No</Label>
+                            </div>
+                          </RadioGroup>
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="message" className="flex items-center text-sm font-medium mb-2">
+                          <MessageSquare className="w-4 h-4 mr-2" />
+                          Mensaje adicional
+                        </Label>
+                        <Textarea
+                          id="message"
+                          name="message"
+                          value={formData.message}
+                          onChange={handleInputChange}
+                          placeholder="¿Qué te gustaría lograr con este taller? ¿Hay algo que debamos saber antes de la llamada?"
+                          rows={3}
+                        />
+                      </div>
                     </div>
                   </div>
-                )}
 
-                {/* Step 2: Schedule */}
-                {currentStep === 2 && (
-                  <div className="space-y-4">
-                    <div className="mb-6">
-                      <h2 className="text-xl font-semibold mb-2">Paso 2: Agenda la llamada</h2>
-                      <p className="text-muted-foreground">Selecciona el mejor momento para tu llamada</p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Schedule */}
+                  <div>
+                    <h2 className="text-lg font-semibold mb-4">Agenda la llamada</h2>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <Label className="flex items-center text-sm font-medium mb-2">
                           <CalendarIcon className="w-4 h-4 mr-2" />
@@ -510,104 +458,40 @@ const RequestSolution: React.FC = () => {
                           <Clock className="w-4 h-4 mr-2" />
                           Hora <span className="text-red-500">*</span>
                         </Label>
-                        {selectedDate && (
-                          <Select value={selectedTime} onValueChange={setSelectedTime}>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Selecciona hora" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {getAvailableTimeSlots().map((slot) => (
-                                <SelectItem key={slot.time} value={slot.time}>
-                                  {slot.time}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        )}
+                        <Select value={selectedTime} onValueChange={setSelectedTime}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecciona hora" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {getAvailableTimeSlots().map((slot) => (
+                              <SelectItem key={slot.time} value={slot.time}>
+                                {slot.time}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
                     </div>
                   </div>
-                )}
+                </div>
 
-                {/* Step 3: Confirmation */}
-                {currentStep === 3 && (
-                  <div className="space-y-6">
-                    <div className="mb-6">
-                      <h2 className="text-xl font-semibold mb-2">Paso 3: Confirmación</h2>
-                      <p className="text-muted-foreground">Revisa tu información antes de enviar</p>
-                    </div>
-
-                    <div className="bg-gray-50 p-4 rounded-lg space-y-4">
-                      <div>
-                        <h3 className="font-medium mb-2">Información de contacto</h3>
-                        <div className="text-sm space-y-1">
-                          <p><strong>Nombre:</strong> {formData.name}</p>
-                          <p><strong>Email:</strong> {formData.email}</p>
-                          {formData.company && <p><strong>Empresa:</strong> {formData.company}</p>}
-                          {formData.participants && <p><strong>Participantes:</strong> {formData.participants}</p>}
-                          {formData.deliveryMode && <p><strong>Modalidad:</strong> {formData.deliveryMode}</p>}
-                        </div>
-                      </div>
-
-                      <div>
-                        <h3 className="font-medium mb-2">Fecha y hora</h3>
-                        <div className="text-sm">
-                          {selectedDate && selectedTime && (
-                            <p>{formatAppointmentDate(selectedDate, selectedTime)}</p>
-                          )}
-                        </div>
-                      </div>
-
-                      <div>
-                        <h3 className="font-medium mb-2">Solución</h3>
-                        <div className="text-sm">
-                          <p>{solution.title}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Navigation Buttons */}
-                <div className="flex justify-between pt-6 border-t">
+                {/* Submit Button */}
+                <div className="pt-6 border-t mt-6">
                   <Button
-                    type="button"
-                    variant="outline"
-                    onClick={handlePrevStep}
-                    disabled={currentStep === 1}
-                    className="flex items-center gap-2"
+                    type="submit"
+                    variant="guay-primary"
+                    disabled={isSubmitting}
+                    className="w-full flex items-center justify-center gap-2"
                   >
-                    <ChevronLeft className="w-4 h-4" />
-                    Anterior
+                    {isSubmitting ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        Enviando...
+                      </>
+                    ) : (
+                      "Enviar solicitud"
+                    )}
                   </Button>
-
-                  {currentStep < totalSteps ? (
-                    <Button
-                      type="button"
-                      variant="guay-primary"
-                      onClick={handleNextStep}
-                      className="flex items-center gap-2"
-                    >
-                      Siguiente
-                      <ChevronRight className="w-4 h-4" />
-                    </Button>
-                  ) : (
-                    <Button
-                      type="submit"
-                      variant="guay-primary"
-                      disabled={isSubmitting}
-                      className="flex items-center gap-2"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                          Enviando...
-                        </>
-                      ) : (
-                        "Enviar solicitud"
-                      )}
-                    </Button>
-                  )}
                 </div>
               </form>
             </div>
