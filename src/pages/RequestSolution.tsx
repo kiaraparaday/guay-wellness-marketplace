@@ -11,7 +11,6 @@ import { Label } from "@/components/ui/label";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { 
   ArrowLeft, 
   Calendar as CalendarIcon, 
@@ -21,8 +20,6 @@ import {
   Building,
   MessageSquare,
   CheckCircle,
-  Users,
-  Monitor,
   Target
 } from "lucide-react";
 import { toast } from "sonner";
@@ -51,10 +48,6 @@ const RequestSolution: React.FC = () => {
     company: userData?.empresa || "",
     message: "",
     motivation: "",
-    participants: "",
-    deliveryMode: "",
-    preferredDay: "",
-    customContent: "",
   });
 
   // Date and time state
@@ -98,10 +91,6 @@ const RequestSolution: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSelectChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -300,8 +289,6 @@ const RequestSolution: React.FC = () => {
 
                   {/* Additional Information */}
                   <div>
-                    <h2 className="text-lg font-semibold mb-4">Información adicional</h2>
-                    
                     <div className="space-y-4">
                       <div>
                         <Label htmlFor="motivation" className="flex items-center text-sm font-medium mb-2">
@@ -316,82 +303,6 @@ const RequestSolution: React.FC = () => {
                           placeholder="Comparte qué te llevó a considerar este taller..."
                           rows={3}
                         />
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <Label htmlFor="participants" className="flex items-center text-sm font-medium mb-2">
-                            <Users className="w-4 h-4 mr-2" />
-                            ¿Cuántas personas participarían?
-                          </Label>
-                          <Input
-                            id="participants"
-                            name="participants"
-                            type="number"
-                            value={formData.participants}
-                            onChange={handleInputChange}
-                            placeholder="Número estimado"
-                            min="1"
-                          />
-                        </div>
-
-                        <div>
-                          <Label className="flex items-center text-sm font-medium mb-2">
-                            <Monitor className="w-4 h-4 mr-2" />
-                            Modalidad preferida
-                          </Label>
-                          <Select value={formData.deliveryMode} onValueChange={(value) => handleSelectChange('deliveryMode', value)}>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Selecciona modalidad" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="presencial">Presencial</SelectItem>
-                              <SelectItem value="virtual">Virtual</SelectItem>
-                              <SelectItem value="hibrida">Híbrida</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <Label className="flex items-center text-sm font-medium mb-2">
-                            <CalendarIcon className="w-4 h-4 mr-2" />
-                            Día preferido de la semana
-                          </Label>
-                          <Select value={formData.preferredDay} onValueChange={(value) => handleSelectChange('preferredDay', value)}>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Selecciona día" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="lunes">Lunes</SelectItem>
-                              <SelectItem value="martes">Martes</SelectItem>
-                              <SelectItem value="miercoles">Miércoles</SelectItem>
-                              <SelectItem value="jueves">Jueves</SelectItem>
-                              <SelectItem value="viernes">Viernes</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-
-                        <div>
-                          <Label className="text-sm font-medium mb-2 block">
-                            ¿Contenido adaptado con casos de tu organización?
-                          </Label>
-                          <RadioGroup 
-                            value={formData.customContent} 
-                            onValueChange={(value) => handleSelectChange('customContent', value)}
-                            className="flex gap-6"
-                          >
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="si" id="si" />
-                              <Label htmlFor="si">Sí</Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="no" id="no" />
-                              <Label htmlFor="no">No</Label>
-                            </div>
-                          </RadioGroup>
-                        </div>
                       </div>
 
                       <div>
