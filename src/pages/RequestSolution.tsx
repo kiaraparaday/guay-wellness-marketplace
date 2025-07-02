@@ -287,41 +287,6 @@ const RequestSolution: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Additional Information */}
-                  <div>
-                    <div className="space-y-4">
-                      <div>
-                        <Label htmlFor="motivation" className="flex items-center text-sm font-medium mb-2">
-                          <Target className="w-4 h-4 mr-2" />
-                          ¿Qué te motivó a interesarte en este taller?
-                        </Label>
-                        <Textarea
-                          id="motivation"
-                          name="motivation"
-                          value={formData.motivation}
-                          onChange={handleInputChange}
-                          placeholder="Comparte qué te llevó a considerar este taller..."
-                          rows={3}
-                        />
-                      </div>
-
-                      <div>
-                        <Label htmlFor="message" className="flex items-center text-sm font-medium mb-2">
-                          <MessageSquare className="w-4 h-4 mr-2" />
-                          Mensaje adicional
-                        </Label>
-                        <Textarea
-                          id="message"
-                          name="message"
-                          value={formData.message}
-                          onChange={handleInputChange}
-                          placeholder="¿Qué te gustaría lograr con este taller? ¿Hay algo que debamos saber antes de la llamada?"
-                          rows={3}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
                   {/* Schedule */}
                   <div>
                     <h2 className="text-lg font-semibold mb-4">Agenda la llamada</h2>
@@ -381,6 +346,41 @@ const RequestSolution: React.FC = () => {
                             ))}
                           </SelectContent>
                         </Select>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Additional Information */}
+                  <div>
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="motivation" className="flex items-center text-sm font-medium mb-2">
+                          <Target className="w-4 h-4 mr-2" />
+                          ¿Qué te motivó a interesarte en este taller?
+                        </Label>
+                        <Textarea
+                          id="motivation"
+                          name="motivation"
+                          value={formData.motivation}
+                          onChange={handleInputChange}
+                          placeholder="Comparte qué te llevó a considerar este taller..."
+                          rows={3}
+                        />
+                      </div>
+
+                      <div>
+                        <Label htmlFor="message" className="flex items-center text-sm font-medium mb-2">
+                          <MessageSquare className="w-4 h-4 mr-2" />
+                          Mensaje adicional
+                        </Label>
+                        <Textarea
+                          id="message"
+                          name="message"
+                          value={formData.message}
+                          onChange={handleInputChange}
+                          placeholder="¿Qué te gustaría lograr con este taller? ¿Hay algo que debamos saber antes de la llamada?"
+                          rows={3}
+                        />
                       </div>
                     </div>
                   </div>
